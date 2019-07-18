@@ -1,0 +1,42 @@
+--------------
+ClassName
+--------------
+Attributes
+---------------
+Methods
+--------------
+
+
+RelationShips (Person ---->----- Book)
+
+* = many including 0, e.g. Person* --->---- *Book, many persons can write many books 
+    1..* or *..7 or 1 ..2
+
+A 0..*---->----1..2 B    =    B can go to 0..* A whereas A can go to 1..2 B
+
+Named Association fields 
+
+Attribute types are suualy data types 
+
+Do not use attributes as foreign keys . eg. Person shouldnt be linked to flight by variable flight number, it should be linked by object flight
+
+<B>-----  integeral part / physical part    =   COMPOSITION(Black Diamond) >> parts cannot exist without the whole >> synchronises lifetimes(transitively)
+    A is a physical part of B       =       Wing ---- Airplane      =       AP <B>------  W
+    creation / destruction of A and B linked 
+
+<>----- non integeral part / logical part    =   AGGREGATION (White diamond) >> Regular assocation with whole-part connotation (anti-symmeteric, transitive) >> no additional semantics attacted >> if in doubt use regular association
+    A is a logical part of B    =      FlightLeg ---- FlightRoute    =    FL <>------- FR
+    
+Design Phase
+    Association ends are owned by classes
+    
+    
+Many - Many fixed by inbetween class 
+
+
+
+
+    
+
+
+
