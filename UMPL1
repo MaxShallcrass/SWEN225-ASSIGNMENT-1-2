@@ -1,0 +1,114 @@
+ 
+class Card
+{
+}
+
+class WeaponCard
+{
+  isA Card;
+}
+
+class RoomCard
+{
+  isA Card;
+}
+
+class CharacterCard
+{
+  isA Card;
+}
+
+class Cells
+{
+}
+
+class FloorCell
+{
+  isA Cells;
+}
+
+class RoomCell
+{
+  isA Cells;
+}class DoorCell
+{
+  isA RoomCell;
+}
+
+class Location
+{
+}
+
+class Board
+{
+}
+
+class Cluedo
+{
+}
+
+class Player
+{
+}
+
+//$?[End_of_model]$?
+
+class Card
+{
+  position 10 5 109 42;
+}
+
+class WeaponCard
+{
+  position 8 104 109 42;
+}
+
+class RoomCard
+{
+  position 246 101 109 42;
+}
+
+class CharacterCard
+{
+  position 126 100 109 42;
+}
+
+class Cells
+{
+  position 446 14 109 42;
+}
+
+class FloorCell
+{
+  position 530 99 109 42;
+}
+
+class RoomCell
+{
+  position 414 100 109 42;
+}
+
+class DoorCell
+{
+  position 412 174 109 41;
+}
+
+class Location
+{
+  position 757 25 109 41;
+}
+
+class Board
+{
+  position 824 150 109 41;
+}
+
+class Cluedo
+{
+  position 903 256 109 41;
+}
+
+class Player
+{
+  position 792 322 109 41;
+}
