@@ -1,4 +1,3 @@
- 
 class Card
 {
 }
@@ -51,64 +50,91 @@ class Player
 {
 }
 
-//$?[End_of_model]$?
+
+
+class Hand
+{
+}
+
+class Accusation
+{
+}
+
+class Suggestion
+{
+}
 
 class Card
 {
-  position 10 5 109 42;
+  position 122 443 109 41;
 }
 
 class WeaponCard
 {
-  position 8 104 109 42;
+  position 1 497 109 41;
 }
 
 class RoomCard
 {
-  position 246 101 109 42;
+  position 245 497 109 41;
 }
 
 class CharacterCard
 {
-  position 126 100 109 42;
+  position 120 494 109 41;
 }
 
 class Cells
 {
-  position 446 14 109 42;
+  position 521 382 109 41;
 }
 
 class FloorCell
 {
-  position 530 99 109 42;
+  position 599 444 109 41;
 }
 
 class RoomCell
 {
-  position 414 100 109 42;
+  position 477 444 109 41;
 }
 
 class DoorCell
 {
-  position 412 174 109 41;
+  position 480 495 109 41;
 }
 
 class Location
 {
-  position 757 25 109 41;
+  position 408 58 109 41;
 }
 
 class Board
 {
-  position 824 150 109 41;
+  position 509 226 109 41;
 }
 
 class Cluedo
 {
-  position 903 256 109 41;
+  position 285 37 109 41;
 }
 
 class Player
 {
-  position 792 322 109 41;
+  position 117 170 109 41;
+}//$?[End_of_model]$?
+
+class Hand
+{
+  position 11 0 109 41;
+}
+
+class Accusation
+{
+  position 342 187 109 41;
+}
+
+class Suggestion
+{
+  position 539 136 109 41;
 }
