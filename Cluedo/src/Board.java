@@ -67,8 +67,8 @@ public class Board {
 			realPlayers.get(i).setLocation(playerLocs.get(i));
 		}
 		for (int i = realPlayers.size(); i < realPlayers.size() + nonPlayer.size(); i++) {
-			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(nonPlayer.get(i));
-			nonPlayer.get(i).setLocation(playerLocs.get(i));
+			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(nonPlayer.get(i-realPlayers.size()));
+			nonPlayer.get(i-realPlayers.size()).setLocation(playerLocs.get(i));
 		}
 	}
 
