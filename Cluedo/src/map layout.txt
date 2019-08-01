@@ -1,0 +1,27 @@
+e  e  e  e  e  e  e  e  e  t  e  e  e  e  t  e  e  e  e  e  e  e  e  e
+k  k  k  k  k  k  e  t  t  t  b  b  b  b  t  t  t  e  c  c  c  c  c  c
+k  k  k  k  k  k  t  t  b  b  b  b  b  b  b  b  t  t  c  c  c  c  c  c  
+k  k  k  k  k  k  t  t  b  b  b  b  b  b  b  b  t  t  c  c  c  c  c  c  
+k  k  k  k  k  k  t  t  b  b  b  b  b  b  b  b  t  t  DWc c  c  c  c  c  
+k  k  k  k  k  k  t  t  DWb  b  b  b  b  b  b  DEb t  t  t  c  c  c  c  e
+e  k  k  k  DSK k  t  t  b  b  b  b  b  b  b  b  t  t  t  t  t  t  t  t
+t  t  t  t  t  t  t  t  b  DSb  b  b  b  b  DSb  b  t  t  t  t  t  t  t  e
+e  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  B  B  B  B  B  B
+d  d  d  d  d  d  t  t  t  t  t  t  t  t  t  t  t  t  DWB B  B  B  B  B
+d  d  d  d  d  d  d  d  d  t  t  e  e  e  e  t  t  t  B  B  B  B  B  B
+d  d  d  d  d  d  d  d  d  t  t  e  e  e  e  t  t  t  B  B  B  B  B  B
+d  d  d  d  d  d  d  d  DEd  t  t  e  e  e  e  t  t  t  B  B  B  B  DSB B
+d  d  d  d  d  d  d  d  d  t  t  e  e  e  e  t  t  t  t  t  t  t  t  e
+d  d  d  d  d  d  d  d  d  t  t  e  e  e  e  t  t  t  l  l  DNl l  l  e  
+d  d  d  d  d  d  d  DSd d  t  t  e  e  e  e  t  t  l  l  l  l  l  l  l  
+e  t  t  t  t  t  t  t  t  t  t  e  e  e  e  t  t  DWl l  l  l  l  l  l
+t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  t  l  l  l  l  l  l  l
+e  t  t  t  t  t  t  t  t  h  h  DNH DNH h  h  t  t  t  l  l  l  l  l  e
+L  L  L  L  L  L  DNL t  t  h  h  h  h  h  h  t  t  t  t  t  t  t  t  t
+L  L  L  L  L  L  L  t  t  h  h  h  h  h  DEH  t  t  t  t  t  t  t  t  e
+L  L  L  L  L  L  L  t  t  h  h  h  h  h  h  t  t  DNS s  s  s  s  s  s
+L  L  L  L  L  L  L  t  t  h  h  h  h  h  h  t  t  s  s  s  s  s  s  s
+L  L  L  L  L  L  L  t  t  h  h  h  h  h  h  t  t  s  s  s  s  s  s  s
+L  L  L  L  L  L  e  t  e  h  h  h  h  h  h  e  t  e  s  s  s  s  s  s
+
+Needs  oritentaion  of  the  doors
