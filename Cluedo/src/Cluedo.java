@@ -48,13 +48,13 @@ public class Cluedo
 	  //Creating envelope and dealing hands
 	  Envelope e = deal(players);
 	 
-	  doSuggestion(players,players.get(0),"Lounge");
-	  /*
+	 // doSuggestion(players,players.get(0),"Lounge");
+	  
 	  //Create new board
 	  Board board = new Board(players,computerPlayers);
 	  
 	  //Play Game
-	  playCluedo(players,board);*/
+	  playCluedo(players,board);
   }
   
   /**

@@ -178,7 +178,8 @@ public class Board {
 		getCellAt(locAt).removePlayer();
 		getCellAt(locTo).setPlayer(p);
 		p.setLocation(locTo);
-
+		if(getCellAt(locTo) instanceof DoorCell) //if made it into a room
+			return 0;
 		return --movesLeft;
 	}
 
@@ -237,8 +238,35 @@ public class Board {
 				return false;
 			}
 		}
+		if(from instanceof DoorCell&& !moveTo.isRoom()) {
+			if(!(((DoorCell) from).getEntryLoc().equals(moveTo.getLocation()))){
+				System.out.println("Invalid move - Cannot move from a door to that tile from this direction: Retry again");
+				return false;
+			}
+		}	
 		return true;
 	}
+	/*
+	 * Moves a player to a room after having been in a suggestion
+	 */
+	public void movePlayerToRoom(Player p, String roomName) {
+		//making sure player is not already in the room
+		if(!getCellAt(p.getLocation()).isRoom() ||!getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomName) ) {
+			
+			
+			
+		}
+		
+		
+		
+	}
+	
+	
+	private ArrayList<Cell> getCellsFromRoom(){
+		return null;
+	}
+	
+	
 
 	/// HELPER METHODS\\\
 	/*

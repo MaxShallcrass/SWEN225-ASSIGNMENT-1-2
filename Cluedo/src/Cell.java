@@ -39,6 +39,11 @@ public abstract class Cell {
 		hasWeapon=true;
 		weapon=wep;
 	}
+	
+	public void removeWeapon() {
+		hasWeapon=false;
+		weapon="";
+	}
 
 	public void setPlayer(Player p) {
 		this.player = p;
