@@ -8,48 +8,25 @@
 public class Location
 {
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Location Associations
-  private Cell cells;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public Location(Cell aCells)
-  {
-    if (aCells == null || aCells.getLocation() != null)
-    {
-      throw new RuntimeException("Unable to create Location due to aCells. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    cells = aCells;
-  }
-
-  public Location(Board aBoardForCells)
-  {
-    cells = new Cell(this, aBoardForCells);
-  }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-  /* Code from template association_GetOne */
-  public Cell getCells()
-  {
-    return cells;
-  }
-
-  public void delete()
-  {
-    Cell existingCells = cells;
-    cells = null;
-    if (existingCells != null)
-    {
-      existingCells.delete();
-    }
-  }
+private int x, y;
+ Location(int x, int y){
+this.x=x;
+this.y=y;
+	 
+ }
+ public int getX() {
+	 return x;
+ }
+ public int getY() {
+	 return y;
+ }
+ 
+ public void setX(int x) {
+	 this.x=x;
+ }
+ public void setY(int y) {
+	 this.y=y;
+ }
+ 
 
 }

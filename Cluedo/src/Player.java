@@ -20,6 +20,7 @@ public class Player
   
   private String character; 
   private String name;
+  private Location loc;
 
   //------------------------
   // CONSTRUCTOR
