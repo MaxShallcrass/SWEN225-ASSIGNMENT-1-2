@@ -66,9 +66,9 @@ public class Cluedo
 	  
 	  //make envelope
 	  Random rand = new Random();
-	  int roomIndex = rand.nextInt((10- 0) + 0) + 0;
-	  int weaponIndex = rand.nextInt((6- 0) + 0) + 0;
-	  int characterIndex = rand.nextInt((6- 0) + 0) + 0;
+	  int roomIndex = rand.nextInt((9- 0) + 0) + 0;
+	  int weaponIndex = rand.nextInt((5- 0) + 0) + 0;
+	  int characterIndex = rand.nextInt((5- 0) + 0) + 0;
 	  Envelope envelope = new Envelope(new RoomCard(rooms.get(roomIndex)),new WeaponCard(weapons.get(weaponIndex)),
 			  					new CharacterCard(characters.get(characterIndex)));
 	  characters.remove(characterIndex);
@@ -125,9 +125,16 @@ public class Cluedo
 			  steps = board.movePlayer(player.getLocation(),md,steps);
 		  }
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
-		  String decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
+		  String decision = "";
+		  /* if in room 
+		  decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
 				  				"Error please enter: a , s or n ",
 				  				new ArrayList<String>(Arrays.asList("a,s,n")));
+		  */
+		  //else
+		  decision = ask("You can now make accusation (a) or do nothing (n)",
+	  				"Error please enter: a or n ",
+	  				new ArrayList<String>(Arrays.asList("a","n")));
 		  if(decision.equals("a")) {
 			  doAccusation();
 		  }else if(decision.equals("s")) {
@@ -152,8 +159,15 @@ public class Cluedo
   }
   
   
-  public void doSuggestion() {
+  public void doSuggestion() { //FIX CAPITALISED 
 	  	//Create suggestion
+	  String room = "";
+	  String weapon = cleanString(ask("What weapon do you want to suggest CAPITALISED??"+weapons,
+				"Error please enter a weapon",weapons));
+	  String character = cleanString(ask("What character do you want to suggest CAPITALISED??"+weapons,
+				"Error please enter a character",characters));
+	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
+	  	
   }
 
   
@@ -232,6 +246,10 @@ public class Cluedo
 		  }
 	  }
 	  return result;
+  }
+  
+  public String cleanString(String str) {
+	  return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
   }
   
 

@@ -13,15 +13,22 @@ public class Suggestion
   //------------------------
 
   //Suggestion Associations
-  private Player player;
+  private RoomCard room;
+  private WeaponCard weapon;
+  private CharacterCard character;
+  
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Suggestion() {
+  public Suggestion(RoomCard r, WeaponCard w, CharacterCard c) {
+	  room = r;
+	  weapon = w;
+	  character = c;
 	  
   }
+  
   //------------------------
   // INTERFACE
   //------------------------
