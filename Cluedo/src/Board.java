@@ -27,12 +27,12 @@ public class Board {
 				if (token.length() > 1) { // A door
 					DoorCell dc = new DoorCell(loc, token);
 					board[x][y] = dc;
-					
+					token=token.substring(2);
 				} else { // floor tile
 					FloorCell fc = new FloorCell(loc, token.charAt(0));
 					board[x][y] = fc;
 				}
-				// Adds the fact that a cell is a room if it is
+				// Adds the fact that a cell is in a room if it is
 				addRoom(token, board[x][y]);
 				if (++x == 24) {
 					x = 0;
@@ -249,14 +249,6 @@ public class Board {
 	/*
 	 * Moves a player to a room after having been in a suggestion
 	 */
-<<<<<<< HEAD
-	public void movePlayerToRoom(Player p, String roomName) {
-		//making sure player is not already in the room
-		if(!getCellAt(p.getLocation()).isRoom() ||!getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomName) ) {
-			
-			
-			
-=======
 	public void movePlayerWeaponToRoom(Player p, String roomNameTo, String weaponName) {
 		List<Cell> cells = getCellsFromRoom(roomNameTo);
 		Collections.shuffle(cells);
@@ -269,13 +261,7 @@ public class Board {
 					p.setLocation(cell.getLocation());
 					break;
 				}
->>>>>>> branch 'master' of https://github.com/FergusCurrie/SWEN225-ASSIGNMENT-1.git
 		}
-		
-<<<<<<< HEAD
-		
-		
-=======
 		if(weaponName.equals("Candlestick"))
 			weaponName="Ca";
 		else if(weaponName.equals("Dagger"))
@@ -298,23 +284,46 @@ public class Board {
 					break;
 				}
 		}	
->>>>>>> branch 'master' of https://github.com/FergusCurrie/SWEN225-ASSIGNMENT-1.git
-	}
-	
-	
-	private ArrayList<Cell> getCellsFromRoom(){
-		return null;
-	}
-	
+
+		}
 	
 
+
 	/// HELPER METHODS\\\
+	
+	/*
+	 * Gets all the cells that are within the given room
+	 */
+	private List<Cell> getCellsFromRoom(String roomName){
+		List<Cell> cells = new ArrayList<Cell>();
+
+		for (int y = 0; y < 25; y++) {
+			for (int x = 0; x < 24; x++) {
+				if(board[x][y].isRoom()&& board[x][y].getRoom().equals(roomName))
+					cells.add(board[x][y]);
+			}
+		}
+		return cells;
+	}
+	
+	
+	
 	/*
 	 * Gets player at location on the board
 	 */
 	private Player getPlayerAt(Location loc) {
 		Player p = board[loc.getX()][loc.getY()].getPlayer();
 		return p;
+	}
+	
+	private Location weaponLocation(String name){
+		for (int y = 0; y < 25; y++) {
+			for (int x = 0; x < 24; x++) {
+				if(board[x][y].hasWeapon() && board[x][y].getWeapon().equals(name))
+					return board[x][y].getLocation();
+			}
+		}
+		throw new RuntimeException("Weapon not found on the board");
 	}
 
 	/*
