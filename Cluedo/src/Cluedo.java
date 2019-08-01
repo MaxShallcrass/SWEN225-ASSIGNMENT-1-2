@@ -29,14 +29,17 @@ public class Cluedo
    */
   public Cluedo() {
 	  //Get num players and create players
-	  int numPlayers = getNumPlayers();
+	  int numPlayers = Integer.parseInt(ask("How many players are there? ","Error - please enter 2,3 or 4",new ArrayList<String>(
+			  Arrays.asList("2","3","4"))));
 	  ArrayList<Player> players = new ArrayList<Player>();
 	  for(int i = 0;i < numPlayers;i++) {
 		  players.add(new Player(i+1));
 	  }
+	  System.out.println(players.size());
 	  
 	  //Set names and characters for each player 
 	  ArrayList<Player> computerPlayers = charactersAndNames(players,numPlayers);
+	  
 	  
 	  //Creating envelope and dealing hands
 	  Envelope e = deal(players);
@@ -115,8 +118,14 @@ public class Cluedo
 		  //Moving 
 		  int steps = diceRoll();
 		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of"+steps);
-		  //movePlayer
+		  while(steps != 0) {
+			  String md = ask("What direction do you want to move (w-a-s-d)? ",
+					  "Error - please enter w , a , s or d",new ArrayList<String>(
+					  Arrays.asList("w","a","s","d")));
+			  steps = board.movePlayer(player.getLocation(),md,steps);
+		  }
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
+		  
 		  
 		  
 	  }
@@ -125,7 +134,7 @@ public class Cluedo
 		  
 		
   }
-  
+
   
   /**
    * method to get a dice roll, e.g. sum of 2 random numbers 1- 6
@@ -155,38 +164,17 @@ public class Cluedo
    * @return computer Players 
    */
   public ArrayList<Player> charactersAndNames(ArrayList<Player> players,int numPlayers) {
+	  ArrayList<String> indexChoices = new ArrayList<String>(Arrays.asList("0","1","2","3","4","5"));
 	  ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
 			  								"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
 	  //repeats for each players 
 	  for(int reps = 0; reps < numPlayers; reps++) {
-		  Player player = players.get(reps+1);
+		  Player player = players.get(reps);
 		  player.setName(askPlayer("Player "+(reps+1)+" please enter your name: "));
-		  boolean found = false;
-		  int choice = -1;
-		  //loops until input is satisfactory 
-		  while(!found) {
-			  System.out.println("Available characters : "+characterArray);
-			  String strNumPlayers = askPlayer(""+player.getName()+" please select a character (0 for first anem, "
-			  						+ "1 for next ... etc ");
-			  int numErrorMsg = 0;
-			  try {
-				 found = true;
-			     choice = Integer.parseInt(strNumPlayers);
-			  }
-			  catch (NumberFormatException e) {
-			     found = false;
-			     choice = -1;
-			     System.out.println("Input error, please enter 0,1...etc to select character");
-			     numErrorMsg++;
-			  }
-			  if(choice < 0 || choice > 5) {
-				  if(numErrorMsg == 0) {
-					  System.out.println("Input error, please enter 0,1...etc to select character");
-				  }
-				  choice = -1;
-				  found = false;
-			  }
-		  }
+		  String strChoice = ask("The available characters are:"+characterArray+"\n"+""+player.getName()+" please select a character (0 first name, "
+					+ "1 for second ... etc: ","Input error, please enter 0,1...etc to select character",indexChoices);
+		  indexChoices.remove(indexChoices.size()-1); //remove final element
+		  int choice = Integer.parseInt(strChoice);
 		  player.setCharacter(characterArray.get(choice));
 		  characterArray.remove(choice);
 	  }
@@ -201,43 +189,28 @@ public class Cluedo
 	  return computerPlayers;
   }
   
-  
   /**
-   * Method to get the number of players.
-   * Has checking to make sure they give good inputs 
-   * @return int
+   * method to ask for input from user
+   * @param question
+   * @param errorMsg
+   * @param targetValues
+   * @return answer - result
    */
-  public int getNumPlayers() {
-	  boolean foundNum = false;
-	  int numPlayers = -1;
-	  //loops until we get the input we want 
-	  while(!foundNum) {
-		  String strNumPlayers = askPlayer("How many people are playing? ");
-		  int numErrorMsg = 0;
-		  try {
-			 foundNum = true;
-		     numPlayers = Integer.parseInt(strNumPlayers);
-		  }
-		  catch (NumberFormatException e) {
-		     foundNum = false;
-		     numPlayers = -1;
-		     System.out.println("Input error, please enter 2 , 3 or 4");
-		     numErrorMsg++;
-		  }
-		  if(numPlayers < 2 || numPlayers > 4) {
-			  if(numErrorMsg == 0) {
-				  System.out.println("Input error, please enter 2 , 3 or 4");
+  public String ask(String question,String errorMsg,ArrayList<String> targetValues) {
+	  boolean found = false;
+	  String result = "";
+	  while(!found) {
+		  result = askPlayer(question);
+		  for(String tv : targetValues) {
+			  if(result.equals(tv)) {
+				  found = true;
 			  }
-			  numPlayers = -1;
-			  foundNum = false;
+		  }
+		  if(!found) {
+			  System.out.println(errorMsg);
 		  }
 	  }
-	  return numPlayers;
-  }
-  
-  //lalala
-  public void ask() {
-	  
+	  return result;
   }
   
 
