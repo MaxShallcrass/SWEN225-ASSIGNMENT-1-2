@@ -33,4 +33,17 @@ public class Suggestion
   // INTERFACE
   //------------------------
   
+  public Boolean refutedBy(String s) {
+	  if(room.getName().equals(s)) {
+		  return true; 
+	  }
+	  if(weapon.getName().equals(s)) {
+		  return true; 
+	  }
+	  if(character.getName().equals(s)) {
+		  return true; 
+	  }
+	  return false;
+	  
+  }
 }

@@ -130,7 +130,9 @@ public class Cluedo
 					  "Error - please enter w , a , s or d",new ArrayList<String>(
 					  Arrays.asList("w","a","s","d")));
 			  steps = board.movePlayer(player.getLocation(),md,steps);
+			  if(steps == 0) {System.out.println("What");}
 			  board.displayBoard();
+			  System.out.println("Remaining moves : "+steps);
 
 		  }
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
@@ -180,14 +182,25 @@ public class Cluedo
 	  //Allow for players to refute
 	  for(Player p : players) {
 		  if(!p.equals(player)) {
+			  System.out.println(); // visual spacing for output
 			  String refuteYN = ask(""+p.getName()+" would you like to refute y/n ? ",
 					  "Please enter Y or N",new ArrayList<String>(Arrays.asList("y","n")));
 			  if(refuteYN.equals("y")) {
-				  System.out.println("These are your cards: "+p.getHand().toList());
-				  String refuteString = ask("What card would you like to refute with? ",
-							"Error please enter a correct card",p.getHand().toList());
+				  boolean correctRefute = false;
+				  String refuteString = "";
+				  while(!correctRefute) {
+					  System.out.println("These are your cards: "+p.getHand().toList());
+					  refuteString = ask("What card would you like to refute with? ",
+								"Error please enter a correct card",p.getHand().toList());
+					  if(sug.refutedBy(refuteString)) {
+						  correctRefute = true;
+					  }
+					  if(!correctRefute) {
+						  System.out.println("");
+					  }
+				  }
 				  System.out.println("Suggestion refuted with : "+refuteString);
-				  break; //BREAKS LOOP 
+				  return; //BREAKS LOOP 
 			  }
 			  //next player
 		  }
@@ -204,7 +217,7 @@ public class Cluedo
 		int dice1 = rand.nextInt((7- 1) + 1) + 1;
 		int dice2 = rand.nextInt((7- 1) + 1) + 1;
 		//return dice1 + dice2;
-		return 9; //REMEMBER TO REMOVE-----------------------------------
+		return 12; //REMEMBER TO REMOVE-----------------------------------
   }
   
   /**

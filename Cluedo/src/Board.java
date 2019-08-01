@@ -27,6 +27,7 @@ public class Board {
 				if (token.length() > 1) { // A door
 					DoorCell dc = new DoorCell(loc, token);
 					board[x][y] = dc;
+					token =token.substring(2);
 
 				} else { // floor tile
 					FloorCell fc = new FloorCell(loc, token.charAt(0));
