@@ -9,9 +9,17 @@ public class Card
 {
 	private String name;
 	
-Card(String name){
-	this.name=name;
-}
+	Card(String name){
+		this.name=name;
+	}
+	
+	/**
+	 * method to overide
+	 * @return
+	 */
+	public String getName() {
+		return name;
+	}
   
 
 }

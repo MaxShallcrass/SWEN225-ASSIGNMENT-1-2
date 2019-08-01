@@ -21,7 +21,7 @@ public class CharacterCard extends Card
 	}
 	
 	public String getName() {
-		return this.getName();
+		return super.getName();
 	}
 
 }

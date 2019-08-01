@@ -41,7 +41,7 @@ public class Hand
   public ArrayList<String> toList() {
 	  ArrayList<String> list = new ArrayList<String>();
 	  for(Card c : this.getCards()) {
-		  list.add(c.toString());
+		  list.add(c.getName());
 	  }
 	  return list;
   

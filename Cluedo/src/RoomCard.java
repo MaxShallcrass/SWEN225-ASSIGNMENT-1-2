@@ -22,7 +22,7 @@ public class RoomCard extends Card
 	}
 	
 	public String getName() {
-		return this.getName();
+		return super.getName();
 	}
 
   

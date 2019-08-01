@@ -48,13 +48,13 @@ public class Cluedo
 	  //Creating envelope and dealing hands
 	  Envelope e = deal(players);
 	 
-	  doSuggestion(players,players.get(0),"Lounge");
-	  /*
+	  //doSuggestion(players,players.get(0),"Lounge");
+	  
 	  //Create new board
 	  Board board = new Board(players,computerPlayers);
 	  
 	  //Play Game
-	  playCluedo(players,board);*/
+	  playCluedo(players,board);
   }
   
   /**
@@ -114,6 +114,8 @@ public class Cluedo
 	  
 	  //Main Loop
 	  while(!gameOver) {
+		  System.out.println(); // visual spacing for output
+		  System.out.println(); // visual spacing for output
 		  //Determine player
 		  Player player = players.get(turn);
 		  player.newTurn();
@@ -167,6 +169,7 @@ public class Cluedo
   
   public void doSuggestion(ArrayList<Player> players,Player player,String room) { //FIX CAPITALISED 
 	  //Create suggestion
+	  System.out.println(); // visual spacing for output
 	  String weapon = cleanString(ask("What weapon do you want to suggest CAPITALISED??"+weapons,
 				"Error please enter a weapon",weapons));
 	  String character = cleanString(ask("What character do you want to suggest CAPITALISED??"+characters,
@@ -178,9 +181,9 @@ public class Cluedo
 			  String refuteYN = ask(""+p.getName()+" would you like to refute y/n ? ",
 					  "Please enter Y or N",new ArrayList<String>(Arrays.asList("y","n")));
 			  if(refuteYN.equals("y")) {
-				  System.out.println("These are your cards: "+p.getHand());
-				  String refuteString = ask("These are your cards: "+p.getHand(),
-							"Error please enter a weapon",p.getHand().toList());
+				  System.out.println("These are your cards: "+p.getHand().toList());
+				  String refuteString = ask("What card would you like to refute with? ",
+							"Error please enter a correct card",p.getHand().toList());
 				  System.out.println("Suggestion refuted with : "+refuteString);
 				  break; //BREAKS LOOP 
 			  }
@@ -263,6 +266,8 @@ public class Cluedo
 		  }
 		  if(!found) {
 			  System.out.println(errorMsg);
+			  System.out.println(result);
+			  System.out.println("From : "+targetValues);
 		  }
 	  }
 	  return result;
@@ -307,7 +312,7 @@ public class Cluedo
   public String askPlayer(String s) {
 	  System.out.print(s);
 	  Scanner sc = new Scanner(System.in);
-	  String ans = sc.next();
+	  String ans = sc.nextLine();
 	  return ans;
   }
   
