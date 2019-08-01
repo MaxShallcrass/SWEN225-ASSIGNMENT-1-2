@@ -1,0 +1,173 @@
+class Card
+{
+  3..* -- 1 Hand;
+  }
+
+class WeaponCard
+{
+  isA Card;
+}
+
+class RoomCard
+{
+  isA Card;
+}
+
+class CharacterCard
+{
+  isA Card;
+  1 -- 1 Envelope;
+}
+
+class Cells
+{
+  1 -- 1 Location;
+}
+
+class FloorCell
+{
+  isA Cells;
+}
+
+class DoorCell
+{
+  isA Cells;
+}class Location
+{
+}
+
+class Board
+{
+  1 -- 1 Cluedo;
+  1 -- 3..6 Player;
+  1 -- * Cells;
+}
+
+class Cluedo
+{
+   1 -- 1 Envelope;
+}
+
+class Player
+{
+  1 -- 0..1 Suggestion;
+}
+
+
+
+class Hand
+{
+  1 -- 1 Player;
+}
+
+class Accusation
+{
+        0..1 -- 1 Player;
+}
+
+class Suggestion
+{
+}
+
+class Envelope
+{
+  1 -- 1 RoomCard;
+  1 -- 1 WeaponCard;
+}
+
+class EmptyCell
+{
+  isA Cells;
+}
+
+class Card
+{
+  position 78 389 109 41;
+  position.association Card__Hand 57,0 62,41;
+  }
+
+class WeaponCard
+{
+  position 1 497 109 41;
+}
+
+class RoomCard
+{
+  position 245 497 109 41;
+}
+
+class CharacterCard
+{
+  position 120 494 109 41;
+  position.association CharacterCard__Envelope 110,0 0,0;
+}
+
+class Cells
+{
+  position 428 347 109 41;
+  position.association Cells__Location 109,12 0,12;
+}
+
+class FloorCell
+{
+  position 613 430 109 41;
+}
+
+class DoorCell
+{
+  position 371 455 109 41;
+}
+
+class Location
+{
+  position 592 347 109 41;
+}
+
+class Board
+{
+  position 279 210 109 41;
+  position.association Board__Cluedo 65,0 66,41;
+  position.association Board__Player 0,40 109,2;
+  position.association Board__Cells 94,41 12,0;
+}
+
+class Cluedo
+{
+  position 242 68 109 41;
+    position.association Cluedo__Envelope 103,41 5,0;
+}
+
+class Player
+{
+  position 69 242 109 41;
+  position.association Player__Suggestion 67,0 57,41;
+}//$?[End_of_model]$?
+
+class Hand
+{
+  position 93 320 109 41;
+  position.association Hand__Player 49,0 58,41;
+}
+
+class Accusation
+{
+  position 1 136 109 41;
+        position.association Accusation__Player 41,41 24,0;
+}
+
+class Suggestion
+{
+  position 78 74 109 41;
+}
+
+class Envelope
+{
+  position 465 155 109 41;
+  position.association Envelope__RoomCard 54,41 78,0;
+  position.association Envelope__WeaponCard 0,33 109,17;
+}
+
+class EmptyCell
+{
+  position 504 466 109 41;
+}
