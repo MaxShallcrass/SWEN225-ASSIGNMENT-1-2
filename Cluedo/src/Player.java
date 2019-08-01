@@ -26,7 +26,7 @@ public class Player
   private int displayNumber;
   private Hand hand;
   
-  private List<Location> locsThisTurn;
+  private List<Location> visitedLocsThisTurn;
 
   //------------------------
   // CONSTRUCTOR
@@ -91,7 +91,7 @@ public class Player
    * Creates a new list of moved locations
    */
   public void newTurn() {
-	  locsThisTurn=new ArrayList<Location>();
+	  visitedLocsThisTurn=new ArrayList<Location>();
 	  
   }
   
@@ -99,12 +99,14 @@ public class Player
    * Adds locations for visited cells
    * this turn
    */
-  public void addLocMove(Location loc) {
-	  locsThisTurn.add(loc);
+  public void addVisitedLocation(Location loc) {
+	  visitedLocsThisTurn.add(loc);
   }
-  
-  public List<Location> getLocations(){
-	  return locsThisTurn;
+  /*
+   * Returns all visited locations this turn
+   */
+  public List<Location> getVisitedLocations(){
+	  return visitedLocsThisTurn;
   }
   
   /*
