@@ -17,39 +17,57 @@ public class Player
   private Board board;
   private Hand hand;
   private Accusation accusation;
+  
+  private String character; 
+  private String name;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Player(Board aBoard, Hand aHand)
-  {
-    boolean didAddBoard = setBoard(aBoard);
-    if (!didAddBoard)
-    {
-      throw new RuntimeException("Unable to create player due to board. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    if (aHand == null || aHand.getPlayer() != null)
-    {
-      throw new RuntimeException("Unable to create Player due to aHand. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    hand = aHand;
-  }
-
-  public Player(Board aBoard)
-  {
-    boolean didAddBoard = setBoard(aBoard);
-    if (!didAddBoard)
-    {
-      throw new RuntimeException("Unable to create player due to board. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    hand = new Hand(this);
+  public Player() {
+  
   }
 
   //------------------------
   // INTERFACE
   //------------------------
-  /* Code from template association_GetOne */
+  
+  /**
+   * setter to set character
+   * @param String - character name 
+   */
+  public void setCharacter(String s) {
+	  character = s;
+  }
+  
+  /**
+   * setter to set name
+   * @param String -  name 
+   */
+  public void setName(String s) {
+	  name = s;
+  }
+  
+  /**
+   * getter for name of player
+   * @return String - name 
+   */
+  public String getName() {
+	  return name;
+  }
+  
+  /**
+   * getter for character this player is playing 
+   * @return String - character
+   */
+  public String getCharacter() {
+	  return character;
+  }
+  
+  
+  
+  /////////////////
   public Suggestion getSuggestion()
   {
     return suggestion;
