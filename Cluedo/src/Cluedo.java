@@ -50,6 +50,8 @@ public class Cluedo
 	 
 	  //doSuggestion(players,players.get(0),"Lounge");
 	  
+	 // doSuggestion(players,players.get(0),"Lounge");
+	  
 	  //Create new board
 	  Board board = new Board(players,computerPlayers);
 	  
