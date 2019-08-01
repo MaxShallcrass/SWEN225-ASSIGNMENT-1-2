@@ -65,6 +65,10 @@ public abstract class Cell {
 		return player;
 	}
 	
+	public Location getLocation() {
+		return loc;
+	}
+	
 	public abstract char getId();
 
 

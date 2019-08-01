@@ -230,6 +230,13 @@ public class Board {
 			System.out.println("Invalid move - Cannot move onto a weapon: Retry again");
 			return false;
 		}
+		//Checking that if moving into a door cell, that its from the right direction
+		if(moveTo instanceof DoorCell&& !from.isRoom()) {
+			if(!(((DoorCell) moveTo).getEntryLoc().equals(from.getLocation()))){
+				System.out.println("Invalid move - Cannot move to a door from this direction: Retry again");
+				return false;
+			}
+		}
 		return true;
 	}
 
