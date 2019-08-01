@@ -58,7 +58,9 @@ public class Player
   public Location getLocation(){
 	  return this.loc;
   }
-  
+  /*
+   * To string for board visuals
+   */
   public String toString() {
 	  return "gotta fix";
   }
