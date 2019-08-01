@@ -1,4 +1,4 @@
-8
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -30,7 +30,7 @@ public class Board {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Error loading board");
+			throw new RuntimeException(e);
 		}
 		
 		// adding players and weapons to the board

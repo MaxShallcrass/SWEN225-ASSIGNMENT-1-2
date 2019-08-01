@@ -35,7 +35,6 @@ public class Cluedo
 	  for(int i = 0;i < numPlayers;i++) {
 		  players.add(new Player(i+1));
 	  }
-	  System.out.println(players.size());
 	  
 	  //Set names and characters for each player 
 	  ArrayList<Player> computerPlayers = charactersAndNames(players,numPlayers);
@@ -122,17 +121,39 @@ public class Cluedo
 			  String md = ask("What direction do you want to move (w-a-s-d)? ",
 					  "Error - please enter w , a , s or d",new ArrayList<String>(
 					  Arrays.asList("w","a","s","d")));
+			  board.displayBoard();
 			  steps = board.movePlayer(player.getLocation(),md,steps);
 		  }
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
-		  
-		  
-		  
+		  String decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
+				  				"Error please enter: a , s or n ",
+				  				new ArrayList<String>(Arrays.asList("a,s,n")));
+		  if(decision.equals("a")) {
+			  doAccusation();
+		  }else if(decision.equals("s")) {
+			  doSuggestion();
+		  }
+		  //next players turn 
+		  turn++;
+		  if(turn == players.size()) {
+			  turn = 0;
+		  } 
 	  }
 	  
 	  //Clean up
 		  
 		
+  }
+  
+  
+  public boolean doAccusation() {
+	  
+	  return false;
+  }
+  
+  
+  public void doSuggestion() {
+	  	
   }
 
   
