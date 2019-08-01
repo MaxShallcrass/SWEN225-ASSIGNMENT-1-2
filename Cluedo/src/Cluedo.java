@@ -48,11 +48,13 @@ public class Cluedo
 	  //Creating envelope and dealing hands
 	  Envelope e = deal(players);
 	 
+	  doSuggestion(players,players.get(0),"Lounge");
+	  /*
 	  //Create new board
 	  Board board = new Board(players,computerPlayers);
 	  
 	  //Play Game
-	  playCluedo(players,board);
+	  playCluedo(players,board);*/
   }
   
   /**
@@ -128,20 +130,21 @@ public class Cluedo
 
 		  }
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
+		  Cell cell = board.getCellAt(player.getLocation());
 		  String decision = "";
-		  /* if in room 
-		  decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
-				  				"Error please enter: a , s or n ",
-				  				new ArrayList<String>(Arrays.asList("a,s,n")));
-		  */
-		  //else
-		  decision = ask("You can now make accusation (a) or do nothing (n)",
-	  				"Error please enter: a or n ",
-	  				new ArrayList<String>(Arrays.asList("a","n")));
+		  if(cell.isRoom()) {
+			  decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
+					  				"Error please enter: a , s or n ",
+					  				new ArrayList<String>(Arrays.asList("a","s","n")));
+		  }else {
+			  decision = ask("You can now make accusation (a) or do nothing (n)",
+		  				"Error please enter: a or n ",
+		  				new ArrayList<String>(Arrays.asList("a","n")));
+		  }
 		  if(decision.equals("a")) {
 			  doAccusation();
 		  }else if(decision.equals("s")) {
-			  doSuggestion(players,player);
+			  doSuggestion(players,player,cell.getRoom());
 		  }
 		  //next players turn 
 		  turn++;
@@ -162,12 +165,11 @@ public class Cluedo
   }
   
   
-  public void doSuggestion(ArrayList<Player> players,Player player) { //FIX CAPITALISED 
+  public void doSuggestion(ArrayList<Player> players,Player player,String room) { //FIX CAPITALISED 
 	  //Create suggestion
-	  String room = "";
 	  String weapon = cleanString(ask("What weapon do you want to suggest CAPITALISED??"+weapons,
 				"Error please enter a weapon",weapons));
-	  String character = cleanString(ask("What character do you want to suggest CAPITALISED??"+weapons,
+	  String character = cleanString(ask("What character do you want to suggest CAPITALISED??"+characters,
 				"Error please enter a character",characters));
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  //Allow for players to refute
@@ -196,7 +198,8 @@ public class Cluedo
 		Random rand = new Random();
 		int dice1 = rand.nextInt((7- 1) + 1) + 1;
 		int dice2 = rand.nextInt((7- 1) + 1) + 1;
-		return dice1 + dice2;
+		//return dice1 + dice2;
+		return 9; //REMEMBER TO REMOVE-----------------------------------
   }
   
   /**
