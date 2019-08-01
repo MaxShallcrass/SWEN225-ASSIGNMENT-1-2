@@ -18,13 +18,13 @@ public class Player
   //Player Associations
   private Suggestion suggestion;
   private Board board;
-  private Hand hand;
   private Accusation accusation;
   
   private String character; 
   private String name;
   private Location loc;
   private int displayNumber;
+  private Hand hand;
   
   private List<Location> locsThisTurn;
 
@@ -34,6 +34,7 @@ public class Player
 
   public Player(int dn) {
 	  displayNumber = dn;
+	  hand = new Hand();
   }
 
   //------------------------

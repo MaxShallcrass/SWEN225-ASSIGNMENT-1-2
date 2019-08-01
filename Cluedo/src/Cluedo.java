@@ -2,6 +2,7 @@
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -36,6 +37,9 @@ public class Cluedo
 	  
 	  //Set names and characters for each player 
 	  ArrayList<Player> computerPlayers = charactersAndNames(players,numPlayers);
+	  
+	  //Creating envelope and dealing hands
+	  Envelope e = deal(players);
 	 
 	  //Create new board
 	  Board board = new Board(players,computerPlayers);
@@ -44,7 +48,61 @@ public class Cluedo
 	  playCluedo(players,board);
   }
   
+  /**
+   * method to create envelope and deal cards 
+   * @param players
+   * @return envelope
+   */
+  public Envelope deal(ArrayList<Player> players) {
+	  //Create deck of cards as arraylist of super type card
+	  ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
+				"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
+	  ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick","Dagger","Lead Pipe","Revolver","Rope","Spanner"));
+	  ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen","Ballroom","Conservatory","Billiard Room","Library",
+			  											"Study","Hall","Lounge","Dining Room"));
+	  ArrayList<Card> deck = new ArrayList<Card>();
+	  
+	  //make envelope
+	  Random rand = new Random();
+	  int roomIndex = rand.nextInt((10- 0) + 0) + 0;
+	  int weaponIndex = rand.nextInt((6- 0) + 0) + 0;
+	  int characterIndex = rand.nextInt((6- 0) + 0) + 0;
+	  Envelope envelope = new Envelope(new RoomCard(rooms.get(roomIndex)),new WeaponCard(weapons.get(weaponIndex)),
+			  					new CharacterCard(characters.get(characterIndex)));
+	  characters.remove(characterIndex);
+	  rooms.remove(roomIndex);
+	  weapons.remove(weaponIndex);
+	  
+	  //construct new subclass cards and add to deck
+	  for(String c : characters) {
+		  deck.add(new CharacterCard(c));
+	  }
+	  for(String w : weapons) {
+		  deck.add(new WeaponCard(w));
+	  }
+	  for(String r : rooms) {
+		  deck.add(new RoomCard(r));
+	  }
+	  //shuffle deck 
+	  Collections.shuffle(deck);
+	  //deal
+	  int turn = 0;
+	  for(Card c : deck) {
+		  Player player = players.get(turn);
+		  player.getHand().add(c);
+		  turn++;
+		  if(turn == players.size()) {
+			  turn = 0;
+		  }
+	  }
+	  return envelope;
+  }
   
+  /**
+   * main method that loops player turns 
+   * @param players
+   * @param board
+   */
   public void playCluedo(ArrayList<Player> players, Board board) {
 	  //Control Variables
 	  boolean gameOver = false;
@@ -57,7 +115,7 @@ public class Cluedo
 		  //Moving 
 		  int steps = diceRoll();
 		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of"+steps);
-		  //MOVE PLAYER STEPS 
+		  //movePlayer
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
 		  
 		  
