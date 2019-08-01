@@ -3,6 +3,7 @@ import java.awt.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -26,31 +27,59 @@ public class Cluedo
    * Constructor for Cluedo. Runs the main game mechanics. 
    */
   public Cluedo() {
-	  //Get num players and create players 
+	  //Get num players and create players
 	  int numPlayers = getNumPlayers();
-	  HashMap<Integer,Player> players = new HashMap<Integer,Player>();
+	  ArrayList<Player> players = new ArrayList<Player>();
 	  for(int i = 0;i < numPlayers;i++) {
-		  players.put(i+1,new Player(i+1));
+		  players.add(new Player(i+1));
 	  }
 	  
 	  //Set names and characters for each player 
 	  ArrayList<Player> computerPlayers = charactersAndNames(players,numPlayers);
 	 
 	  //Create new board
-	  ArrayList<Player> playerList = (ArrayList<Player>) players.values();
-	  Board board = new Board(playerList,computerPlayers);
+	  Board board = new Board(players,computerPlayers);
 	  
-	  //Turns : dice -> move -> suggestion(in room) or accusation
+	  //Play Game
+	  playCluedo(players,board);
   }
   
+  
+  public void playCluedo(ArrayList<Player> players, Board board) {
+	  //Control Variables
+	  boolean gameOver = false;
+	  int turn = 0;
+	  
+	  //Main Loop
+	  while(!gameOver) {
+		  //Determine player
+		  Player player = players.get(turn);
+		  //Moving 
+		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of"+diceRoll());
+		  
+	  }
+	  
+	  //Clean u
+		  
+		
+  }
+  
+  
+  /**
+   * method to get a dice roll, e.g. sum of 2 random numbers 1- 6
+   * @return int 
+   */
   public int diceRoll() {
-	  return 0;
+		Random rand = new Random();
+		int dice1 = rand.nextInt((7- 1) + 1) + 1;
+		int dice2 = rand.nextInt((7- 1) + 1) + 1;
+		return dice1 + dice2;
   }
   
   /**
    * printers what happening for players 
    */
-  public void pState(HashMap<Integer,Player> players,int numPlayers) {
+  public void pState(ArrayList<Player> players,int numPlayers) {
 	  for(int i =0;i<numPlayers;i++) {
 		  Player p = players.get(i+1);
 		  System.out.println("Player "+(i+1)+" named: "+p.getName()+" playing: "+p.getCharacter());
@@ -63,7 +92,7 @@ public class Cluedo
    * @param numPlayers
    * @return computer Players 
    */
-  public ArrayList<Player> charactersAndNames(HashMap<Integer,Player> players,int numPlayers) {
+  public ArrayList<Player> charactersAndNames(ArrayList<Player> players,int numPlayers) {
 	  ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
 			  								"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
 	  //repeats for each players 
@@ -101,7 +130,7 @@ public class Cluedo
 	  }
 	  ArrayList<Player> computerPlayers = new ArrayList<Player>();
 	  for(int i=0;i<characterArray.size();i++) {
-		  Player p = new Player();
+		  Player p = new Player(numPlayers+i+1);
 		  String c = characterArray.get(i);
 		  p.setCharacter(c);
 		  p.setName(c);
@@ -143,7 +172,12 @@ public class Cluedo
 	  }
 	  return numPlayers;
   }
-
+  
+  //lalala
+  public void ask() {
+	  
+  }
+  
 
   //------------------------
   // INTERFACE
