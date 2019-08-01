@@ -5,30 +5,17 @@ import java.util.*;
 
 public class Board {
 
-	// ------------------------
-	// MEMBER VARIABLES
-	// ------------------------
-
-	// Board Associations
-	private Cluedo cluedo;
-	private List<Player> players;
-	private List<Cell> cells;
 	private Cell[][] board;
 
-	// ------------------------
-	// CONSTRUCTOR
-	// ------------------------
 	/*
-	 * Constructs the board for the game.
-	 * Loads the board from map layout.txt
-	 * Adds players to the board
+	 * Constructs the board for the game. Loads the board from map layout.txt Adds
+	 * players to the board
 	 */
 	public Board(List<Player> realPlayers, List<Player> nonPlayer) {
 		// Placing all the cells on the board
 		board = new Cell[24][25];
 		try {
-			Scanner sc = new Scanner(new File("map layout.txt"));
-
+			Scanner sc = new Scanner(new File("GameBoard.txt"));
 			int x = 0, y = 0;
 			while (sc.hasNext()) { // scans through board txt file
 				String token = sc.next();
@@ -43,9 +30,20 @@ public class Board {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("Error loading board");
+			throw new RuntimeException("Error loading board");
 		}
-		List<Location> playerLocs = new ArrayList<Location>(); // Starter locations for players
+		
+		// adding players and weapons to the board
+		addPlayers(realPlayers, nonPlayer);
+		addWeapons();
+	}
+
+	/*
+	 * adds players to the board
+	 */
+	private void addPlayers(List<Player> realPlayers, List<Player> nonPlayer) {
+		// Starter locations for players
+		List<Location> playerLocs = new ArrayList<Location>(); 
 		playerLocs.add(new Location(0, 9));
 		playerLocs.add(new Location(0, 14));
 		playerLocs.add(new Location(23, 6));
@@ -65,6 +63,40 @@ public class Board {
 	}
 
 	/*
+	 * Adds weapons onto the board
+	 */
+	private void addWeapons() {
+		// locations for weapons - one for each room
+		List<Location> wepLocations = new ArrayList<Location>() {
+			{
+				add(new Location(0, 1));
+				add(new Location(0, 12));
+				add(new Location(0, 24));
+				add(new Location(12, 1));
+				add(new Location(23, 1));
+				add(new Location(23, 9));
+				add(new Location(23, 15));
+				add(new Location(23, 24));
+				add(new Location(12, 24));
+			}
+		};
+		// placing weapons on the board - random
+		Collections.shuffle(wepLocations);
+		Location loc = wepLocations.remove(0);
+		getCellAt(loc).setWeapon("Ca");
+		loc = wepLocations.remove(0);
+		getCellAt(loc).setWeapon("Dg");
+		loc = wepLocations.remove(0);
+		getCellAt(loc).setWeapon("Lp");
+		loc = wepLocations.remove(0);
+		getCellAt(loc).setWeapon("Rv");
+		loc = wepLocations.remove(0);
+		getCellAt(loc).setWeapon("Rp");
+		loc = wepLocations.remove(0);
+		getCellAt(loc).setWeapon("Sp");
+	}
+
+	/*
 	 * displays the board to text output
 	 */
 	public void displayBoard() {
@@ -80,26 +112,28 @@ public class Board {
 	 * Moves a player one place on the board up, down, left, right
 	 */
 	public int movePlayer(Location locAt, String direction, int movesLeft) {
-		int x=locAt.getX();
-		int y=locAt.getY();
-		if(direction.compareToIgnoreCase("w")==0)
-			y-=1;
-		if(direction.compareToIgnoreCase("a")==0)
-			x-=1;
-		if(direction.compareToIgnoreCase("s")==0)
-			y+=1;
-		if(direction.compareToIgnoreCase("d")==0)
-			x+=1;
+		if(movesLeft==0)
+			throw new RuntimeException("Player has no moves left");
+		int x = locAt.getX();
+		int y = locAt.getY();
+		if (direction.compareToIgnoreCase("w") == 0)
+			y -= 1;
+		if (direction.compareToIgnoreCase("a") == 0)
+			x -= 1;
+		if (direction.compareToIgnoreCase("s") == 0)
+			y += 1;
+		if (direction.compareToIgnoreCase("d") == 0)
+			x += 1;
 		Location locTo = new Location(x, y);
-		//if not valid return with same number of turns left - redo their turn
-		if(!isValidMove(locAt, locTo))
+		// if not valid return with same number of turns left - redo their turn
+		if (!isValidMove(locAt, locTo))
 			return movesLeft;
-		//move player, add visited locations
-		Player p =getPlayerAt(locAt);
+		// move player, add visited locations
+		Player p = getPlayerAt(locAt);
 		p.addVisitedLocation(locAt);
 		getCellAt(locAt).removePlayer();
 		getCellAt(locTo).setPlayer(p);
-		
+
 		return --movesLeft;
 	}
 
@@ -107,45 +141,53 @@ public class Board {
 	 * Checks if its valid to move a player in the direction
 	 */
 	private boolean isValidMove(Location at, Location to) {
-		int x=to.getX();
-		int y=to.getY();
+		int x = to.getX();
+		int y = to.getY();
 		// Checks error bounds
-		if(x<0 || x>=24 || y<0 || y>=24) { 
+		if (x < 0 || x >= 24 || y < 0 || y >= 24) {
 			System.out.println("Invalid move - Out of bounds: Retry again");
 			return false;
 		}
-		
-		
-		//checks that player hasnt moved to that cell this turn
+
+		// checks that player hasnt moved to that cell this turn
 		List<Location> prevsLocs = getPlayerAt(at).getVisitedLocations();
-		for(Location loc: prevsLocs) {
-			if(loc.equals(to)) {
+		for (Location loc : prevsLocs) {
+			if (loc.equals(to)) {
 				System.out.println("Invalid move - Already visited tile this turn: Retry again");
 				return false;
 			}
 		}
 		Cell moveTo = getCellAt(to);
-		Cell from=getCellAt(at);
-	//checks that there is not already a player on that tile
-		if(moveTo.hasPlayer()) {
+		Cell from = getCellAt(at);
+		// checks that there is not already a player on that tile
+		if (moveTo.hasPlayer()) {
 			System.out.println("Invalid move - Player already on that tile: Retry again");
 			return false;
 		}
-		//checks it's not an empty tile
-		if(moveTo.toString().compareToIgnoreCase("e")==0) {
+		// checks it's not an empty tile
+		if (moveTo.toString().compareToIgnoreCase("e") == 0) {
 			System.out.println("Invalid move - Cannot move to an empty tile(e): Retry again");
 			return false;
 		}
-		
-		//checks that either both locations are hallways, or room cell or at least one is a door
-		//note cannot move from hallway cell to a room cell - has to transition trough a door cell
-		if(!moveTo.toString().equals(from.toString())&& !(moveTo instanceof DoorCell) && !(from instanceof DoorCell)) {
+
+		// checks that either both locations are hallways, or room cell or at least one
+		// is a door
+		// note cannot move from hallway cell to a room cell - has to transition trough
+		// a door cell
+		if (!moveTo.toString().equals(from.toString()) && !(moveTo instanceof DoorCell)
+				&& !(from instanceof DoorCell)) {
 			System.out.println("Invalid move - Cannot move through a wall: Retry again");
+			return false;
+		}
+		// checks if tile has a weapon on it
+		if (moveTo.hasWeapon()) {
+			System.out.println("Invalid move - Cannot move onto a weapon: Retry again");
 			return false;
 		}
 		return true;
 	}
-	
+
+	/// HELPER METHODS\\\
 	/*
 	 * Gets player at location on the board
 	 */

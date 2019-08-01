@@ -7,11 +7,18 @@ public class Cell {
 	private boolean hasPlayer;
 	private Location loc;
 	private Player player;
-	private WeaponCard weapon;
+	private String weapon;
+	private boolean hasWeapon;
 
 	Cell(Location loc) {
 		this.loc = loc;
 		hasPlayer = false;
+		hasWeapon=false;
+	}
+	
+	public void setWeapon(String wep) {
+		hasWeapon=true;
+		weapon=wep;
 	}
 
 	public void setPlayer(Player p) {
@@ -28,23 +35,25 @@ public class Cell {
 		return hasPlayer;
 	}
 	
+	public boolean hasWeapon() {
+		return hasWeapon;
+	}
+	
 	public Player getPlayer() {
 		if(!hasPlayer)
 			throw new RuntimeException("Error: Cell that does not have a player - getPlayer");
+			
 		return player;
 	}
-	public void setWeapon(WeaponCard weapon) {
-		
-		
-	}
-	
-	
-	
+
 
 	public String toString() {
-		if (!hasPlayer)
+		if (!hasPlayer && !hasWeapon)
 			throw new RuntimeException("Error: Cell that does not have a player - toString - could be an inheiritance issue");
 
+		if(hasPlayer)
 		return player.toString();
+		else
+			return weapon+ " ";
 	}
 }

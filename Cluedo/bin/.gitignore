@@ -1,11 +1,11 @@
-/Cluedo.class
 /Accusation.class
+/Board$1.class
 /Board.class
 /Card.class
-/Cells.class
+/Cell.class
 /CharacterCard.class
+/Cluedo.class
 /DoorCell.class
-/EmptyCell.class
 /Envelope.class
 /FloorCell.class
 /Hand.class
@@ -14,5 +14,4 @@
 /RoomCard.class
 /Suggestion.class
 /WeaponCard.class
-/Cell.class
 /map layout.txt
