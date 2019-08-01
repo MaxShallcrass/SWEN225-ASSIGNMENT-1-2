@@ -7,52 +7,21 @@
 // line 100 "model.ump"
 public class CharacterCard extends Card
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //CharacterCard Associations
-  private Envelope envelope;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public CharacterCard(Hand aHand, Envelope aEnvelope)
-  {
-    super(aHand);
-    if (aEnvelope == null || aEnvelope.getCharacterCard() != null)
-    {
-      throw new RuntimeException("Unable to create CharacterCard due to aEnvelope. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    envelope = aEnvelope;
-  }
-
-  public CharacterCard(Hand aHand, RoomCard aRoomCardForEnvelope, WeaponCard aWeaponCardForEnvelope, Cluedo aCluedoForEnvelope)
-  {
-    super(aHand);
-    envelope = new Envelope(aRoomCardForEnvelope, aWeaponCardForEnvelope, this, aCluedoForEnvelope);
-  }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-  /* Code from template association_GetOne */
-  public Envelope getEnvelope()
-  {
-    return envelope;
-  }
-
-  public void delete()
-  {
-    Envelope existingEnvelope = envelope;
-    envelope = null;
-    if (existingEnvelope != null)
-    {
-      existingEnvelope.delete();
-    }
-    super.delete();
-  }
+	public CharacterCard(String name) {
+		super(name);
+	}
+	
+	public boolean equals(Object other) {
+		if(other!=null && other.getClass().equals(this.getClass())) {
+			CharacterCard o = (CharacterCard) other;
+			if(o.getName().equals(getName()))
+				return true;
+		}
+		return false;
+	}
+	
+	public String getName() {
+		return this.getName();
+	}
 
 }

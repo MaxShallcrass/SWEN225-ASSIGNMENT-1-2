@@ -9,6 +9,7 @@ public class Location
 {
 
 private int x, y;
+
  Location(int x, int y){
 this.x=x;
 this.y=y;
@@ -26,6 +27,15 @@ this.y=y;
  }
  public void setY(int y) {
 	 this.y=y;
+ }
+ 
+ public boolean equals(Object other) {
+	 if(other!=null && other.getClass().equals(this.getClass())) {
+			Location o = (Location) other;
+			if(this.x==o.getX() && this.y==o.getY())
+				return true;
+		}
+		return false;
  }
  
 

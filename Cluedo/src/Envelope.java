@@ -16,94 +16,24 @@ public class Envelope
   private RoomCard roomCard;
   private WeaponCard weaponCard;
   private CharacterCard characterCard;
-  private Cluedo cluedo;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
+  
 
-  public Envelope(RoomCard aRoomCard, WeaponCard aWeaponCard, CharacterCard aCharacterCard, Cluedo aCluedo)
-  {
-    if (aRoomCard == null || aRoomCard.getEnvelope() != null)
-    {
-      throw new RuntimeException("Unable to create Envelope due to aRoomCard. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    roomCard = aRoomCard;
-    if (aWeaponCard == null || aWeaponCard.getEnvelope() != null)
-    {
-      throw new RuntimeException("Unable to create Envelope due to aWeaponCard. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    weaponCard = aWeaponCard;
-    if (aCharacterCard == null || aCharacterCard.getEnvelope() != null)
-    {
-      throw new RuntimeException("Unable to create Envelope due to aCharacterCard. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    characterCard = aCharacterCard;
-    if (aCluedo == null || aCluedo.getEnvelope() != null)
-    {
-      throw new RuntimeException("Unable to create Envelope due to aCluedo. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    cluedo = aCluedo;
+  public Envelope(RoomCard room, WeaponCard weapon, CharacterCard character){
+	  this.roomCard=room;
+	  this.weaponCard=weapon;
+	  this.characterCard=character;
   }
-
-  public Envelope(Hand aHandForRoomCard, Hand aHandForWeaponCard, Hand aHandForCharacterCard, Board aBoardForCluedo)
-  {
-    roomCard = new RoomCard(aHandForRoomCard, this);
-    weaponCard = new WeaponCard(aHandForWeaponCard, this);
-    characterCard = new CharacterCard(aHandForCharacterCard, this);
-    cluedo = new Cluedo(this, aBoardForCluedo);
+  public RoomCard getRoom() {
+	  return roomCard;
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-  /* Code from template association_GetOne */
-  public RoomCard getRoomCard()
-  {
-    return roomCard;
+  public WeaponCard getWeapon() {
+	  return weaponCard;
   }
-  /* Code from template association_GetOne */
-  public WeaponCard getWeaponCard()
-  {
-    return weaponCard;
+  public CharacterCard getCharacter() {
+	  return characterCard;
   }
-  /* Code from template association_GetOne */
-  public CharacterCard getCharacterCard()
-  {
-    return characterCard;
-  }
-  /* Code from template association_GetOne */
-  public Cluedo getCluedo()
-  {
-    return cluedo;
-  }
-
-  public void delete()
-  {
-    RoomCard existingRoomCard = roomCard;
-    roomCard = null;
-    if (existingRoomCard != null)
-    {
-      existingRoomCard.delete();
-    }
-    WeaponCard existingWeaponCard = weaponCard;
-    weaponCard = null;
-    if (existingWeaponCard != null)
-    {
-      existingWeaponCard.delete();
-    }
-    CharacterCard existingCharacterCard = characterCard;
-    characterCard = null;
-    if (existingCharacterCard != null)
-    {
-      existingCharacterCard.delete();
-    }
-    Cluedo existingCluedo = cluedo;
-    cluedo = null;
-    if (existingCluedo != null)
-    {
-      existingCluedo.delete();
-    }
-  }
-
+  
+  
+  
 }

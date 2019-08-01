@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
 
@@ -22,6 +25,8 @@ public class Player
   private String name;
   private Location loc;
   private int displayNumber;
+  
+  private List<Location> locsThisTurn;
 
   //------------------------
   // CONSTRUCTOR
@@ -79,11 +84,33 @@ public class Player
   public Location getLocation(){
 	  return this.loc;
   }
+  
+  /*
+   * Resets a player for a new turn
+   * Creates a new list of moved locations
+   */
+  public void newTurn() {
+	  locsThisTurn=new ArrayList<Location>();
+	  
+  }
+  
+  /*
+   * Adds locations for visited cells
+   * this turn
+   */
+  public void addLocMove(Location loc) {
+	  locsThisTurn.add(loc);
+  }
+  
+  public List<Location> getLocations(){
+	  return locsThisTurn;
+  }
+  
   /*
    * To string for board visuals
    */
   public String toString() {
-	  return ""+displayNumber;
+	  return displayNumber + "  ";
   }
   
   
