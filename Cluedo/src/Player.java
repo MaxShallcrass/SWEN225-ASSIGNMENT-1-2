@@ -21,13 +21,14 @@ public class Player
   private String character; 
   private String name;
   private Location loc;
+  private int displayNumber;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Player() {
-  
+  public Player(int dn) {
+	  displayNumber = dn;
   }
 
   //------------------------
@@ -82,7 +83,7 @@ public class Player
    * To string for board visuals
    */
   public String toString() {
-	  return "gotta fix";
+	  return ""+displayNumber;
   }
   
   
