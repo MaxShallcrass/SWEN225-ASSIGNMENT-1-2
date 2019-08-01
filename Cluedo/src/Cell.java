@@ -44,6 +44,10 @@ public abstract class Cell {
 		hasWeapon=false;
 		weapon="";
 	}
+	
+	public String getWeapon() {
+		return weapon;
+	}
 
 	public void setPlayer(Player p) {
 		this.player = p;
