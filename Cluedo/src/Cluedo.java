@@ -114,15 +114,18 @@ public class Cluedo
 	  while(!gameOver) {
 		  //Determine player
 		  Player player = players.get(turn);
+		  player.newTurn();
 		  //Moving 
 		  int steps = diceRoll();
-		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of"+steps);
+		  board.displayBoard();
+		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of "+steps);
 		  while(steps != 0) {
 			  String md = ask("What direction do you want to move (w-a-s-d)? ",
 					  "Error - please enter w , a , s or d",new ArrayList<String>(
 					  Arrays.asList("w","a","s","d")));
-			  board.displayBoard();
 			  steps = board.movePlayer(player.getLocation(),md,steps);
+			  board.displayBoard();
+
 		  }
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
 		  String decision = "";
@@ -219,7 +222,7 @@ public class Cluedo
 	  //repeats for each players 
 	  for(int reps = 0; reps < numPlayers; reps++) {
 		  Player player = players.get(reps);
-		  player.setName(askPlayer("Player "+(reps+1)+" please enter your name: "));
+		  player.setName(askPlayer("Player "+(reps+1)+" please enter your name: ")+ " (" +(reps+1)+ ")");
 		  String strChoice = ask("The available characters are:"+characterArray+"\n"+""+player.getName()+" please select a character (0 first name, "
 					+ "1 for second ... etc: ","Input error, please enter 0,1...etc to select character",indexChoices);
 		  indexChoices.remove(indexChoices.size()-1); //remove final element
@@ -277,6 +280,8 @@ public class Cluedo
 	  
 	  System.out.println();
   }
+  
+  
   
   /**
    * Getter for envelope 

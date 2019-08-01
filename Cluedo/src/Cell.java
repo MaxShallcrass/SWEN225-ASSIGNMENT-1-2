@@ -3,7 +3,7 @@
 
 // line 23 "model.ump"
 // line 106 "model.ump"
-public class Cell {
+public abstract class Cell {
 	private boolean hasPlayer;
 	private Location loc;
 	private Player player;
@@ -45,6 +45,8 @@ public class Cell {
 			
 		return player;
 	}
+	
+	public abstract char getId();
 
 
 	public String toString() {
