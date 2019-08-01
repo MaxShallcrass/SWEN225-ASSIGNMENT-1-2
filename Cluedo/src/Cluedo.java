@@ -55,11 +55,15 @@ public class Cluedo
 		  //Determine player
 		  Player player = players.get(turn);
 		  //Moving 
-		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of"+diceRoll());
+		  int steps = diceRoll();
+		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of"+steps);
+		  //MOVE PLAYER STEPS 
+		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
+		  
 		  
 	  }
 	  
-	  //Clean u
+	  //Clean up
 		  
 		
   }
