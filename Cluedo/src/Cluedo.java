@@ -267,6 +267,8 @@ public class Cluedo
 	  System.out.println();
   }
   
+  
+  
   /**
    * Getter for envelope 
    * @return Envelope

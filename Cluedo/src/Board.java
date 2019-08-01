@@ -108,7 +108,7 @@ public class Board {
 	 * displays the board to text output
 	 */
 	public void displayBoard() {
-
+		System.out.println("\n\n\n\n");
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
 				System.out.print(board[x][y].toString());
@@ -213,5 +213,12 @@ public class Board {
 	public Cell getCellAt(Location loc) {
 		return board[loc.getX()][loc.getY()];
 	}
+	/*
+	 * Clears the console
+	 */
+	private static void clearScreen() {  
+	    System.out.print("\033[H\033[2J");  
+	    System.out.flush();  
+	   }
 
 }
