@@ -116,9 +116,6 @@ public class Player
 	  return displayNumber + "  ";
   }
   
-  
-  
-  /////////////////
   public Suggestion getSuggestion()
   {
     return suggestion;
