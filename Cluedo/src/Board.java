@@ -27,8 +27,7 @@ public class Board {
 				if (token.length() > 1) { // A door
 					DoorCell dc = new DoorCell(loc, token);
 					board[x][y] = dc;
-					token =token.substring(2);
-
+					
 				} else { // floor tile
 					FloorCell fc = new FloorCell(loc, token.charAt(0));
 					board[x][y] = fc;
@@ -207,8 +206,8 @@ public class Board {
 		}
 		Cell moveTo = getCellAt(to);
 		Cell from = getCellAt(at);
-		// checks that there is not already a player on that tile
-		if (moveTo.hasPlayer()) {
+		// checks that there is not already a player or weapon on that tile
+		if (moveTo.hasPlayer() || moveTo.hasWeapon()) {
 			System.out.println("Invalid move - Player already on that tile: Retry again");
 			return false;
 		}
@@ -250,16 +249,56 @@ public class Board {
 	/*
 	 * Moves a player to a room after having been in a suggestion
 	 */
+<<<<<<< HEAD
 	public void movePlayerToRoom(Player p, String roomName) {
 		//making sure player is not already in the room
 		if(!getCellAt(p.getLocation()).isRoom() ||!getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomName) ) {
 			
 			
 			
+=======
+	public void movePlayerWeaponToRoom(Player p, String roomNameTo, String weaponName) {
+		List<Cell> cells = getCellsFromRoom(roomNameTo);
+		Collections.shuffle(cells);
+		//moving player if nessicary
+		if(!getCellAt(p.getLocation()).isRoom() ||!getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomNameTo) ) {
+			for(Cell cell: cells)
+				if(!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
+					getCellAt(p.getLocation()).removePlayer();
+					cell.setPlayer(p);
+					p.setLocation(cell.getLocation());
+					break;
+				}
+>>>>>>> branch 'master' of https://github.com/FergusCurrie/SWEN225-ASSIGNMENT-1.git
 		}
 		
+<<<<<<< HEAD
 		
 		
+=======
+		if(weaponName.equals("Candlestick"))
+			weaponName="Ca";
+		else if(weaponName.equals("Dagger"))
+			weaponName="Dg";
+		else if(weaponName.equals("Lead Pipe"))
+			weaponName="Lp";
+		else if(weaponName.equals("Revolver"))
+			weaponName="Rv";
+		else if(weaponName.equals("Rope"))
+			weaponName="Rp";
+		else if(weaponName.equals("Spanner"))
+			weaponName="Sp";
+		//Moving weapon if nessicary
+		Cell weaponLoc = getCellAt(weaponLocation(weaponName));
+		if(!weaponLoc.isRoom() || !weaponLoc.getRoom().equals(roomNameTo)) {
+			for(Cell cell: cells)
+				if(!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
+					getCellAt(weaponLoc.getLocation()).removeWeapon();
+					cell.setWeapon(weaponName);
+					break;
+				}
+		}	
+>>>>>>> branch 'master' of https://github.com/FergusCurrie/SWEN225-ASSIGNMENT-1.git
 	}
 	
 	
