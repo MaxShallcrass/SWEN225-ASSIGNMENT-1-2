@@ -18,7 +18,7 @@ char id;
   }
 
   public String toString() {
-	  if(super.hasPlayer()) {
+	  if(super.hasPlayer() || super.hasWeapon()) {
 		  return super.toString();
 	  }
 	  return id+ "  ";
