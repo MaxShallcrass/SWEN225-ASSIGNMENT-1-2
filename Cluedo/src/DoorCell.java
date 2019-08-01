@@ -5,7 +5,7 @@
 
 // line 33 "model.ump"
 // line 117 "model.ump"
-public class DoorCell extends Cells
+public class DoorCell extends Cell
 {
 
   //------------------------

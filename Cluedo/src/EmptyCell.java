@@ -5,7 +5,7 @@
 
 // line 79 "model.ump"
 // line 171 "model.ump"
-public class EmptyCell extends Cells
+public class EmptyCell extends Cell
 {
 
   //------------------------

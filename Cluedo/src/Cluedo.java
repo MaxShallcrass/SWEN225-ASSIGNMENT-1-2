@@ -1,14 +1,13 @@
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
+=======
+>>>>>>> branch 'master' of https://github.com/FergusCurrie/SWEN225-ASSIGNMENT-1.git
 
-
-
-// line 47 "model.ump"
-// line 135 "model.ump"
 public class Cluedo
 {
 
