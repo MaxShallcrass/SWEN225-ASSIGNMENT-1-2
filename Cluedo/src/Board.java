@@ -91,10 +91,16 @@ public class Board {
 		if(direction.compareToIgnoreCase("d")==0)
 			x+=1;
 		Location locTo = new Location(x, y);
-		isValidMove(locAt, locTo);
+		//if not valid return with same number of turns left - redo their turn
+		if(!isValidMove(locAt, locTo))
+			return movesLeft;
+		//move player, add visited locations
+		Player p =getPlayerAt(locAt);
+		p.addVisitedLocation(locAt);
+		getCellAt(locAt).removePlayer();
+		getCellAt(locTo).setPlayer(p);
 		
-		
-		return movesLeft;
+		return --movesLeft;
 	}
 
 	/*
@@ -108,18 +114,36 @@ public class Board {
 			System.out.println("Invalid move - Out of bounds: Retry again");
 			return false;
 		}
+		
+		
 		//checks that player hasnt moved to that cell this turn
-		List<Location> prevsLocs = getPlayerAt(at).getLocations();
+		List<Location> prevsLocs = getPlayerAt(at).getVisitedLocations();
 		for(Location loc: prevsLocs) {
 			if(loc.equals(to)) {
 				System.out.println("Invalid move - Already visited tile this turn: Retry again");
 				return false;
 			}
-				
+		}
+		Cell moveTo = getCellAt(to);
+		Cell from=getCellAt(at);
+	//checks that there is not already a player on that tile
+		if(moveTo.hasPlayer()) {
+			System.out.println("Invalid move - Player already on that tile: Retry again");
+			return false;
+		}
+		//checks it's not an empty tile
+		if(moveTo.toString().compareToIgnoreCase("e")==0) {
+			System.out.println("Invalid move - Cannot move to an empty tile(e): Retry again");
+			return false;
 		}
 		
-		
-		return false;
+		//checks that either both locations are hallways, or room cell or at least one is a door
+		//note cannot move from hallway cell to a room cell - has to transition trough a door cell
+		if(!moveTo.toString().equals(from.toString())&& !(moveTo instanceof DoorCell) && !(from instanceof DoorCell)) {
+			System.out.println("Invalid move - Cannot move through a wall: Retry again");
+			return false;
+		}
+		return true;
 	}
 	
 	/*
@@ -134,8 +158,7 @@ public class Board {
 	 * Returns a cell at the Location, x,y
 	 */
 	public Cell getCellAt(Location loc) {
-
-		return null;
+		return board[loc.getX()][loc.getY()];
 	}
 
 }

@@ -7,6 +7,7 @@ public class Cell {
 	private boolean hasPlayer;
 	private Location loc;
 	private Player player;
+	private WeaponCard weapon;
 
 	Cell(Location loc) {
 		this.loc = loc;
@@ -32,6 +33,13 @@ public class Cell {
 			throw new RuntimeException("Error: Cell that does not have a player - getPlayer");
 		return player;
 	}
+	public void setWeapon(WeaponCard weapon) {
+		
+		
+	}
+	
+	
+	
 
 	public String toString() {
 		if (!hasPlayer)

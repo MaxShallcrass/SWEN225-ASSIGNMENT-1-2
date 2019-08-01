@@ -186,6 +186,14 @@ public class Cluedo
   //------------------------
   // INTERFACE
   //------------------------
+  /*
+   * potential work in progress
+   */
+  public void helpMessage() {
+	  
+	  System.out.println();
+  }
+  
   /**
    * Getter for envelope 
    * @return Envelope
