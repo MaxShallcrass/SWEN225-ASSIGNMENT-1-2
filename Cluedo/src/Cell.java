@@ -9,11 +9,30 @@ public abstract class Cell {
 	private Player player;
 	private String weapon;
 	private boolean hasWeapon;
+	private boolean isRoom;
+	private String roomName;
 
 	Cell(Location loc) {
 		this.loc = loc;
 		hasPlayer = false;
 		hasWeapon=false;
+		isRoom=false;
+	}
+	
+	
+	public void setRoom(String room) {
+		roomName=room;
+		isRoom=true;
+	}
+	public boolean isRoom() {
+		return isRoom;
+	}
+	
+	public String getRoom(){
+		if(isRoom)
+		return roomName;
+		else
+			throw new RuntimeException("Error: cell is not a room");
 	}
 	
 	public void setWeapon(String wep) {
