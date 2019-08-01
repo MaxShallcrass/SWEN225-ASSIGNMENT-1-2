@@ -26,7 +26,7 @@ public class Hand
    * getter for hand
    * @return arraylist of card
    */
-  public ArrayList<Card> getHand() {
+  public ArrayList<Card> getCards() {
 	  return cards;
   }
   
@@ -36,6 +36,15 @@ public class Hand
    */
   public void add(Card c) {
 	  cards.add(c);
+  }
+  
+  public ArrayList<String> toList() {
+	  ArrayList<String> list = new ArrayList<String>();
+	  for(Card c : this.getCards()) {
+		  list.add(c.toString());
+	  }
+	  return list;
+  
   }
   
 }

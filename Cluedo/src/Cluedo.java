@@ -138,7 +138,7 @@ public class Cluedo
 		  if(decision.equals("a")) {
 			  doAccusation();
 		  }else if(decision.equals("s")) {
-			  doSuggestion();
+			  doSuggestion(players,player);
 		  }
 		  //next players turn 
 		  turn++;
@@ -159,15 +159,29 @@ public class Cluedo
   }
   
   
-  public void doSuggestion() { //FIX CAPITALISED 
-	  	//Create suggestion
+  public void doSuggestion(ArrayList<Player> players,Player player) { //FIX CAPITALISED 
+	  //Create suggestion
 	  String room = "";
 	  String weapon = cleanString(ask("What weapon do you want to suggest CAPITALISED??"+weapons,
 				"Error please enter a weapon",weapons));
 	  String character = cleanString(ask("What character do you want to suggest CAPITALISED??"+weapons,
 				"Error please enter a character",characters));
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
-	  	
+	  //Allow for players to refute
+	  for(Player p : players) {
+		  if(!p.equals(player)) {
+			  String refuteYN = ask(""+p.getName()+" would you like to refute y/n ? ",
+					  "Please enter Y or N",new ArrayList<String>(Arrays.asList("y","n")));
+			  if(refuteYN.equals("y")) {
+				  System.out.println("These are your cards: "+p.getHand());
+				  String refuteString = ask("These are your cards: "+p.getHand(),
+							"Error please enter a weapon",p.getHand().toList());
+				  System.out.println("Suggestion refuted with : "+refuteString);
+				  break; //BREAKS LOOP 
+			  }
+			  //next player
+		  }
+	  }
   }
 
   
