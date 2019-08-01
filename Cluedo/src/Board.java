@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'master' of https://github.com/FergusCurrie/SWEN225-ASSIGNMENT-1.git
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+
+import javax.print.DocFlavor.URL;
 
 public class Board {
 
@@ -15,11 +20,17 @@ public class Board {
 		// Placing all the cells on the board
 		board = new Cell[24][25];
 		try {
-			Scanner sc = new Scanner(new File("GameBoard.txt"));
+			java.net.URL fileUrl = getClass().getResource("/GameBoard.txt");
+	        File file = new File(fileUrl.getFile());
+			
+			
+			Scanner sc = new Scanner(file);
 			int x = 0, y = 0;
 			while (sc.hasNext()) { // scans through board txt file
 				String token = sc.next();
-				Location loc = new Location(x++, y++);
+				System.out.println("made it");
+
+				Location loc = new Location(x++, y);
 				if (token.length() > 1) { // A door
 					DoorCell dc = new DoorCell(loc, token);
 					board[x][y] = dc;
@@ -28,7 +39,10 @@ public class Board {
 					FloorCell fc = new FloorCell(loc, token.charAt(0));
 					board[x][y] = fc;
 				}
-			}
+				if(x==24) {
+				y++;
+					x=0;
+			}}
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
