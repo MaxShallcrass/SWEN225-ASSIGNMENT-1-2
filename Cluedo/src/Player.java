@@ -17,6 +17,7 @@ public class Player
   private Board board;
   private Hand hand;
   private Accusation accusation;
+  private Location loc;
 
   //------------------------
   // CONSTRUCTOR
@@ -44,6 +45,22 @@ public class Player
       throw new RuntimeException("Unable to create player due to board. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     hand = new Hand(this);
+  }
+  /*
+   * Sets location on the board where the player is
+   */
+  public void setLocation(Location loc) {
+	  this.loc=loc;
+  }
+  /*
+   * Gets location of the player on the board
+   */
+  public Location getLocation(){
+	  return this.loc;
+  }
+  
+  public String toString() {
+	  return "gotta fix";
   }
 
   //------------------------

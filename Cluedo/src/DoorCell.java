@@ -7,6 +7,9 @@
 // line 117 "model.ump"
 public class DoorCell extends Cell
 {
+	private char room;
+	private char direction;
+	
 
   //------------------------
   // MEMBER VARIABLES
@@ -16,18 +19,21 @@ public class DoorCell extends Cell
   // CONSTRUCTOR
   //------------------------
 
-  public DoorCell(Location aLocation, Board aBoard)
+  public DoorCell(Location aLocation, String id)
   {
-    super(aLocation, aBoard);
+    super(aLocation);
+	  this.room=id.charAt(2);
+	  this.direction=id.charAt(1);
+	  
+  }
+  
+  public String toString() {
+	  if(super.hasPlayer()) {
+		  return super.toString();
+	  }
+	  return "D" + direction + " ";
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-  public void delete()
-  {
-    super.delete();
-  }
+ 
 
 }

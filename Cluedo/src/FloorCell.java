@@ -8,26 +8,20 @@
 public class FloorCell extends Cell
 {
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
+char id;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public FloorCell(Location aLocation, Board aBoard)
+  public FloorCell(Location aLocation, char id)
   {
-    super(aLocation, aBoard);
+    super(aLocation);
+    this.id=id;
+    
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-  public void delete()
-  {
-    super.delete();
+  public String toString() {
+	  if(super.hasPlayer()) {
+		  return super.toString();
+	  }
+	  return id+ "  ";
   }
 
 }
