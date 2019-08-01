@@ -30,7 +30,7 @@ public class Cluedo
 	  int numPlayers = getNumPlayers();
 	  HashMap<Integer,Player> players = new HashMap<Integer,Player>();
 	  for(int i = 0;i < numPlayers;i++) {
-		  players.put(i+1,new Player());
+		  players.put(i+1,new Player(i+1));
 	  }
 	  
 	  //Set names and characters for each player 
