@@ -247,24 +247,61 @@ public class Board {
 		}	
 		return true;
 	}
+	
 	/*
-	 * Moves a player to a room after having been in a suggestion
+	 * Moves a player and to a room after having been in a suggestion
 	 */
-	public void movePlayerToRoom(Player p, String roomName) {
+	public void movePlayerWeaponToRoom(Player p, String roomNameTo, String weaponName) {
+		List<Cell> cells = getCellsFromRoom(roomNameTo);
+		Collections.shuffle(cells);
 		//making sure player is not already in the room
-		if(!getCellAt(p.getLocation()).isRoom() ||!getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomName) ) {
-			
-			
-			
+		if(!getCellAt(p.getLocation()).isRoom() ||!getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomNameTo) ) {
+			for(Cell cell: cells)
+				if(!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
+					getCellAt(p.getLocation()).removePlayer();
+					cell.setPlayer(p);
+					p.setLocation(cell.getLocation());
+					break;
+				}
 		}
 		
+		if(weaponName.equals("Candlestick"))
+			weaponName="Ca";
+		else if(weaponName.equals("Dagger"))
+			weaponName="Dg";
+		else if(weaponName.equals("Lead Pipe"))
+			weaponName="Lp";
+		else if(weaponName.equals("Revolver"))
+			weaponName="Rv";
+		else if(weaponName.equals("Rope"))
+			weaponName="Rp";
+		else if(weaponName.equals("Spanner"))
+			weaponName="Sp";
 		
-		
+		Cell weaponLoc = getCellAt(weaponLocation(weaponName));
+		if(!weaponLoc.isRoom() || !weaponLoc.getRoom().equals(roomNameTo)) {
+			for(Cell cell: cells)
+				if(!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
+					getCellAt(weaponLoc.getLocation()).removeWeapon();
+					cell.setWeapon(weaponName);
+					break;
+				}
+		}	
 	}
 	
-	
-	private ArrayList<Cell> getCellsFromRoom(){
-		return null;
+	/*
+	 * Gets all the cells that are within the given room
+	 */
+	private List<Cell> getCellsFromRoom(String roomName){
+		List<Cell> cells = new ArrayList<Cell>();
+		
+		for (int y = 0; y < 25; y++) {
+			for (int x = 0; x < 24; x++) {
+				if(board[x][y].isRoom()&& board[x][y].getRoom().equals(roomName))
+					cells.add(board[x][y]);
+			}
+		}
+		return cells;
 	}
 	
 	
@@ -276,6 +313,16 @@ public class Board {
 	private Player getPlayerAt(Location loc) {
 		Player p = board[loc.getX()][loc.getY()].getPlayer();
 		return p;
+	}
+	
+	private Location weaponLocation(String name){
+		for (int y = 0; y < 25; y++) {
+			for (int x = 0; x < 24; x++) {
+				if(board[x][y].hasWeapon() && board[x][y].getWeapon().equals(name))
+					return board[x][y].getLocation();
+			}
+		}
+		throw new RuntimeException("Weapon not found on the board");
 	}
 
 	/*
