@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> branch 'master' of https://github.com/FergusCurrie/SWEN225-ASSIGNMENT-1.git
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
