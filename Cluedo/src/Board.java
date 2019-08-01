@@ -17,16 +17,15 @@ public class Board {
 		board = new Cell[24][25];
 		try {
 			java.net.URL fileUrl = getClass().getResource("/GameBoard.txt");
-	        File file = new File(fileUrl.getFile());
-			
-			
+			File file = new File(fileUrl.getFile());
+
 			Scanner sc = new Scanner(file);
 			int x = 0, y = 0;
 			while (sc.hasNext()) { // scans through board txt file
 				String token = sc.next();
-				System.out.println("made it");
+				System.out.println(token);
 
-				Location loc = new Location(x++, y);
+				Location loc = new Location(x, y);
 				if (token.length() > 1) { // A door
 					DoorCell dc = new DoorCell(loc, token);
 					board[x][y] = dc;
@@ -35,14 +34,15 @@ public class Board {
 					FloorCell fc = new FloorCell(loc, token.charAt(0));
 					board[x][y] = fc;
 				}
-				if(x==24) {
-				y++;
-					x=0;
-			}}
+			if(++x==24) {
+				x=0;
+			y++;}
+				
+			}
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		// adding players and weapons to the board
 		addPlayers(realPlayers, nonPlayer);
 		addWeapons();
