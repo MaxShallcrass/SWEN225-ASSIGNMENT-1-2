@@ -5,7 +5,7 @@
 
 // line 23 "model.ump"
 // line 106 "model.ump"
-public class Cells
+public class Cell
 {
 
   //------------------------
@@ -20,7 +20,7 @@ public class Cells
   // CONSTRUCTOR
   //------------------------
 
-  public Cells(Location aLocation, Board aBoard)
+  public Cell(Location aLocation, Board aBoard)
   {
     if (aLocation == null || aLocation.getCells() != null)
     {
@@ -34,7 +34,7 @@ public class Cells
     }
   }
 
-  public Cells(Board aBoard)
+  public Cell(Board aBoard)
   {
     location = new Location(this);
     boolean didAddBoard = setBoard(aBoard);

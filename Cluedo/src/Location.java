@@ -13,13 +13,13 @@ public class Location
   //------------------------
 
   //Location Associations
-  private Cells cells;
+  private Cell cells;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Location(Cells aCells)
+  public Location(Cell aCells)
   {
     if (aCells == null || aCells.getLocation() != null)
     {
@@ -30,21 +30,21 @@ public class Location
 
   public Location(Board aBoardForCells)
   {
-    cells = new Cells(this, aBoardForCells);
+    cells = new Cell(this, aBoardForCells);
   }
 
   //------------------------
   // INTERFACE
   //------------------------
   /* Code from template association_GetOne */
-  public Cells getCells()
+  public Cell getCells()
   {
     return cells;
   }
 
   public void delete()
   {
-    Cells existingCells = cells;
+    Cell existingCells = cells;
     cells = null;
     if (existingCells != null)
     {

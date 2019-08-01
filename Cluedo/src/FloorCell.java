@@ -5,7 +5,7 @@
 
 // line 28 "model.ump"
 // line 112 "model.ump"
-public class FloorCell extends Cells
+public class FloorCell extends Cell
 {
 
   //------------------------
