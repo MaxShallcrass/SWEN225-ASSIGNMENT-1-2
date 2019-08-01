@@ -34,6 +34,11 @@ public class Board {
 					FloorCell fc = new FloorCell(loc, token.charAt(0));
 					board[x][y] = fc;
 				}
+				//adds that the cell is a room if it is
+				addRoom(token, board[x][y]);
+				
+				
+				
 			if(++x==24) {
 				x=0;
 			y++;}
@@ -67,9 +72,9 @@ public class Board {
 			realPlayers.get(i).setLocation(playerLocs.get(i));
 		}
 		for (int i = realPlayers.size(); i < realPlayers.size() + nonPlayer.size(); i++) {
-			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(nonPlayer.get(i));
-			nonPlayer.get(i).setLocation(playerLocs.get(i));
-		}
+			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(nonPlayer.get(i-realPlayers.size()));
+			nonPlayer.get(i-realPlayers.size()).setLocation(playerLocs.get(i-realPlayers.size()));
+		} //////////////////////////
 	}
 
 	/*
@@ -104,6 +109,40 @@ public class Board {
 		getCellAt(loc).setWeapon("Rp");
 		loc = wepLocations.remove(0);
 		getCellAt(loc).setWeapon("Sp");
+	}
+	
+	
+	/*
+	 * If the cell is a room tile adds the room name
+	 */
+	private void addRoom(String token, Cell cell) {
+		if (token.equals("k")) {
+			cell.setRoom("Kitchen");
+
+		} else if (token.equals("b")) {
+			cell.setRoom("Ball Room");
+
+		} else if (token.equals("c")) {
+			cell.setRoom("Conservatory");
+
+		} else if (token.equals("B")) {
+			cell.setRoom("Billiard Room");
+
+		} else if (token.equals("l")) {
+			cell.setRoom("Library");
+
+		} else if (token.equals("s")) {
+			cell.setRoom("Study");
+
+		} else if (token.equals("h")) {
+			cell.setRoom("Hall");
+
+		} else if (token.equals("L")) {
+			cell.setRoom("Lounge");
+
+		} else if (token.equals("d")) {
+			cell.setRoom("Dining Room");
+		}
 	}
 
 	/*
