@@ -18,6 +18,11 @@ public class Cluedo
   //Cluedo Associations
   private Envelope envelope;
   private Board board;
+  private ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
+			"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
+  private ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick","Dagger","Lead Pipe","Revolver","Rope","Spanner"));
+  private ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen","Ballroom","Conservatory","Billiard Room","Library",
+		  											"Study","Hall","Lounge","Dining Room"));
   
   //
 
@@ -57,11 +62,6 @@ public class Cluedo
    */
   public Envelope deal(ArrayList<Player> players) {
 	  //Create deck of cards as arraylist of super type card
-	  ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
-				"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
-	  ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick","Dagger","Lead Pipe","Revolver","Rope","Spanner"));
-	  ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen","Ballroom","Conservatory","Billiard Room","Library",
-			  											"Study","Hall","Lounge","Dining Room"));
 	  ArrayList<Card> deck = new ArrayList<Card>();
 	  
 	  //make envelope
@@ -153,7 +153,7 @@ public class Cluedo
   
   
   public void doSuggestion() {
-	  	
+	  	//Create suggestion
   }
 
   
