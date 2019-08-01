@@ -24,4 +24,9 @@ char id;
 	  return id+ "  ";
   }
 
+@Override
+public char getId() {
+	return id;
+}
+
 }

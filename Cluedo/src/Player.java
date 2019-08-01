@@ -35,6 +35,7 @@ public class Player
   public Player(int dn) {
 	  displayNumber = dn;
 	  hand = new Hand();
+	//  visitedLocsThisTurn= new ArrayList<Location>();
   }
 
   //------------------------
@@ -92,7 +93,6 @@ public class Player
    */
   public void newTurn() {
 	  visitedLocsThisTurn=new ArrayList<Location>();
-	  
   }
   
   /*

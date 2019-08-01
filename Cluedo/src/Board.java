@@ -23,8 +23,6 @@ public class Board {
 			int x = 0, y = 0;
 			while (sc.hasNext()) { // scans through board txt file
 				String token = sc.next();
-				System.out.println(token);
-
 				Location loc = new Location(x, y);
 				if (token.length() > 1) { // A door
 					DoorCell dc = new DoorCell(loc, token);
@@ -54,8 +52,8 @@ public class Board {
 	private void addPlayers(List<Player> realPlayers, List<Player> nonPlayer) {
 		// Starter locations for players
 		List<Location> playerLocs = new ArrayList<Location>(); 
-		playerLocs.add(new Location(0, 9));
-		playerLocs.add(new Location(0, 14));
+		playerLocs.add(new Location(9, 0));
+		playerLocs.add(new Location(14, 0));
 		playerLocs.add(new Location(23, 6));
 		playerLocs.add(new Location(23, 19));
 		playerLocs.add(new Location(7, 24));
@@ -110,8 +108,9 @@ public class Board {
 	 * displays the board to text output
 	 */
 	public void displayBoard() {
-		for (int x = 0; x < 24; x++) {
-			for (int y = 0; y < 25; y++) {
+
+		for (int y = 0; y < 25; y++) {
+			for (int x = 0; x < 24; x++) {
 				System.out.print(board[x][y].toString());
 			}
 			System.out.println();
@@ -143,6 +142,7 @@ public class Board {
 		p.addVisitedLocation(locAt);
 		getCellAt(locAt).removePlayer();
 		getCellAt(locTo).setPlayer(p);
+		p.setLocation(locTo);
 
 		return --movesLeft;
 	}
@@ -161,6 +161,7 @@ public class Board {
 
 		// checks that player hasnt moved to that cell this turn
 		List<Location> prevsLocs = getPlayerAt(at).getVisitedLocations();
+		if(!prevsLocs.isEmpty())
 		for (Location loc : prevsLocs) {
 			if (loc.equals(to)) {
 				System.out.println("Invalid move - Already visited tile this turn: Retry again");
@@ -184,7 +185,7 @@ public class Board {
 		// is a door
 		// note cannot move from hallway cell to a room cell - has to transition trough
 		// a door cell
-		if (!moveTo.toString().equals(from.toString()) && !(moveTo instanceof DoorCell)
+		if (moveTo.getId()!=from.getId() && !(moveTo instanceof DoorCell)
 				&& !(from instanceof DoorCell)) {
 			System.out.println("Invalid move - Cannot move through a wall: Retry again");
 			return false;

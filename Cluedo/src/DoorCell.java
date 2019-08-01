@@ -34,6 +34,12 @@ public class DoorCell extends Cell
 	  return "D" + direction + " ";
   }
 
+@Override
+public char getId() {
+	// TODO Auto-generated method stub
+	return 'z';
+}
+
  
 
 }
