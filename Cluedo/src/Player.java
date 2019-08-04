@@ -25,6 +25,7 @@ public class Player
   private Location loc;
   private int displayNumber;
   private Hand hand;
+  private boolean isGameOver;
   
   private List<Location> visitedLocsThisTurn;
 
@@ -35,6 +36,7 @@ public class Player
   public Player(int dn) {
 	  displayNumber = dn;
 	  hand = new Hand();
+	  isGameOver = false;
 	//  visitedLocsThisTurn= new ArrayList<Location>();
   }
 
@@ -48,6 +50,20 @@ public class Player
    */
   public void setCharacter(String s) {
 	  character = s;
+  }
+  
+  /**
+   * sets players isGameOver state to true
+   */
+  public void losesGame() {
+	  isGameOver = true;
+  }
+  
+  /**
+   * checks if players game is over yet
+   */
+  public boolean isGameOver() {
+	  return isGameOver;
   }
   
   /**

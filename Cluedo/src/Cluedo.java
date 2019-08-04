@@ -166,7 +166,15 @@ public class Cluedo
   
   
   public boolean doAccusation() {
-	  
+	  //Create suggestion
+	  System.out.println(); // visual spacing for output
+	  String weapon = cleanString(ask("What weapon do you want to accuse CAPITALISED??"+weapons,
+				"Error please enter a weapon",weapons));
+	  String character = cleanString(ask("What character do you want to accuse CAPITALISED??"+characters,
+				"Error please enter a character",characters));
+	  String room = cleanString(ask("What room do you want to accuse CAPITALISED??"+rooms,
+				"Error please enter a room",rooms));
+	  Accusation acus = new Accusation(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  return false;
   }
   
@@ -179,6 +187,8 @@ public class Cluedo
 	  String character = cleanString(ask("What character do you want to suggest CAPITALISED??"+characters,
 				"Error please enter a character",characters));
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
+	  //Move character and weapon to room
+	  board.movePlayerWeaponToRoom(player,room,weapon);
 	  //Allow for players to refute
 	  for(Player p : players) {
 		  if(!p.equals(player)) {
