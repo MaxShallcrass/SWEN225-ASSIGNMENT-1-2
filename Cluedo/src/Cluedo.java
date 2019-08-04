@@ -231,9 +231,9 @@ public class Cluedo
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  //Move character and weapon to room
 	  board.movePlayerWeaponToRoom(player,room,weapon);
+	  clearScreen();
 	  //max added ------- think need to redisplay to show player and weapon moved
-	  System.out.println("Weapon " + weapon + "and character "+ character + player.getNumber() + " moved to room " + room);
-	  board.displayBoard();
+	  System.out.println("Weapon - " + weapon + " and character - "+ character + player.getNumber() + " moved to room " + room);
 	  refute(sug,player);
   }
   
@@ -242,26 +242,25 @@ public class Cluedo
    */
   public void refute(Suggestion s,Player playerThatSuggested) {
 	  //find player after this player
-	  int turn = -1;
+	  int turn = 0;
 	  int count =0;
-	  for(Player p : players) {
-		  if(p.equals(playerThatSuggested)) {
-			  turn = count+1  ;//-1 to avoid the count ++
+	  for(int i=0; i<players.size();i++) {
+		  if(players.get(i).equals(playerThatSuggested)) {
+			  turn = count+1  ;//+1 for the next player
 		  }
 		  count++;
 	  }
-	//  turn++; //get player  ahead
 	//wrap around for turn
-	  if(turn == players.size()-1) {
+	  if(turn == players.size()) {
 		  turn =0;
 	  }
 	  //loop through the remaining players 
-	  for(int i=turn;i<players.size();i++) {
+	  while(true) {
 		  //wraparound for getting next refute player
-		  if(i == players.size()) {
-			  i =0;
+		  if(turn == players.size()) {
+			  turn =0;
 		  }
-		  Player player = players.get(i);
+		  Player player = players.get(turn);
 		  if(player.equals(playerThatSuggested)) { //finished refutes
 			  System.out.println("Refutes finished.");
 			  break;}
@@ -281,16 +280,18 @@ public class Cluedo
 				  strPossRefutes.add(c.getName());
 			  }
 			  askPlayer(player.getName()+player.getNumber() + " turn to refute. Press any key to continue");
+			  System.out.println("Cards suggested: \n" + s.toString());
 			  System.out.println("Cards "+player.getName()+" can refute with: "+strPossRefutes);
 			  String cardToRefute = cleanString(ask("What card woud you like to refute with? ",
 						"Error please enter a card from: ",strPossRefutes));
-			  
+			  clearScreen();
 			  System.out.println("For " + playerThatSuggested.getName() + playerThatSuggested.getNumber() + " to see: " + player.getName()+ player.getNumber() +" has refuted with: "+cardToRefute);
 			  askPlayer("Press any key to continue");
+			  clearScreen();
 		  }else {
 			  System.out.println("Player " + player.getName() + player.getNumber() + " unable to refute.");
 		  }
-		  
+		  turn++;
 	  }
   }
 
@@ -429,6 +430,7 @@ public class Cluedo
    */
   public void clearScreen() {
 	  for (int i = 0; i < 50; ++i) System.out.println();
+	  board.displayBoard();
   }
   
   
