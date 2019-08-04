@@ -46,14 +46,14 @@ public class Cluedo
 	  
 	  
 	  //Creating envelope and dealing hands
-	  Envelope e = deal(players);
+	  Envelope envelope = deal(players);
 	 
 	  //doSuggestion(players,players.get(0),"Lounge");
 	  
 	 // doSuggestion(players,players.get(0),"Lounge");
 	  
 	  //Create new board
-	  Board board = new Board(players,computerPlayers);
+	  board = new Board(players,computerPlayers);
 	  
 	  //Play Game
 	  playCluedo(players,board);
@@ -73,7 +73,7 @@ public class Cluedo
 	  int roomIndex = rand.nextInt((9- 0) + 0) + 0;
 	  int weaponIndex = rand.nextInt((5- 0) + 0) + 0;
 	  int characterIndex = rand.nextInt((5- 0) + 0) + 0;
-	  Envelope envelope = new Envelope(new RoomCard(rooms.get(roomIndex)),new WeaponCard(weapons.get(weaponIndex)),
+	  Envelope e = new Envelope(new RoomCard(rooms.get(roomIndex)),new WeaponCard(weapons.get(weaponIndex)),
 			  					new CharacterCard(characters.get(characterIndex)));
 	  characters.remove(characterIndex);
 	  rooms.remove(roomIndex);
@@ -101,7 +101,7 @@ public class Cluedo
 			  turn = 0;
 		  }
 	  }
-	  return envelope;
+	  return e;
   }
   
   /**
@@ -148,7 +148,10 @@ public class Cluedo
 		  				new ArrayList<String>(Arrays.asList("a","n")));
 		  }
 		  if(decision.equals("a")) {
-			  doAccusation();
+			  gameOver = doAccusation();
+			  if(!gameOver) {
+				  player.losesGame();
+			  }
 		  }else if(decision.equals("s")) {
 			  doSuggestion(players,player,cell.getRoom());
 		  }
@@ -164,7 +167,10 @@ public class Cluedo
 		
   }
   
-  
+  /**
+   * method to do an accusation, returns true if accusation is correct, false otherwise
+   * @return
+   */
   public boolean doAccusation() {
 	  //Create suggestion
 	  System.out.println(); // visual spacing for output
@@ -175,6 +181,9 @@ public class Cluedo
 	  String room = cleanString(ask("What room do you want to accuse CAPITALISED??"+rooms,
 				"Error please enter a room",rooms));
 	  Accusation acus = new Accusation(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
+	  if(acus.testAccusation(envelope)) {
+		  return true;
+	  }
 	  return false;
   }
   
