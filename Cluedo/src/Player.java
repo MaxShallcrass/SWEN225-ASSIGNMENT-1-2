@@ -62,7 +62,7 @@ public class Player
   /**
    * checks if players game is over yet
    */
-  public boolean isGameOver() {
+  public boolean hasLost() {
 	  return isGameOver;
   }
   
@@ -109,6 +109,12 @@ public class Player
    */
   public void newTurn() {
 	  visitedLocsThisTurn=new ArrayList<Location>();
+  }
+  /*
+   * Returns player number
+   */
+  public String getNumber() {
+	  return "("+ displayNumber + ")";
   }
   
   /*

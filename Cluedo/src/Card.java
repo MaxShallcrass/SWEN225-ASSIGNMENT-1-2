@@ -10,6 +10,7 @@ public class Card
 	private String name;
 	
 	Card(String name){
+		System.out.println(name);
 		this.name=name;
 	}
 	

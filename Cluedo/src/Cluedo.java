@@ -24,6 +24,7 @@ public class Cluedo
   private ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick","Dagger","Lead Pipe","Revolver","Rope","Spanner"));
   private ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen","Ballroom","Conservatory","Billiard Room","Library",
 		  											"Study","Hall","Lounge","Dining Room"));
+  private boolean gameOver=false;
   
   //
 
@@ -47,7 +48,7 @@ public class Cluedo
 	  
 	  
 	  //Creating envelope and dealing hands
-	  Envelope envelope = deal();
+	   deal();
 	  System.out.println(envelope.toString());
 	 
 	  //doSuggestion(players,players.get(0),"Lounge");
@@ -65,7 +66,7 @@ public class Cluedo
    * @param players
    * @return envelope
    */
-  public Envelope deal() {
+  private void deal() {
 	  //Create deck of cards as arraylist of super type card
 	  ArrayList<Card> deck = new ArrayList<Card>();
 	  
@@ -78,10 +79,11 @@ public class Cluedo
 	  
 	  //make envelope
 	  Random rand = new Random();
-	  int roomIndex = rand.nextInt((9- 0) + 0) + 0;
+	  int roomIndex = rand.nextInt((8- 0) + 0) + 0;
+	  
 	  int weaponIndex = rand.nextInt((5- 0) + 0) + 0;
 	  int characterIndex = rand.nextInt((5- 0) + 0) + 0;
-	  Envelope e = new Envelope(new RoomCard(roomsClone.get(roomIndex)),new WeaponCard(weaponsClone.get(weaponIndex)),
+	  envelope = new Envelope(new RoomCard(roomsClone.get(roomIndex)),new WeaponCard(weaponsClone.get(weaponIndex)),
 			  					new CharacterCard(charactersClone.get(characterIndex)));
 	  charactersClone.remove(characterIndex);
 	  roomsClone.remove(roomIndex);
@@ -109,7 +111,6 @@ public class Cluedo
 			  turn = 0;
 		  }
 	  }
-	  return e;
   }
   
   /**
@@ -119,28 +120,35 @@ public class Cluedo
    */
   public void playCluedo() {
 	  //Control Variables
-	  boolean gameOver = false;
-	  int turn = 0; //simple variable to store player turn - stored as index of player list
-	  Player winner = null; //variable to store winner 
-	  
-	  //Main Loop
-	  while(!gameOver) {
-		  clearScreen();
-		  //Determine player
-		  Player player = players.get(turn);
-		  player.newTurn();
-		  //Moving 
-		  int steps = diceRoll();
-		  board.displayBoard();
-		  System.out.println(""+player.getName()+" it's your turn, you have a dice roll of "+steps);
-		  while(steps != 0) {
-			  String md = ask("What direction do you want to move (w-a-s-d)? ",
-					  "Error - please enter w , a , s or d",new ArrayList<String>(
-					  Arrays.asList("w","a","s","d")));
-			  steps = board.movePlayer(player.getLocation(),md,steps);
-			  clearScreen();
-			  board.displayBoard();
-			  System.out.println("Remaining moves : "+steps);
+	 // boolean gameOver = false;
+	  Player player;
+		int turn = 0; // simple variable to store player turn - stored as index of player list
+		Player winner = null; // variable to store winner
+
+		// Main Loop
+		while (canPlay() && !gameOver) {
+			clearScreen();
+			// Determine player
+			player = players.get(turn);
+			// choosing a player that can play
+			while (player.hasLost()) {
+				if (++turn == players.size())
+					turn = 0;
+				player = players.get(turn);
+			}
+			player.newTurn(); // for keeping track of players movements
+			// Moving
+			int steps = diceRoll();
+			board.displayBoard();
+			System.out.println("" + player.getName() + " it's your turn, you have a dice roll of " + steps);
+			System.out.println("Your cards are: " + player.getHand().toList().toString());
+			while (steps != 0) {
+				String md = ask("What direction do you want to move (w-a-s-d)? ", "Error - please enter w , a , s or d",
+						new ArrayList<String>(Arrays.asList("w", "a", "s", "d")));
+				steps = board.movePlayer(player.getLocation(), md, steps);
+				clearScreen();
+				board.displayBoard();
+				System.out.println("Remaining moves : " + steps);
 
 		  }
 		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
@@ -156,13 +164,16 @@ public class Cluedo
 		  				new ArrayList<String>(Arrays.asList("a","n")));
 		  }
 		  if(decision.equals("a")) {
+				System.out.println("Your cards are: " + player.getHand().toList().toString());
 			  gameOver = doAccusation();
 			  if(!gameOver) {
 				  player.losesGame();
 			  }else {
 				  winner = player;
+				  
 			  }
 		  }else if(decision.equals("s")) {
+				System.out.println("Your cards are: " + player.getHand().toList().toString());
 			  doSuggestion(player,cell.getRoom());
 		  }
 		  //next players turn 
@@ -172,9 +183,8 @@ public class Cluedo
 		  } 
 	  }
 	  //Clean up - games over. 
-	  System.out.println("Games over, winner is : "+winner.getName());
-		  
-		
+	  System.out.println("GAME OVER\n" + winner.getName() + winner.getNumber() + " wins the game!");
+	  System.exit(0);//may need to change the exit of program
   }
   
   /**
@@ -182,18 +192,25 @@ public class Cluedo
    * @return boolen, wether accusation was successful or not
    */
   public boolean doAccusation() {
+	  
+	  
 	  //Create suggestion
 	  System.out.println(); // visual spacing for output
 	  String weapon = cleanString(ask("Weapons: "+weapons+"\n What weapon do you want to accuse?",
 				"Error please enter a weapon",weapons));
-	  String character = cleanString(ask("Characters: "+"\n What character do you want to accuse?",
+	  String character = cleanString(ask("Characters: "+ characters +"\n What character do you want to accuse?",
 				"Error please enter a character",characters));
-	  String room = cleanString(ask("What room do you want to accuse CAPITALISED??"+rooms,
+	  String room = cleanString(ask("What room do you want to accuse?"+rooms,
 				"Error please enter a room",rooms));
 	  Accusation acus = new Accusation(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
-	  if(acus.testAccusation(envelope)) {
-		  return true;
-	  }
+
+		clearScreen();
+		askPlayer("Acusation made - show all: \n" + "Weapon: " + weapon + " Character: " + character + " Room: " + room
+				+ "\n press any key to continue: ");
+		System.out.println("Envelope contains:\n" + envelope.toString());
+		if (acus.testAccusation(envelope)) {
+			return true;
+		}
 	  return false;
   }
   
@@ -204,7 +221,7 @@ public class Cluedo
    * @param player
    * @param room
    */
-  public void doSuggestion(Player player,String room) { 
+  public void doSuggestion(Player player,String room){ 
 	  //Create suggestion
 	  System.out.println(); // visual spacing for output
 	  String weapon = cleanString(ask("Weapons: "+weapons+"\n What weapon do you want to suggest?",
@@ -214,6 +231,9 @@ public class Cluedo
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  //Move character and weapon to room
 	  board.movePlayerWeaponToRoom(player,room,weapon);
+	  //max added ------- think need to redisplay to show player and weapon moved
+	  System.out.println("Weapon " + weapon + "and character "+ character + player.getNumber() + " moved to room " + room);
+	  board.displayBoard();
 	  refute(sug,player);
   }
   
@@ -226,22 +246,26 @@ public class Cluedo
 	  int count =0;
 	  for(Player p : players) {
 		  if(p.equals(playerThatSuggested)) {
-			  turn = count - 1 ;//-1 to avoid the count ++
+			  turn = count+1  ;//-1 to avoid the count ++
 		  }
 		  count++;
 	  }
-	  turn++; //get player  ahead
+	//  turn++; //get player  ahead
 	//wrap around for turn
-	  if(turn == players.size()) {
-		  turn -= players.size();
+	  if(turn == players.size()-1) {
+		  turn =0;
 	  }
 	  //loop through the remaining players 
-	  for(int i=turn+1;i<players.size();i++) {
-		  //wraparound for getting player
+	  for(int i=turn;i<players.size();i++) {
+		  //wraparound for getting next refute player
 		  if(i == players.size()) {
-			  i -= players.size();
+			  i =0;
 		  }
 		  Player player = players.get(i);
+		  if(player.equals(playerThatSuggested)) { //finished refutes
+			  System.out.println("Refutes finished.");
+			  break;}
+		  
 		  //Add possible refutes to list and then control flow off size of list (0 or >0)
 		  ArrayList<Card> possRefutes = new ArrayList<Card>();
 		  for(Card playerCard : player.getHand().getCards()) {
@@ -256,12 +280,15 @@ public class Cluedo
 			  for(Card c : possRefutes) {
 				  strPossRefutes.add(c.getName());
 			  }
+			  askPlayer(player.getName()+player.getNumber() + " turn to refute. Press any key to continue");
 			  System.out.println("Cards "+player.getName()+" can refute with: "+strPossRefutes);
 			  String cardToRefute = cleanString(ask("What card woud you like to refute with? ",
 						"Error please enter a card from: ",strPossRefutes));
-			  System.out.println(player.getName()+" has refuted with: "+cardToRefute);
+			  
+			  System.out.println("For " + playerThatSuggested.getName() + playerThatSuggested.getNumber() + " to see: " + player.getName()+ player.getNumber() +" has refuted with: "+cardToRefute);
 			  askPlayer("Press any key to continue");
-			  break;
+		  }else {
+			  System.out.println("Player " + player.getName() + player.getNumber() + " unable to refute.");
 		  }
 		  
 	  }
@@ -366,6 +393,25 @@ public class Cluedo
 	  //return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
   }
   
+  /*
+   * checks if the game has finished
+   */
+  private boolean canPlay() {
+	  int playersStillIn=0;
+	  for(Player p: players)
+		  if(!p.hasLost())
+				playersStillIn++;  
+	  
+	  
+	  //fix this up --- if only one player left does he win?
+	  if(playersStillIn>1)
+		  return true;
+	  
+	  
+	  System.out.println("Game is over - no one has won");
+	  System.exit(0);
+	  return false;
+  }
 
   //------------------------
   // INTERFACE
