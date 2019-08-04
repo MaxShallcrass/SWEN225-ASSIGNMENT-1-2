@@ -33,6 +33,9 @@ public class Envelope
   public CharacterCard getCharacter() {
 	  return characterCard;
   }
+  public String toString() {
+	  return roomCard.getName() +" "+weaponCard.getName()+" "+characterCard.getName();
+  }
   
   
   

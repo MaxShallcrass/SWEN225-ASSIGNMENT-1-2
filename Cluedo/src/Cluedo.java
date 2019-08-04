@@ -47,6 +47,7 @@ public class Cluedo
 	  
 	  //Creating envelope and dealing hands
 	  Envelope envelope = deal(players);
+	  System.out.println(envelope.toString());
 	 
 	  //doSuggestion(players,players.get(0),"Lounge");
 	  
@@ -54,7 +55,7 @@ public class Cluedo
 	  
 	  //Create new board
 	  board = new Board(players,computerPlayers);
-	  
+	  clearScreen();
 	  //Play Game
 	  playCluedo(players,board);
   }
@@ -112,7 +113,8 @@ public class Cluedo
   public void playCluedo(ArrayList<Player> players, Board board) {
 	  //Control Variables
 	  boolean gameOver = false;
-	  int turn = 0;
+	  int turn = 0; //simple variable to store player turn - stored as index of player list
+	  Player winner = null; //variable to store winner 
 	  
 	  //Main Loop
 	  while(!gameOver) {
@@ -151,6 +153,8 @@ public class Cluedo
 			  gameOver = doAccusation();
 			  if(!gameOver) {
 				  player.losesGame();
+			  }else {
+				  winner = player;
 			  }
 		  }else if(decision.equals("s")) {
 			  doSuggestion(players,player,cell.getRoom());
@@ -161,22 +165,22 @@ public class Cluedo
 			  turn = 0;
 		  } 
 	  }
-	  
-	  //Clean up
+	  //Clean up - games over. 
+	  System.out.println("Games over, winner is : "+winner.getName());
 		  
 		
   }
   
   /**
    * method to do an accusation, returns true if accusation is correct, false otherwise
-   * @return
+   * @return boolen, wether accusation was successful or not
    */
   public boolean doAccusation() {
 	  //Create suggestion
 	  System.out.println(); // visual spacing for output
-	  String weapon = cleanString(ask("What weapon do you want to accuse CAPITALISED??"+weapons,
+	  String weapon = cleanString(ask("Weapons: "+weapons+"\n What weapon do you want to accuse?",
 				"Error please enter a weapon",weapons));
-	  String character = cleanString(ask("What character do you want to accuse CAPITALISED??"+characters,
+	  String character = cleanString(ask("Characters: "+"\n What character do you want to accuse?",
 				"Error please enter a character",characters));
 	  String room = cleanString(ask("What room do you want to accuse CAPITALISED??"+rooms,
 				"Error please enter a room",rooms));
@@ -188,12 +192,18 @@ public class Cluedo
   }
   
   
+  /**
+   * method to execute a suggestion made by a player, this involves creating suggestion and refuting
+   * @param players
+   * @param player
+   * @param room
+   */
   public void doSuggestion(ArrayList<Player> players,Player player,String room) { //FIX CAPITALISED 
 	  //Create suggestion
 	  System.out.println(); // visual spacing for output
-	  String weapon = cleanString(ask("What weapon do you want to suggest CAPITALISED??"+weapons,
+	  String weapon = cleanString(ask("Weapons: "+weapons+"\n What weapon do you want to suggest?",
 				"Error please enter a weapon",weapons));
-	  String character = cleanString(ask("What character do you want to suggest CAPITALISED??"+characters,
+	  String character = cleanString(ask("Characers: "+characters+"\n What character do you want to suggest?",
 				"Error please enter a character",characters));
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  //Move character and weapon to room
@@ -203,7 +213,7 @@ public class Cluedo
 		  if(!p.equals(player)) {
 			  System.out.println(); // visual spacing for output
 			  String refuteYN = ask(""+p.getName()+" would you like to refute y/n ? ",
-					  "Please enter Y or N",new ArrayList<String>(Arrays.asList("y","n")));
+					  "Please enter y or n",new ArrayList<String>(Arrays.asList("y","n")));
 			  if(refuteYN.equals("y")) {
 				  boolean correctRefute = false;
 				  String refuteString = "";
@@ -282,7 +292,7 @@ public class Cluedo
   }
   
   /**
-   * method to ask for input from user
+   * method to ask for input from user, has a list of target values, a question and an error msg
    * @param question
    * @param errorMsg
    * @param targetValues
@@ -307,8 +317,22 @@ public class Cluedo
 	  return result;
   }
   
-  public String cleanString(String str) {
-	  return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+  /**
+   * gets the string into the correct format e.g. each words capitalised rest lower case
+   * @param str
+   * @return cleaned string 
+   */
+  public String cleanString(String s) {
+	  String[] stringA = s.split(" ");
+	  String str1 = stringA[0];
+	  if(stringA.length > 1) {
+		  String str2 = stringA[1];
+		  String s1 = str1.substring(0, 1).toUpperCase() + str1.substring(1).toLowerCase();
+		  String s2 = str2.substring(0, 1).toUpperCase() + str2.substring(1).toLowerCase();
+		  return s1+" "+s2;
+	  }
+	  return str1.substring(0, 1).toUpperCase() + str1.substring(1).toLowerCase();
+	  //return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
   }
   
 
@@ -323,6 +347,12 @@ public class Cluedo
 	  System.out.println();
   }
   
+  /**
+   * method to clear screen so that other players cannot see turn informaiton
+   */
+  public void clearScreen() {
+	  for (int i = 0; i < 50; ++i) System.out.println();
+  }
   
   
   /**
