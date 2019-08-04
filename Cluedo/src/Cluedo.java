@@ -18,6 +18,7 @@ public class Cluedo
   //Cluedo Associations
   private Envelope envelope;
   private Board board;
+  private ArrayList<Player> players;
   private ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
 			"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
   private ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick","Dagger","Lead Pipe","Revolver","Rope","Spanner"));
@@ -36,17 +37,17 @@ public class Cluedo
 	  //Get num players and create players
 	  int numPlayers = Integer.parseInt(ask("How many players are there? ","Error - please enter 2,3 or 4",new ArrayList<String>(
 			  Arrays.asList("2","3","4"))));
-	  ArrayList<Player> players = new ArrayList<Player>();
+	  players = new ArrayList<Player>();
 	  for(int i = 0;i < numPlayers;i++) {
 		  players.add(new Player(i+1));
 	  }
 	  
 	  //Set names and characters for each player 
-	  ArrayList<Player> computerPlayers = charactersAndNames(players,numPlayers);
+	  ArrayList<Player> computerPlayers = charactersAndNames(numPlayers);
 	  
 	  
 	  //Creating envelope and dealing hands
-	  Envelope envelope = deal(players);
+	  Envelope envelope = deal();
 	  System.out.println(envelope.toString());
 	 
 	  //doSuggestion(players,players.get(0),"Lounge");
@@ -55,9 +56,8 @@ public class Cluedo
 	  
 	  //Create new board
 	  board = new Board(players,computerPlayers);
-	  clearScreen();
 	  //Play Game
-	  playCluedo(players,board);
+	  playCluedo();
   }
   
   /**
@@ -65,29 +65,36 @@ public class Cluedo
    * @param players
    * @return envelope
    */
-  public Envelope deal(ArrayList<Player> players) {
+  public Envelope deal() {
 	  //Create deck of cards as arraylist of super type card
 	  ArrayList<Card> deck = new ArrayList<Card>();
+	  
+	  //Make copies of main lists so that we can edit them without changing global variables
+	  ArrayList<String> charactersClone = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
+				"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
+	  ArrayList<String> weaponsClone = new ArrayList<String>(Arrays.asList("Candlestick","Dagger","Lead Pipe","Revolver","Rope","Spanner"));
+	  ArrayList<String> roomsClone = new ArrayList<String>(Arrays.asList("Kitchen","Ballroom","Conservatory","Billiard Room","Library",
+			  											"Study","Hall","Lounge","Dining Room"));
 	  
 	  //make envelope
 	  Random rand = new Random();
 	  int roomIndex = rand.nextInt((9- 0) + 0) + 0;
 	  int weaponIndex = rand.nextInt((5- 0) + 0) + 0;
 	  int characterIndex = rand.nextInt((5- 0) + 0) + 0;
-	  Envelope e = new Envelope(new RoomCard(rooms.get(roomIndex)),new WeaponCard(weapons.get(weaponIndex)),
-			  					new CharacterCard(characters.get(characterIndex)));
-	  characters.remove(characterIndex);
-	  rooms.remove(roomIndex);
-	  weapons.remove(weaponIndex);
+	  Envelope e = new Envelope(new RoomCard(roomsClone.get(roomIndex)),new WeaponCard(weaponsClone.get(weaponIndex)),
+			  					new CharacterCard(charactersClone.get(characterIndex)));
+	  charactersClone.remove(characterIndex);
+	  roomsClone.remove(roomIndex);
+	  weaponsClone.remove(weaponIndex);
 	  
 	  //construct new subclass cards and add to deck
-	  for(String c : characters) {
+	  for(String c : charactersClone) {
 		  deck.add(new CharacterCard(c));
 	  }
-	  for(String w : weapons) {
+	  for(String w : weaponsClone) {
 		  deck.add(new WeaponCard(w));
 	  }
-	  for(String r : rooms) {
+	  for(String r : roomsClone) {
 		  deck.add(new RoomCard(r));
 	  }
 	  //shuffle deck 
@@ -110,7 +117,7 @@ public class Cluedo
    * @param players
    * @param board
    */
-  public void playCluedo(ArrayList<Player> players, Board board) {
+  public void playCluedo() {
 	  //Control Variables
 	  boolean gameOver = false;
 	  int turn = 0; //simple variable to store player turn - stored as index of player list
@@ -118,8 +125,7 @@ public class Cluedo
 	  
 	  //Main Loop
 	  while(!gameOver) {
-		  System.out.println(); // visual spacing for output
-		  System.out.println(); // visual spacing for output
+		  clearScreen();
 		  //Determine player
 		  Player player = players.get(turn);
 		  player.newTurn();
@@ -132,7 +138,7 @@ public class Cluedo
 					  "Error - please enter w , a , s or d",new ArrayList<String>(
 					  Arrays.asList("w","a","s","d")));
 			  steps = board.movePlayer(player.getLocation(),md,steps);
-			  if(steps == 0) {System.out.println("What");}
+			  clearScreen();
 			  board.displayBoard();
 			  System.out.println("Remaining moves : "+steps);
 
@@ -157,7 +163,7 @@ public class Cluedo
 				  winner = player;
 			  }
 		  }else if(decision.equals("s")) {
-			  doSuggestion(players,player,cell.getRoom());
+			  doSuggestion(player,cell.getRoom());
 		  }
 		  //next players turn 
 		  turn++;
@@ -198,7 +204,7 @@ public class Cluedo
    * @param player
    * @param room
    */
-  public void doSuggestion(ArrayList<Player> players,Player player,String room) { //FIX CAPITALISED 
+  public void doSuggestion(Player player,String room) { 
 	  //Create suggestion
 	  System.out.println(); // visual spacing for output
 	  String weapon = cleanString(ask("Weapons: "+weapons+"\n What weapon do you want to suggest?",
@@ -252,7 +258,7 @@ public class Cluedo
   /**
    * printers what happening for players 
    */
-  public void pState(ArrayList<Player> players,int numPlayers) {
+  public void pState(int numPlayers) {
 	  for(int i =0;i<numPlayers;i++) {
 		  Player p = players.get(i+1);
 		  System.out.println("Player "+(i+1)+" named: "+p.getName()+" playing: "+p.getCharacter());
@@ -265,7 +271,7 @@ public class Cluedo
    * @param numPlayers
    * @return computer Players 
    */
-  public ArrayList<Player> charactersAndNames(ArrayList<Player> players,int numPlayers) {
+  public ArrayList<Player> charactersAndNames(int numPlayers) {
 	  ArrayList<String> indexChoices = new ArrayList<String>(Arrays.asList("0","1","2","3","4","5"));
 	  ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Miss Scarlett","Colonel Mustard",
 			  								"Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum"));
