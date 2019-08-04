@@ -214,36 +214,7 @@ public class Cluedo
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  //Move character and weapon to room
 	  board.movePlayerWeaponToRoom(player,room,weapon);
-	  
 	  refute(sug,player);
-	  /*
-	  //Allow for players to refute
-	  for(Player p : players) {
-		  if(!p.equals(player)) {
-			  System.out.println(); // visual spacing for output
-			  String refuteYN = ask(""+p.getName()+" would you like to refute y/n ? ",
-					  "Please enter y or n",new ArrayList<String>(Arrays.asList("y","n")));
-			  if(refuteYN.equals("y")) {
-				  boolean correctRefute = false;
-				  String refuteString = "";
-				  while(!correctRefute) {
-					  System.out.println("These are your cards: "+p.getHand().toList());
-					  refuteString = ask("What card would you like to refute with? ",
-								"Error please enter a correct card",p.getHand().toList());
-					  if(sug.refutedBy(refuteString)) {
-						  correctRefute = true;
-					  }
-					  if(!correctRefute) {
-						  System.out.println("");
-					  }
-				  }
-				  System.out.println("Suggestion refuted with : "+refuteString);
-				  return; //BREAKS LOOP 
-			  }
-			  //next player
-		  }
-	  }
-	  */
   }
   
   /**
@@ -259,32 +230,40 @@ public class Cluedo
 		  }
 		  count++;
 	  }
+	  turn++; //get player  ahead
+	//wrap around for turn
+	  if(turn == players.size()) {
+		  turn -= players.size();
+	  }
 	  //loop through the remaining players 
-	  
-	  for(Player p : players) {
-		  if(!p.equals(player)) {
-			  System.out.println(); // visual spacing for output
-			  String refuteYN = ask(""+p.getName()+" would you like to refute y/n ? ",
-					  "Please enter y or n",new ArrayList<String>(Arrays.asList("y","n")));
-			  if(refuteYN.equals("y")) {
-				  boolean correctRefute = false;
-				  String refuteString = "";
-				  while(!correctRefute) {
-					  System.out.println("These are your cards: "+p.getHand().toList());
-					  refuteString = ask("What card would you like to refute with? ",
-								"Error please enter a correct card",p.getHand().toList());
-					  if(sug.refutedBy(refuteString)) {
-						  correctRefute = true;
-					  }
-					  if(!correctRefute) {
-						  System.out.println("");
-					  }
-				  }
-				  System.out.println("Suggestion refuted with : "+refuteString);
-				  return; //BREAKS LOOP 
-			  }
-			  //next player
+	  for(int i=turn+1;i<players.size();i++) {
+		  //wraparound for getting player
+		  if(i == players.size()) {
+			  i -= players.size();
 		  }
+		  Player player = players.get(i);
+		  //Add possible refutes to list and then control flow off size of list (0 or >0)
+		  ArrayList<Card> possRefutes = new ArrayList<Card>();
+		  for(Card playerCard : player.getHand().getCards()) {
+			  for(Card suggestionCard : s.getCards()) {
+				  if(playerCard.equals(suggestionCard)) {
+					  possRefutes.add(playerCard);
+				  }
+			  }
+		  }
+		  if(possRefutes.size() != 0) {
+			  ArrayList<String> strPossRefutes = new ArrayList<String>();
+			  for(Card c : possRefutes) {
+				  strPossRefutes.add(c.getName());
+			  }
+			  System.out.println("Cards "+player.getName()+" can refute with: "+strPossRefutes);
+			  String cardToRefute = cleanString(ask("What card woud you like to refute with? ",
+						"Error please enter a card from: ",strPossRefutes));
+			  System.out.println(player.getName()+" has refuted with: "+cardToRefute);
+			  askPlayer("Press any key to continue");
+			  break;
+		  }
+		  
 	  }
   }
 

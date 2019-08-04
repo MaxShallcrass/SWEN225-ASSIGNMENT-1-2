@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
 
@@ -33,6 +35,11 @@ public class Suggestion
   // INTERFACE
   //------------------------
   
+  /**
+   * 
+   * @param s
+   * @return boolean
+   */
   public Boolean refutedBy(String s) {
 	  if(room.getName().equals(s)) {
 		  return true; 
@@ -45,5 +52,13 @@ public class Suggestion
 	  }
 	  return false;
 	  
+  }
+  
+  public ArrayList<Card> getCards(){
+	  ArrayList<Card> cards = new ArrayList<Card>();
+	  cards.add(room);
+	  cards.add(weapon);
+	  cards.add(character);
+	  return cards;
   }
 }
