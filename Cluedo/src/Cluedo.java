@@ -214,7 +214,53 @@ public class Cluedo
 	  Suggestion sug = new Suggestion(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  //Move character and weapon to room
 	  board.movePlayerWeaponToRoom(player,room,weapon);
+	  
+	  refute(sug,player);
+	  /*
 	  //Allow for players to refute
+	  for(Player p : players) {
+		  if(!p.equals(player)) {
+			  System.out.println(); // visual spacing for output
+			  String refuteYN = ask(""+p.getName()+" would you like to refute y/n ? ",
+					  "Please enter y or n",new ArrayList<String>(Arrays.asList("y","n")));
+			  if(refuteYN.equals("y")) {
+				  boolean correctRefute = false;
+				  String refuteString = "";
+				  while(!correctRefute) {
+					  System.out.println("These are your cards: "+p.getHand().toList());
+					  refuteString = ask("What card would you like to refute with? ",
+								"Error please enter a correct card",p.getHand().toList());
+					  if(sug.refutedBy(refuteString)) {
+						  correctRefute = true;
+					  }
+					  if(!correctRefute) {
+						  System.out.println("");
+					  }
+				  }
+				  System.out.println("Suggestion refuted with : "+refuteString);
+				  return; //BREAKS LOOP 
+			  }
+			  //next player
+		  }
+	  }
+	  */
+  }
+  
+  /**
+   * 
+   */
+  public void refute(Suggestion s,Player playerThatSuggested) {
+	  //find player after this player
+	  int turn = -1;
+	  int count =0;
+	  for(Player p : players) {
+		  if(p.equals(playerThatSuggested)) {
+			  turn = count - 1 ;//-1 to avoid the count ++
+		  }
+		  count++;
+	  }
+	  //loop through the remaining players 
+	  
 	  for(Player p : players) {
 		  if(!p.equals(player)) {
 			  System.out.println(); // visual spacing for output
