@@ -237,9 +237,14 @@ public class Cluedo
 	  refute(sug,player);
   }
   
-  /**
-   * 
-   */
+/**
+ * Makes players that can refute a suggestion refute
+ * A refute is where they show a card that was suggested
+ * to be the murder circumstances to prove it wrong
+ * 
+ * @param s - Suggestion, cards suggested to be the murder circumstance
+ * @param playerThatSuggested
+ */
   public void refute(Suggestion s,Player playerThatSuggested) {
 	  //find player after this player
 	  int turn = 0;
