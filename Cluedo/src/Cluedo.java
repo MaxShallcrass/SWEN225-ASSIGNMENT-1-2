@@ -16,6 +16,8 @@ public class Cluedo {
 
 	private Envelope envelope;
 	private Board board;
+	private boolean testing;
+	private Scanner testSc;
 	private ArrayList<Player> players;
 	// Character, weapon and room names
 	private ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
@@ -29,11 +31,17 @@ public class Cluedo {
 
 	/**
 	 * Constructor for Cluedo. Runs and sets up the main game mechanics.
+	 * 
+	 * @param testing shouldnt ask for input ever
 	 */
-	public Cluedo() {
+	public Cluedo(Boolean t,String testingString) {
+		testing = t;
+		if(testing) {
+			testSc = new Scanner(testingString);
+		}
 		// Get num players and create players
 		int numPlayers = Integer.parseInt(ask("How many players are there? ", "Error - please enter 3 to 6",
-				new ArrayList<String>(Arrays.asList("3", "4", "5","6"))));
+				new ArrayList<String>(Arrays.asList("3", "4", "5", "6"))));
 		players = new ArrayList<Player>();
 		for (int i = 0; i < numPlayers; i++) {
 			players.add(new Player(i + 1));
@@ -46,7 +54,9 @@ public class Cluedo {
 		// Create new board
 		board = new Board(players, computerPlayers);
 		// Play Game
-		playCluedo();
+		if(!testing) {
+			playCluedo();
+		}
 	}
 
 	/**
@@ -242,7 +252,7 @@ public class Cluedo {
 			}
 			count++;
 		}
-		turn++; 
+		turn++;
 		// wrap around for turn
 		if (turn == players.size()) {
 			turn = 0;
@@ -431,6 +441,14 @@ public class Cluedo {
 			System.out.println();
 		board.displayBoard();
 	}
+	
+	/**
+	 * getter for players - for testing
+	 * @return arraylist of players
+	 */
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
 
 	/**
 	 * Asks the player for input
@@ -438,13 +456,18 @@ public class Cluedo {
 	 * @param args
 	 */
 	public String askPlayer(String s) {
-		System.out.print(s);
-		Scanner sc = new Scanner(System.in);
-		String ans = sc.nextLine();
+		String ans;
+		if(!testing) {
+			System.out.print(s);
+			Scanner sc = new Scanner(System.in);
+			ans = sc.nextLine();
+		}else {
+			ans = testSc.next();
+		}
 		return ans;
 	}
 
 	public static void main(String args[]) {
-		new Cluedo();
+		new Cluedo(false,"");
 	}
 }
