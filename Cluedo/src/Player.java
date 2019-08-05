@@ -31,6 +31,7 @@ public class Player {
 		hand = new Hand();
 		isGameOver = false;
 		suggestedLastTurn = false;
+		suggestedThisturn=false;
 	}
 
 	/**
@@ -74,7 +75,7 @@ public class Player {
 	 * get name
 	 */
 	public String getName() {
-		return name;
+		return character+ " - " +name;
 	}
 
 	/**
@@ -127,21 +128,29 @@ public class Player {
 	}
 
 	/**
+	 * Returns last room player suggested in Used for checking for doorways
+	 */
+	public String getLastSuggested() {
+		if (suggestedLastTurn)
+			return lastRoomSuggested;
+		return "  ";
+	}
+
+	/**
 	 * Records if suggestion was made this turn
 	 */
 	public void resetSuggestion() {
 		if (suggestedThisturn)
 			suggestedLastTurn = true;
 		else
-			suggestedLastTurn = true;
-
-		suggestedThisturn = false;
+			suggestedLastTurn = false;
 	}
 
 	/**
 	 * Resets a player for a new turn Creates a new list of moved locations
 	 */
 	public void newTurn() {
+		suggestedThisturn=false;
 		visitedLocsThisTurn = new ArrayList<Location>();
 	}
 

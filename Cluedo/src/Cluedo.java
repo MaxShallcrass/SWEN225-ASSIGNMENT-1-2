@@ -40,6 +40,7 @@ public class Cluedo {
 			testSc = new Scanner(testingString);
 		}
 		System.out.println("------------------------------------------!!!!!WELCOME TO CLUEDO!!!!!------------------------------------------\n");
+		helpMessage();// displays game information
 		// Get num players and create players
 		int numPlayers = Integer.parseInt(ask("How many players are there? ", "Error - please enter 3 to 6",
 				new ArrayList<String>(Arrays.asList("3", "4", "5", "6"))));
@@ -179,7 +180,7 @@ public class Cluedo {
 			}
 		}
 		// Clean up - games over.
-		System.out.println("GAME OVER\n" + winner.getName() + winner.getNumber() + " wins the game!");
+		System.out.println("GAME OVER\n" + winner.getName() +  " wins the game!");
 		System.exit(0);
 	}
 
@@ -214,7 +215,7 @@ public class Cluedo {
 		System.out.println("\n*******************************************************");
 		System.out.println("\n****************INCORRECT ACCUSATION*******************");
 		System.out.println("\n*******************************************************");
-		askPlayer("Sorry but your game is over and you are only allowed to refute\n Press enter to continue:");
+		askPlayer("Sorry but your game is over and you are only allowed to refute\nPress enter to continue:");
 
 		return false;
 	}
@@ -333,20 +334,15 @@ public class Cluedo {
 	 */
 	public ArrayList<Player> charactersAndNames(int numPlayers) {
 		ArrayList<String> indexChoices = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5"));
-		ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
-				"Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
+		ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum","Miss Scarlett", "Colonel Mustard"
+				   ));
 		// repeats for each players
 		for (int reps = 0; reps < numPlayers; reps++) {
 			Player player = players.get(reps);
 			player.setName(askPlayer("Player " + (reps + 1) + " please enter your name: ") + " (" + (reps + 1) + ")");
-			String strChoice = ask(
-					"The available characters are:" + characterArray + "\n" + "" + player.getName()
-							+ " please select a character (0 first name, " + "1 for second ... etc: ",
-					"Input error, please enter 0,1...etc to select character", indexChoices);
-			indexChoices.remove(indexChoices.size() - 1); // remove final element
-			int choice = Integer.parseInt(strChoice);
-			player.setCharacter(characterArray.get(choice));
-			characterArray.remove(choice);
+			player.setCharacter(characterArray.get(reps));
+			characterArray.remove(reps);
+			System.out.println("You are " + player.getName());
 		}
 		ArrayList<Player> computerPlayers = new ArrayList<Player>();
 		for (int i = 0; i < characterArray.size(); i++) {
@@ -431,7 +427,31 @@ public class Cluedo {
 	 * Method to display game information
 	 */
 	public void helpMessage() {
-		System.out.println();
+		System.out.println("------------------------Game Information-------------------------------\n" + 
+				"Doors: Only way to enter and except a room is through a doorway.\n" + 
+				"Doorways are marked with two characters with the first being D\n" + 
+				"and the second letter is direction of where the entrance faces\n" + 
+				"e.g DW is a door to a room that can only be entered through the\n" + 
+				"west tile.\n" + 
+				"Be careful with your move decisions!\n" + 
+				"Players cannot move into a tile that have already previously visited\n" + 
+				"this turn\n" + 
+				"-------Board Keys--------\n" + 
+				"Weapons:\n" + 
+				"Ca = Candlestick\n" + 
+				"Dg = Dagger\n" + 
+				"Lp = Lead Pipe\n" + 
+				"Rv = Revolver\n" + 
+				"Rp= Rope\n" + 
+				"Sp= Spanner\n" + 
+				"Tiles:\n" + 
+				"! = empty tile(non-accessible)\n" + 
+				"# = general floor tile/corridor tile\n" + 
+				"D = door tile\n" + 
+				"alpabet letter = room tile\n" + 
+				"1-6 =players\n" +
+				"--------------------------------------------------------------------------------\n"
+				+"");
 	}
 
 	/**

@@ -168,7 +168,9 @@ public class Board {
 	 * contains a weapon or player
 	 */
 	public void displayBoard() {
-		// System.out.println("\n\n\n\n");
+		System.out.println("");
+		System.out.println("************************************************************************");
+		System.out.println("");
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
 				System.out.print(board[x][y].toString());
@@ -216,8 +218,11 @@ public class Board {
 		getCellAt(locAt).removePlayer();
 		getCellAt(locTo).setPlayer(p);
 		p.setLocation(locTo);
-		if (getCellAt(locTo) instanceof DoorCell) // if made it into a room
-			return 0;
+		if (getCellAt(locTo) instanceof DoorCell) // if made it into a room stop player
+			if (!p.getLastSuggested().equals(getCellAt(locTo).getRoom())) {
+				displayBoard();
+				return 0;
+			}
 		displayBoard();
 		return --movesLeft;
 	}
@@ -257,8 +262,8 @@ public class Board {
 			}
 		Cell moveTo = getCellAt(to);
 		Cell from = getCellAt(at);
-		// checks that there is not already a player or weapon on that tile
-		if (moveTo.hasPlayer() || moveTo.hasWeapon()) {
+		// checks that there is not already a player
+		if (moveTo.hasPlayer()) {
 			displayBoard();
 			System.out.println("Invalid move - Player already on that tile: Retry again");
 			return false;
