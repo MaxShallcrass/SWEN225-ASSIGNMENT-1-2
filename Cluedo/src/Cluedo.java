@@ -309,10 +309,9 @@ public class Cluedo {
 	 */
 	public int diceRoll() {
 		Random rand = new Random();
-		int dice1 = rand.nextInt((7 - 1) + 1) + 1;
-		int dice2 = rand.nextInt((7 - 1) + 1) + 1;
-		// return dice1 + dice2;
-		return 12; // REMEMBER TO REMOVE-----------------------------------
+		int dice1 = rand.nextInt(5) + 1;
+		int dice2 = rand.nextInt(5) + 1;
+		return dice1 + dice2;
 	}
 
 	/**
@@ -356,7 +355,7 @@ public class Cluedo {
 	}
 
 	/**
-	 * method to ask for input from user, has a list of target values, a question
+	 * Method to ask for input from user, has a list of target values, a question
 	 * and an error msg
 	 * 
 	 * @param question
