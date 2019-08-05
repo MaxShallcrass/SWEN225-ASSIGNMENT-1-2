@@ -188,7 +188,7 @@ public class Cluedo
 				"Error please enter a weapon",weapons));
 	  String character = cleanString(ask("Characters: "+"\n What character do you want to accuse?",
 				"Error please enter a character",characters));
-	  String room = cleanString(ask("What room do you want to accuse CAPITALISED??"+rooms,
+	  String room = cleanString(ask("What room do you want to accuse?"+rooms,
 				"Error please enter a room",rooms));
 	  Accusation acus = new Accusation(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 	  if(acus.testAccusation(envelope)) {
@@ -200,7 +200,6 @@ public class Cluedo
   
   /**
    * method to execute a suggestion made by a player, this involves creating suggestion and refuting
-   * @param players
    * @param player
    * @param room
    */
@@ -231,7 +230,7 @@ public class Cluedo
 		  count++;
 	  }
 	  turn++; //get player  ahead
-	//wrap around for turn
+	  //wrap around for turn
 	  if(turn == players.size()) {
 		  turn -= players.size();
 	  }
