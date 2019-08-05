@@ -1,28 +1,34 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
-
-
-
-// line 7 "model.ump"
-// line 90 "model.ump"
-public class WeaponCard extends Card
-{
-
+/**
+ * 
+ * Weapon card
+ *
+ */
+public class WeaponCard extends Card {
+	/**
+	 * Constructor for a Weapon Card
+	 * 
+	 * @param name
+	 */
 	public WeaponCard(String name) {
 		super(name);
 	}
-	
+
+	/**
+	 * Checks if another card is the same as this card
+	 */
 	public boolean equals(Object other) {
-		if(other!=null && other.getClass().equals(this.getClass())) {
+		if (other != null && other.getClass().equals(this.getClass())) {
 			WeaponCard o = (WeaponCard) other;
-			if(o.getName().equals(getName()))
+			if (o.getName().equals(getName()))
 				return true;
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Returns name of card
+	 */
 	public String getName() {
 		return super.getName();
 	}
-
 }

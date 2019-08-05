@@ -1,42 +1,55 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
+/**
+ * 
+ * Before the game starts, one character, one weapon, and one room card are
+ * blindly selected at random. This selection represents the murder
+ * circumstances, i.e., the “solution” that players need to figure out during
+ * game play. The respective cards make an envelope to be hidden from view
+ *
+ */
+public class Envelope {
+	private RoomCard roomCard;
+	private WeaponCard weaponCard;
+	private CharacterCard characterCard;
 
+	/**
+	 * Constructor for envelope
+	 * 
+	 * @param room
+	 * @param weapon
+	 * @param character
+	 */
+	public Envelope(RoomCard room, WeaponCard weapon, CharacterCard character) {
+		this.roomCard = room;
+		this.weaponCard = weapon;
+		this.characterCard = character;
+	}
 
+	/**
+	 * @return room card
+	 */
+	public RoomCard getRoom() {
+		return roomCard;
+	}
 
-// line 73 "model.ump"
-// line 164 "model.ump"
-public class Envelope
-{
+	/**
+	 * @return weapon card
+	 */
+	public WeaponCard getWeapon() {
+		return weaponCard;
+	}
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
+	/**
+	 * @return character card
+	 */
+	public CharacterCard getCharacter() {
+		return characterCard;
+	}
 
-  //Envelope Associations
-  private RoomCard roomCard;
-  private WeaponCard weaponCard;
-  private CharacterCard characterCard;
-
-  
-
-  public Envelope(RoomCard room, WeaponCard weapon, CharacterCard character){
-	  this.roomCard=room;
-	  this.weaponCard=weapon;
-	  this.characterCard=character;
-  }
-  public RoomCard getRoom() {
-	  return roomCard;
-  }
-  public WeaponCard getWeapon() {
-	  return weaponCard;
-  }
-  public CharacterCard getCharacter() {
-	  return characterCard;
-  }
-  public String toString() {
-	  return "Room: " + roomCard.getName() +"\nWeapon: "+weaponCard.getName()+"\nCharacter: "+characterCard.getName();
-  }
-  
-  
-  
+	/**
+	 * Returns the contents of the envelope as a string
+	 */
+	public String toString() {
+		return "Room: " + roomCard.getName() + "\nWeapon: " + weaponCard.getName() + "\nCharacter: "
+				+ characterCard.getName();
+	}
 }

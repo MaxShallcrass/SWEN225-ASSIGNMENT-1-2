@@ -33,7 +33,7 @@ public class Cluedo {
 	public Cluedo() {
 		// Get num players and create players
 		int numPlayers = Integer.parseInt(ask("How many players are there? ", "Error - please enter 3 to 6",
-				new ArrayList<String>(Arrays.asList("2", "3", "4"))));
+				new ArrayList<String>(Arrays.asList("3", "4", "5","6"))));
 		players = new ArrayList<Player>();
 		for (int i = 0; i < numPlayers; i++) {
 			players.add(new Player(i + 1));
@@ -242,8 +242,7 @@ public class Cluedo {
 			}
 			count++;
 		}
-		turn++; // get player ahead
-		// wrap around for turn
+		turn++; 
 		// wrap around for turn
 		if (turn == players.size()) {
 			turn = 0;
@@ -305,7 +304,7 @@ public class Cluedo {
 	}
 
 	/**
-	 * printers what happening for players
+	 * print what happening for players
 	 */
 	public void pState(int numPlayers) {
 		for (int i = 0; i < numPlayers; i++) {
@@ -315,7 +314,7 @@ public class Cluedo {
 	}
 
 	/**
-	 * method to set name of players and the character they're playing
+	 * Method to set name of players and the character they're playing
 	 * 
 	 * @param players
 	 * @param numPlayers
@@ -394,11 +393,13 @@ public class Cluedo {
 			return s1 + " " + s2;
 		}
 		return str1.substring(0, 1).toUpperCase() + str1.substring(1).toLowerCase();
-		// return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
 	}
 
-	/*
-	 * checks if the game has finished
+	/**
+	 * Checks if game is over - if all players apart from one have made accusations
+	 * and sets the winner to the last player
+	 * 
+	 * @return boolean
 	 */
 	private boolean canPlay() {
 		int playersStillIn = 0;
@@ -406,54 +407,29 @@ public class Cluedo {
 			if (!p.hasLost())
 				playersStillIn++;
 
-		// fix this up --- if only one player left does he win?
 		if (playersStillIn > 1)
 			return true;
-		
+
 		for (Player p : players)
 			if (!p.hasLost())
-				winner=p;
-		System.out.println("Game is over - no one has won");
-		System.exit(0);
+				winner = p;
 		return false;
 	}
 
-	// ------------------------
-	// INTERFACE
-	// ------------------------
-	/*
-	 * potential work in progress
+	/**
+	 * Method to display game information
 	 */
 	public void helpMessage() {
-
 		System.out.println();
 	}
 
 	/**
-	 * method to clear screen so that other players cannot see turn informaiton
+	 * method to clear screen so that other players cannot see turn information
 	 */
 	public void clearScreen() {
 		for (int i = 0; i < 50; ++i)
 			System.out.println();
 		board.displayBoard();
-	}
-
-	/**
-	 * Getter for envelope
-	 * 
-	 * @return Envelope
-	 */
-	public Envelope getEnvelope() {
-		return envelope;
-	}
-
-	/**
-	 * getter for Board
-	 * 
-	 * @return Board
-	 */
-	public Board getBoard() {
-		return board;
 	}
 
 	/**
@@ -471,5 +447,4 @@ public class Cluedo {
 	public static void main(String args[]) {
 		new Cluedo();
 	}
-
 }
