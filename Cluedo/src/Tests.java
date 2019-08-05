@@ -57,10 +57,12 @@ class Tests {
 	}
 	
 	@Test
-	void test_incorrect_input3() {		
+	void test() {		
 		Cluedo cluedo = new Cluedo(true,"% 3 f 0 m 0 x 0");
 		assert(cluedo.getPlayers().size() == 3);
 	}
+	
+	
 	
 	
 	

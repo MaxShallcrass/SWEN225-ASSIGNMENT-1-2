@@ -439,7 +439,7 @@ public class Cluedo {
 	public void clearScreen() {
 		for (int i = 0; i < 50; ++i)
 			System.out.println();
-		board.displayBoard();
+		board.displayBoard(); 
 	}
 	
 	/**
