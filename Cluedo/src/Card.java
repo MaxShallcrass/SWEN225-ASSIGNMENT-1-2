@@ -13,7 +13,6 @@ public abstract class Card
 	 * @param name
 	 */
 	Card(String name){
-		System.out.println(name);
 		this.name=name;
 	}
 	

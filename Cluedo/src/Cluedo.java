@@ -32,7 +32,7 @@ public class Cluedo {
 	 */
 	public Cluedo() {
 		// Get num players and create players
-		int numPlayers = Integer.parseInt(ask("How many players are there? ", "Error - please enter 2,3 or 4",
+		int numPlayers = Integer.parseInt(ask("How many players are there? ", "Error - please enter 3 to 6",
 				new ArrayList<String>(Arrays.asList("2", "3", "4"))));
 		players = new ArrayList<Player>();
 		for (int i = 0; i < numPlayers; i++) {
@@ -43,7 +43,6 @@ public class Cluedo {
 		ArrayList<Player> computerPlayers = charactersAndNames(numPlayers);
 		// Creating envelope and dealing hands
 		deal();
-		System.out.println(envelope.toString());
 		// Create new board
 		board = new Board(players, computerPlayers);
 		// Play Game
@@ -204,7 +203,7 @@ public class Cluedo {
 	}
 
 	/**
-	 * method to execute a suggestion made by a player, this involves creating
+	 * Method to execute a suggestion made by a player, this involves creating
 	 * suggestion and refuting
 	 * 
 	 * @param player
@@ -221,9 +220,7 @@ public class Cluedo {
 		// Move character and weapon to room
 		board.movePlayerWeaponToRoom(player, room, weapon);
 		clearScreen();
-		// max added ------- think need to redisplay to show player and weapon moved
-		System.out.println(
-				"Weapon - " + weapon + " and character - " + character + player.getNumber() + " moved to room " + room);
+		System.out.println("Weapon - " + weapon + " and character - " + character + " moved to room " + room);
 		refute(sug, player);
 	}
 
