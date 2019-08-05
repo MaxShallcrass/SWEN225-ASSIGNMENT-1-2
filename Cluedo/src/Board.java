@@ -189,7 +189,8 @@ public class Board {
 	 * @param locAt     - position player is at
 	 * @param direction - direction moving to
 	 * @param movesLeft - amount of moves the player has left return 0 if player
-	 *                    enters a doorway/room - may need to be changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 *                  enters a doorway/room - may need to be
+	 *                  changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 * @return
 	 */
 	public int movePlayer(Location locAt, String direction, int movesLeft) {

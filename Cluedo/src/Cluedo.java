@@ -334,8 +334,8 @@ public class Cluedo {
 	 */
 	public ArrayList<Player> charactersAndNames(int numPlayers) {
 		ArrayList<String> indexChoices = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5"));
-		ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Mrs. White","Mr. Green","Mrs. Peacock","Professor Plum","Miss Scarlett", "Colonel Mustard"
-				   ));
+		ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Mrs. White", "Mr. Green",
+				"Mrs. Peacock", "Professor Plum", "Miss Scarlett", "Colonel Mustard"));
 		// repeats for each players
 		for (int reps = 0; reps < numPlayers; reps++) {
 			Player player = players.get(reps);

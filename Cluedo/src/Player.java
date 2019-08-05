@@ -72,7 +72,7 @@ public class Player {
 	}
 
 	/**
-	 * get name
+	 * gets name - includes character name and player number
 	 */
 	public String getName() {
 		return character+ " - " +name;
