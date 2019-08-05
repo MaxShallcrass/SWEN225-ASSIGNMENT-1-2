@@ -39,6 +39,7 @@ public class Cluedo {
 		if(testing) {
 			testSc = new Scanner(testingString);
 		}
+		System.out.println("------------------------------------------!!!!!WELCOME TO CLUEDO!!!!!------------------------------------------\n");
 		// Get num players and create players
 		int numPlayers = Integer.parseInt(ask("How many players are there? ", "Error - please enter 3 to 6",
 				new ArrayList<String>(Arrays.asList("3", "4", "5", "6"))));
@@ -140,15 +141,10 @@ public class Cluedo {
 			board.displayBoard();
 			System.out.println("" + player.getName() + " it's your turn, you have a dice roll of " + steps);
 			System.out.println("Your cards are: " + player.getHand().toList().toString());
-			int validMoveCheck = steps;
 			while (steps != 0) {
 				String md = ask("What direction do you want to move (w-a-s-d)? ", "Error - please enter w , a , s or d",
 						new ArrayList<String>(Arrays.asList("w", "a", "s", "d")));
 				steps = board.movePlayer(player.getLocation(), md, steps);
-				if (!(validMoveCheck == steps)) {
-					clearScreen();
-					board.displayBoard();
-				}
 				System.out.println("Remaining moves : " + steps);
 			}
 			// If in a room make a suggestion (unless same room as last turn) or can make an
@@ -195,20 +191,31 @@ public class Cluedo {
 	 */
 	public boolean doAccusation() {
 		System.out.println(); // visual spacing for output
-		String weapon = cleanString(ask("Weapons: " + weapons + "\n What weapon do you want to accuse?",
+		String weapon = cleanString(ask("Weapons: " + weapons + "\nWhat weapon do you want to accuse:",
 				"Error please enter a weapon", weapons));
-		String character = cleanString(ask("Characters: " + characters + "\n What character do you want to accuse?",
+		String character = cleanString(ask("Characters: " + characters + "\nWhat character do you want to accuse:",
 				"Error please enter a character", characters));
-		String room = cleanString(ask("What room do you want to accuse?" + rooms, "Error please enter a room", rooms));
+		String room = cleanString(ask("Rooms: " + rooms + "\nWhat room do you want to accuse:", "Error please enter a room", rooms));
 		Accusation acus = new Accusation(new RoomCard(room), new WeaponCard(weapon), new CharacterCard(character));
 
 		clearScreen();
 		askPlayer("Acusation made - show all: \n" + "Weapon: " + weapon + "\nCharacter: " + character + "\nRoom: "
-				+ room + "\nPress any key to continue your turn and reveal the envelope: ");
-		System.out.println("Envelope contains:\n" + envelope.toString());
+				+ room + "\nPress enter to continue your turn and reveal the envelope:");
+		clearScreen();
+		
+		System.out.println("\nEnvelope contains:\n" + envelope.toString());
+		
 		if (acus.testAccusation(envelope)) {
+			System.out.println("\n*******************************************************");
+			System.out.println("\n******************CORRECT ACCUSATION*******************");
+			System.out.println("\n*******************************************************");
 			return true;
 		}
+		System.out.println("\n*******************************************************");
+		System.out.println("\n****************INCORRECT ACCUSATION*******************");
+		System.out.println("\n*******************************************************");
+		askPlayer("Sorry but your game is over and you are only allowed to refute\n Press enter to continue:");
+
 		return false;
 	}
 
@@ -222,15 +229,15 @@ public class Cluedo {
 	public void doSuggestion(Player player, String room) {
 		// Create suggestion
 		System.out.println(); // visual spacing for output
-		String weapon = cleanString(ask("Weapons: " + weapons + "\n What weapon do you want to suggest?",
+		String weapon = cleanString(ask("Weapons: " + weapons + "\nWhat weapon do you want to suggest?",
 				"Error please enter a weapon", weapons));
-		String character = cleanString(ask("Characers: " + characters + "\n What character do you want to suggest?",
+		String character = cleanString(ask("Characers: " + characters + "\nWhat character do you want to suggest?",
 				"Error please enter a character", characters));
 		Suggestion sug = new Suggestion(new RoomCard(room), new WeaponCard(weapon), new CharacterCard(character));
 		// Move character and weapon to room
 		board.movePlayerWeaponToRoom(player, room, weapon);
 		clearScreen();
-		System.out.println("Weapon - " + weapon + " and character - " + character + " moved to room " + room);
+		System.out.println("Weapon " + weapon + ", and character " + character + ", moved to room " + room);
 		refute(sug, player);
 	}
 
@@ -245,17 +252,10 @@ public class Cluedo {
 	public void refute(Suggestion s, Player playerThatSuggested) {
 		// find player after this player
 		int turn = 0;
-		int count = 0;
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).equals(playerThatSuggested)) {
-				turn = count + 1;// +1 for the next player
+				turn = i + 1;// +1 for the next player
 			}
-			count++;
-		}
-		turn++;
-		// wrap around for turn
-		if (turn == players.size()) {
-			turn = 0;
 		}
 		// loop through the remaining players
 		while (true) {
@@ -283,18 +283,19 @@ public class Cluedo {
 				for (Card c : possRefutes) {
 					strPossRefutes.add(c.getName());
 				}
-				askPlayer(player.getName() + player.getNumber() + " turn to refute. Press any key to continue");
+				askPlayer(player.getName()  + " turn to refute. Press enter to continue:");
 				System.out.println("Cards suggested: \n" + s.toString());
 				System.out.println("Cards " + player.getName() + " can refute with: " + strPossRefutes);
 				String cardToRefute = cleanString(ask("What card woud you like to refute with? ",
 						"Error please enter a card from: ", strPossRefutes));
 				clearScreen();
-				System.out.println("For " + playerThatSuggested.getName() + playerThatSuggested.getNumber()
-						+ " to see: " + player.getName() + player.getNumber() + " has refuted with: " + cardToRefute);
-				askPlayer("Press any key to continue");
+				System.out.println("For " + playerThatSuggested.getName() 
+						+ " to see: " + player.getName()  + " has refuted with: " + cardToRefute);
+				askPlayer("Press enter to continue:");
 				clearScreen();
 			} else {
 				System.out.println("Player " + player.getName() + player.getNumber() + " unable to refute.");
+				askPlayer("Press enter to continue:");
 			}
 			turn++;
 		}

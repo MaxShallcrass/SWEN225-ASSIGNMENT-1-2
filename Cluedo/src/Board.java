@@ -218,6 +218,7 @@ public class Board {
 		p.setLocation(locTo);
 		if (getCellAt(locTo) instanceof DoorCell) // if made it into a room
 			return 0;
+		displayBoard();
 		return --movesLeft;
 	}
 
@@ -239,6 +240,7 @@ public class Board {
 		int y = to.getY();
 		// Checks error bounds
 		if (x < 0 || x >= 24 || y < 0 || y >= 24) {
+			displayBoard();
 			System.out.println("Invalid move - Out of bounds: Retry again");
 			return false;
 		}
@@ -248,6 +250,7 @@ public class Board {
 		if (!prevsLocs.isEmpty())
 			for (Location loc : prevsLocs) {
 				if (loc.equals(to)) {
+					displayBoard();
 					System.out.println("Invalid move - Already visited tile this turn: Retry again");
 					return false;
 				}
@@ -256,11 +259,13 @@ public class Board {
 		Cell from = getCellAt(at);
 		// checks that there is not already a player or weapon on that tile
 		if (moveTo.hasPlayer() || moveTo.hasWeapon()) {
+			displayBoard();
 			System.out.println("Invalid move - Player already on that tile: Retry again");
 			return false;
 		}
 		// checks it's not an empty tile
 		if (moveTo.toString().compareToIgnoreCase("e") == 0) {
+			displayBoard();
 			System.out.println("Invalid move - Cannot move to an empty tile(e): Retry again");
 			return false;
 		}
@@ -270,23 +275,27 @@ public class Board {
 		// note cannot move from hallway cell to a room cell - has to transition trough
 		// a door cell
 		if (moveTo.getId() != from.getId() && !(moveTo instanceof DoorCell) && !(from instanceof DoorCell)) {
+			displayBoard();
 			System.out.println("Invalid move - Cannot move through a wall: Retry again");
 			return false;
 		}
 		// checks if tile has a weapon on it
 		if (moveTo.hasWeapon()) {
+			displayBoard();
 			System.out.println("Invalid move - Cannot move onto a weapon: Retry again");
 			return false;
 		}
 		// Checking that if moving into a door cell, that its from the right direction
 		if (moveTo instanceof DoorCell && !from.isRoom()) {
 			if (!(((DoorCell) moveTo).getEntryLoc().equals(from.getLocation()))) {
+				displayBoard();
 				System.out.println("Invalid move - Cannot move to a door from this direction: Retry again");
 				return false;
 			}
 		}
 		if (from instanceof DoorCell && !moveTo.isRoom()) {
 			if (!(((DoorCell) from).getEntryLoc().equals(moveTo.getLocation()))) {
+				displayBoard();
 				System.out.println(
 						"Invalid move - Cannot move from a door to that tile from this direction: Retry again");
 				return false;
