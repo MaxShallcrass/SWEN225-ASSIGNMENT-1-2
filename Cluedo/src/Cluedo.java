@@ -217,7 +217,6 @@ public class Cluedo
   
   /**
    * method to execute a suggestion made by a player, this involves creating suggestion and refuting
-   * @param players
    * @param player
    * @param room
    */
@@ -255,7 +254,9 @@ public class Cluedo
 		  }
 		  count++;
 	  }
-	//wrap around for turn
+	  turn++; //get player  ahead
+	  //wrap around for turn
+	  //wrap around for turn
 	  if(turn == players.size()) {
 		  turn =0;
 	  }
