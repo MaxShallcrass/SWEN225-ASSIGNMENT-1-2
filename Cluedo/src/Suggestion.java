@@ -54,6 +54,11 @@ public class Suggestion
 	  
   }
   
+  public String toString() {
+	  return "Room: " + room.getName() +"\nWeapon: "+weapon.getName()+"\nCharacter: "+character.getName();
+  }
+  
+  
   public ArrayList<Card> getCards(){
 	  ArrayList<Card> cards = new ArrayList<Card>();
 	  cards.add(room);
