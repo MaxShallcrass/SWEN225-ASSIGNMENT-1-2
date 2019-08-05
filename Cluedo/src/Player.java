@@ -1,49 +1,35 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
+/**
+ * Stores all player information - real or not
+ */
+public class Player {
+	// private Suggestion suggestion;
+	// private Accusation accusation;
 
-
-
-// line 52 "model.ump"
-// line 141 "model.ump"
-public class Player
-{
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Player Associations
-  private Suggestion suggestion;
-  private Board board;
-  private Accusation accusation;
-  
-  private String character; 
-  private String name;
-  private Location loc;
-  private int displayNumber;
-  private Hand hand;
-  private boolean isGameOver;
-  
-  private List<Location> visitedLocsThisTurn;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
+	// Player information
+	private String character;
+	private String name;
+	private Location loc;
+	private int displayNumber;
+	private Hand hand;
+	private boolean isGameOver;
+	// Cells the player has visited this turn
+	// -For movement as cannot move through same cell twice on the same turn
+	private List<Location> visitedLocsThisTurn;
+	//Suggestion information - Player cannot make suggestion from same room two turns in a room
+	private boolean suggestedLastTurn;
+	private boolean suggestedThisturn;
+	private String lastRoomSuggested;
 
   public Player(int dn) {
 	  displayNumber = dn;
 	  hand = new Hand();
 	  isGameOver = false;
-	//  visitedLocsThisTurn= new ArrayList<Location>();
+	  suggestedLastTurn=false;
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
-  
   /**
    * setter to set character
    * @param String - character name 
@@ -88,6 +74,13 @@ public class Player
   }
   
   /**
+   * Returns the players hand - Contains all the cards
+   */
+  public Hand getHand() {
+	  return hand;
+  }
+  
+  /**
    * setter to set name
    * @param String -  name 
    */
@@ -102,6 +95,42 @@ public class Player
   public Location getLocation(){
 	  return this.loc;
   }
+  
+	/**
+	 * Stores information if a suggestion was made by a player last turn
+	 * 
+	 * @param room
+	 */
+	public void makesSsuggestion(String room) {
+		suggestedThisturn = true;
+		lastRoomSuggested = room;
+	}
+
+	/**
+	 * Returns true if a player can make a suggestion Returns false if player has
+	 * made a suggestion in the same room last turn
+	 * 
+	 * @param roomName
+	 * @return
+	 */
+	public boolean canSuggest(String roomName) {
+		if (!suggestedLastTurn || !roomName.equals(lastRoomSuggested))
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Records if suggestion was made this turn
+	 */
+	public void resetSuggestion() {
+		if (suggestedThisturn)
+			suggestedLastTurn = true;
+		else
+			suggestedLastTurn = true;
+
+		suggestedThisturn = false;
+	}
   
   /*
    * Resets a player for a new turn
@@ -138,27 +167,14 @@ public class Player
 	  return displayNumber + "  ";
   }
   
-  public Suggestion getSuggestion()
-  {
-    return suggestion;
-  }
+//  public Suggestion getSuggestion()
+ // {
+  //  return suggestion;
+ // }
 
-  public boolean hasSuggestion()
-  {
-    boolean has = suggestion != null;
-    return has;
-  }
-  /* Code from template association_GetOne */
-  public Board getBoard()
-  {
-    return board;
-  }
-  /* Code from template association_GetOne */
-  public Hand getHand()
-  {
-    return hand;
-  }
-
-
-
+  //public boolean hasSuggestion()
+  //{
+   // boolean has = suggestion != null;
+    //return has;
+ // }
 }

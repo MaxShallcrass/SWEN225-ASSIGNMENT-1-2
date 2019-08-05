@@ -4,13 +4,21 @@ import java.util.*;
 
 import javax.print.DocFlavor.URL;
 
+/**
+ * Contains everything for displaying and making the game board and is in
+ * control of all movements on the board
+ * 
+ * Movements and changes in the board are all done through location objects
+ */
 public class Board {
+	private Cell[][] board; // data structure for containing all the board information
 
-	private Cell[][] board;
-
-	/*
-	 * Constructs the board for the game. Loads the board from map layout.txt Adds
-	 * players to the board
+	/**
+	 * Constructs the board for the game. Loads the board from GameBoard.txt Adds
+	 * players to the board Adds weapons to the board
+	 * 
+	 * @param realPlayers
+	 * @param nonPlayer
 	 */
 	public Board(List<Player> realPlayers, List<Player> nonPlayer) {
 		// Placing all the cells on the board
@@ -27,7 +35,7 @@ public class Board {
 				if (token.length() > 1) { // A door
 					DoorCell dc = new DoorCell(loc, token);
 					board[x][y] = dc;
-					token=token.substring(2);
+					token = token.substring(2);
 				} else { // floor tile
 					FloorCell fc = new FloorCell(loc, token.charAt(0));
 					board[x][y] = fc;
@@ -38,23 +46,25 @@ public class Board {
 					x = 0;
 					y++;
 				}
-
 			}
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-
 		// adding players and weapons to the board
 		addPlayers(realPlayers, nonPlayer);
 		addWeapons();
 	}
 
-	/*
-	 * adds players to the board
+	/**
+	 * Adds players/characters to the board to their allocated positions Includes
+	 * real and non real players
+	 * 
+	 * @param realPlayers
+	 * @param nonPlayer
 	 */
 	private void addPlayers(List<Player> realPlayers, List<Player> nonPlayer) {
 		// Starter locations for players
-		List<Location> playerLocs = new ArrayList<Location>(); 
+		List<Location> playerLocs = new ArrayList<Location>();
 		playerLocs.add(new Location(9, 0));
 		playerLocs.add(new Location(14, 0));
 		playerLocs.add(new Location(23, 6));
@@ -68,13 +78,16 @@ public class Board {
 			realPlayers.get(i).setLocation(playerLocs.get(i));
 		}
 		for (int i = realPlayers.size(); i < realPlayers.size() + nonPlayer.size(); i++) {
-			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(nonPlayer.get(i-realPlayers.size()));
-			nonPlayer.get(i-realPlayers.size()).setLocation(playerLocs.get(i));
+			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(nonPlayer.get(i - realPlayers.size()));
+			nonPlayer.get(i - realPlayers.size()).setLocation(playerLocs.get(i));
 		}
 	}
 
-	/*
-	 * Adds weapons onto the board
+	/**
+	 * Adds weapons to randomly allocated rooms
+	 * 
+	 * Note - Locations for weapons have been set to back corners of each of the rooms
+	 * to avoid player movement problems
 	 */
 	private void addWeapons() {
 		// locations for weapons - one for each room
@@ -107,12 +120,20 @@ public class Board {
 		getCellAt(loc).setWeapon("Sp");
 	}
 	
-	/*
-	 * If the cell is a room tile adds the room name
+	/**
+	 * Makes a cell a room tile if it is It is based on the token that the cell is
+	 * given on the text file
+	 * 
+	 * Includes doorways
+	 * 
+	 * @param token - Which room if it is
+	 * @param cell
 	 */
 	private void addRoom(String token, Cell cell) {
+		// Allocates room name to tiles
 		if (token.equals("k")) {
 			cell.setRoom("Kitchen");
+			
 		} else if (token.equals("b")) {
 			cell.setRoom("Ball Room");
 
@@ -137,13 +158,17 @@ public class Board {
 		} else if (token.equals("d")) {
 			cell.setRoom("Dining Room");
 		}
+		// else - Not a room, either hallway tile(#) or empty tile(!)
 	}
 
-	/*
-	 * displays the board to text output
+	/**
+	 * Displays board as text output
+	 * 
+	 * All based off cell.toString() in which takes into account if the cell
+	 * contains a weapon or player
 	 */
 	public void displayBoard() {
-		System.out.println("\n\n\n\n");
+		// System.out.println("\n\n\n\n");
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
 				System.out.print(board[x][y].toString());
@@ -151,15 +176,22 @@ public class Board {
 			System.out.println();
 		}
 		System.out.println("");
-		System.out.println("***********************************************************");
+		System.out.println("************************************************************************");
 		System.out.println("");
 	}
 
-	/*
-	 * Moves a player one place on the board up, down, left, right
+	/**
+	 * Moves a player at Location locAt on the board one cell over in the direction
+	 * w,a,s or d if it is a valid move
+	 * 
+	 * @param locAt     - position player is at
+	 * @param direction - direction moving to
+	 * @param movesLeft - amount of moves the player has left return 0 if player
+	 *                    enters a doorway/room - may need to be changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * @return
 	 */
 	public int movePlayer(Location locAt, String direction, int movesLeft) {
-		if(movesLeft==0)
+		if (movesLeft == 0)
 			throw new RuntimeException("Player has no moves left");
 		int x = locAt.getX();
 		int y = locAt.getY();
@@ -172,7 +204,7 @@ public class Board {
 		if (direction.compareToIgnoreCase("d") == 0)
 			x += 1;
 		Location locTo = new Location(x, y);
-		// if not valid return with same number of turns left - redo their turn
+		// if not valid return with same number of turns left - Redo their turn and displays error message
 		if (!isValidMove(locAt, locTo))
 			return movesLeft;
 		// move player, add visited locations
@@ -181,13 +213,16 @@ public class Board {
 		getCellAt(locAt).removePlayer();
 		getCellAt(locTo).setPlayer(p);
 		p.setLocation(locTo);
-		if(getCellAt(locTo) instanceof DoorCell) //if made it into a room
+		if (getCellAt(locTo) instanceof DoorCell) // if made it into a room
 			return 0;
 		return --movesLeft;
 	}
 
-	/*
-	 * Checks if its valid to move a player in the direction
+	/**
+	 * Checks if it valid for a player to move from Location at to Location to
+	 * @param at
+	 * @param to
+	 * @return
 	 */
 	private boolean isValidMove(Location at, Location to) {
 		int x = to.getX();

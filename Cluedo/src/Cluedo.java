@@ -113,15 +113,16 @@ public class Cluedo
 	  }
   }
   
-  /**
-   * main method that loops player turns 
-   * @param players
-   * @param board
-   */
-  public void playCluedo() {
-	  //Control Variables
-	 // boolean gameOver = false;
-	  Player player;
+	/**
+	 * main method that loops player turns
+	 * 
+	 * @param players
+	 * @param board
+	 */
+	public void playCluedo() {
+		// Control Variables
+		// boolean gameOver = false;
+		Player player;
 		int turn = 0; // simple variable to store player turn - stored as index of player list
 		Player winner = null; // variable to store winner
 
@@ -142,58 +143,59 @@ public class Cluedo
 			board.displayBoard();
 			System.out.println("" + player.getName() + " it's your turn, you have a dice roll of " + steps);
 			System.out.println("Your cards are: " + player.getHand().toList().toString());
+			int validMoveCheck = steps;
 			while (steps != 0) {
 				String md = ask("What direction do you want to move (w-a-s-d)? ", "Error - please enter w , a , s or d",
 						new ArrayList<String>(Arrays.asList("w", "a", "s", "d")));
 				steps = board.movePlayer(player.getLocation(), md, steps);
-				clearScreen();
-				board.displayBoard();
+				if (!(validMoveCheck == steps)) {
+					clearScreen();
+					board.displayBoard();
+				}
 				System.out.println("Remaining moves : " + steps);
+			}
+			// IF IN ROOM CAN MAKE SUGGESTION(unless same room as last turn) OR CAN MAKE
+			// ACCUSATION ANYWHERE
+			Cell cell = board.getCellAt(player.getLocation());
+			String decision = "";
+			if (cell.isRoom() && player.canSuggest(cell.getRoom())) {
+				decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
+						"Error please enter: a , s or n ", new ArrayList<String>(Arrays.asList("a", "s", "n")));
+			} else {
+				decision = ask("You can now make accusation (a) or do nothing (n)", "Error please enter: a or n ",
+						new ArrayList<String>(Arrays.asList("a", "n")));
+			}
+			if (decision.equals("a")) {
+				System.out.println("Your cards are: " + player.getHand().toList().toString());
+				gameOver = doAccusation();
+				if (!gameOver) {
+					player.losesGame();
+				} else {
+					winner = player;
 
-		  }
-		  //IF IN ROOM CAN MAKE SUGGESTION OR CAN MAKE ACCUSATION ANYWHERE
-		  Cell cell = board.getCellAt(player.getLocation());
-		  String decision = "";
-		  if(cell.isRoom()) {
-			  decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
-					  				"Error please enter: a , s or n ",
-					  				new ArrayList<String>(Arrays.asList("a","s","n")));
-		  }else {
-			  decision = ask("You can now make accusation (a) or do nothing (n)",
-		  				"Error please enter: a or n ",
-		  				new ArrayList<String>(Arrays.asList("a","n")));
-		  }
-		  if(decision.equals("a")) {
+				}
+			} else if (decision.equals("s")) {
+				player.makesSsuggestion(cell.getRoom());
 				System.out.println("Your cards are: " + player.getHand().toList().toString());
-			  gameOver = doAccusation();
-			  if(!gameOver) {
-				  player.losesGame();
-			  }else {
-				  winner = player;
-				  
-			  }
-		  }else if(decision.equals("s")) {
-				System.out.println("Your cards are: " + player.getHand().toList().toString());
-			  doSuggestion(player,cell.getRoom());
-		  }
-		  //next players turn 
-		  turn++;
-		  if(turn == players.size()) {
-			  turn = 0;
-		  } 
-	  }
-	  //Clean up - games over. 
-	  System.out.println("GAME OVER\n" + winner.getName() + winner.getNumber() + " wins the game!");
-	  System.exit(0);//may need to change the exit of program
-  }
+				doSuggestion(player, cell.getRoom());
+			}
+			player.resetSuggestion();
+			// next players turn
+			turn++;
+			if (turn == players.size()) {
+				turn = 0;
+			}
+		}
+		// Clean up - games over.
+		System.out.println("GAME OVER\n" + winner.getName() + winner.getNumber() + " wins the game!");
+		System.exit(0);// may need to change the exit of program
+	}
   
   /**
    * method to do an accusation, returns true if accusation is correct, false otherwise
    * @return boolen, wether accusation was successful or not
    */
   public boolean doAccusation() {
-	  
-	  
 	  //Create suggestion
 	  System.out.println(); // visual spacing for output
 	  String weapon = cleanString(ask("Weapons: "+weapons+"\n What weapon do you want to accuse?",
@@ -205,8 +207,8 @@ public class Cluedo
 	  Accusation acus = new Accusation(new RoomCard(room),new WeaponCard(weapon),new CharacterCard(character));
 
 		clearScreen();
-		askPlayer("Acusation made - show all: \n" + "Weapon: " + weapon + " Character: " + character + " Room: " + room
-				+ "\n press any key to continue: ");
+		askPlayer("Acusation made - show all: \n" + "Weapon: " + weapon + "\nCharacter: " + character + "\nRoom: " + room
+				+ "\nPress any key to continue your turn and reveal the envelope: ");
 		System.out.println("Envelope contains:\n" + envelope.toString());
 		if (acus.testAccusation(envelope)) {
 			return true;

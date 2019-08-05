@@ -1,22 +1,30 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
-
-// line 23 "model.ump"
-// line 106 "model.ump"
+/**
+ * Contains all board display and movement information
+ * 
+ * Each cell is either a Floor cell or a door cell
+ */
 public abstract class Cell {
-	private boolean hasPlayer;
+	// Where on the board it is represented
 	private Location loc;
+	// For display and movements of weapons and players
+	private boolean hasWeapon;
+	private boolean hasPlayer;
 	private Player player;
 	private String weapon;
-	private boolean hasWeapon;
+	// Room information if it is
 	private boolean isRoom;
 	private String roomName;
 
+	/**
+	 * Creates a new cell at Location loc
+	 * 
+	 * @param loc
+	 */
 	Cell(Location loc) {
 		this.loc = loc;
 		hasPlayer = false;
-		hasWeapon=false;
-		isRoom=false;
+		hasWeapon = false;
+		isRoom = false;
 	}
 	
 	

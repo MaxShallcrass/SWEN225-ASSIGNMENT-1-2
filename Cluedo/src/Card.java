@@ -1,11 +1,10 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
-
-
-
-// line 2 "model.ump"
-// line 84 "model.ump"
-public class Card
+/**
+ * Abstract card
+ * Cards for game play
+ *Can be a room, character or weapon
+ *Identified by the name
+ */
+public abstract class Card
 {
 	private String name;
 	
@@ -15,12 +14,9 @@ public class Card
 	}
 	
 	/**
-	 * method to overide
-	 * @return
+	 * Returns the identifier(String name) of a card
 	 */
 	public String getName() {
 		return name;
 	}
-  
-
 }
