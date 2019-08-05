@@ -50,6 +50,18 @@ class Tests {
 		assert(cluedo.getPlayers().get(0).hasLost() == true);
 	}
 	
+	@Test
+	void test_incorrect_input() {		
+		Cluedo cluedo = new Cluedo(true,"% 3 f 0 m 0 x 0");
+		assert(cluedo.getPlayers().size() == 3);
+	}
+	
+	@Test
+	void test_incorrect_input3() {		
+		Cluedo cluedo = new Cluedo(true,"% 3 f 0 m 0 x 0");
+		assert(cluedo.getPlayers().size() == 3);
+	}
+	
 	
 	
 	
