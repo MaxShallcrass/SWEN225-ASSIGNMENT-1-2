@@ -133,7 +133,7 @@ public class Board {
 		// Allocates room name to tiles
 		if (token.equals("k")) {
 			cell.setRoom("Kitchen");
-			
+
 		} else if (token.equals("b")) {
 			cell.setRoom("Ball Room");
 
@@ -197,14 +197,17 @@ public class Board {
 		int y = locAt.getY();
 		if (direction.compareToIgnoreCase("w") == 0)
 			y -= 1;
-		if (direction.compareToIgnoreCase("a") == 0)
+		else if (direction.compareToIgnoreCase("a") == 0)
 			x -= 1;
-		if (direction.compareToIgnoreCase("s") == 0)
+		else if (direction.compareToIgnoreCase("s") == 0)
 			y += 1;
-		if (direction.compareToIgnoreCase("d") == 0)
+		else if (direction.compareToIgnoreCase("d") == 0)
 			x += 1;
+		else
+			throw new RuntimeException("Invalid input for a move - Game Crashed"); // Should never reach this
 		Location locTo = new Location(x, y);
-		// if not valid return with same number of turns left - Redo their turn and displays error message
+		// if not valid return with same number of turns left - Redo their turn and
+		// displays bad move message
 		if (!isValidMove(locAt, locTo))
 			return movesLeft;
 		// move player, add visited locations
@@ -220,9 +223,16 @@ public class Board {
 
 	/**
 	 * Checks if it valid for a player to move from Location at to Location to
-	 * @param at
-	 * @param to
-	 * @return
+	 * Moves it checks for:
+	 * -Out of bounds
+	 * -Already visited tiles
+	 * -Tiles that have a player or weapon on it
+	 * -Moving to empty tiles
+	 * -Moving through the "invisible" walls
+	 * -Correct door movement - Can only move in and out of from one tile
+	 * @param at Location player is at
+	 * @param to Location player is to move to
+	 * @return true if valid - false if not
 	 */
 	private boolean isValidMove(Location at, Location to) {
 		int x = to.getX();
@@ -233,15 +243,15 @@ public class Board {
 			return false;
 		}
 
-		// checks that player hasnt moved to that cell this turn
+		// checks that player hasn't moved to that cell this turn
 		List<Location> prevsLocs = getPlayerAt(at).getVisitedLocations();
-		if(!prevsLocs.isEmpty())
-		for (Location loc : prevsLocs) {
-			if (loc.equals(to)) {
-				System.out.println("Invalid move - Already visited tile this turn: Retry again");
-				return false;
+		if (!prevsLocs.isEmpty())
+			for (Location loc : prevsLocs) {
+				if (loc.equals(to)) {
+					System.out.println("Invalid move - Already visited tile this turn: Retry again");
+					return false;
+				}
 			}
-		}
 		Cell moveTo = getCellAt(to);
 		Cell from = getCellAt(at);
 		// checks that there is not already a player or weapon on that tile
@@ -259,8 +269,7 @@ public class Board {
 		// is a door
 		// note cannot move from hallway cell to a room cell - has to transition trough
 		// a door cell
-		if (moveTo.getId()!=from.getId() && !(moveTo instanceof DoorCell)
-				&& !(from instanceof DoorCell)) {
+		if (moveTo.getId() != from.getId() && !(moveTo instanceof DoorCell) && !(from instanceof DoorCell)) {
 			System.out.println("Invalid move - Cannot move through a wall: Retry again");
 			return false;
 		}
@@ -269,112 +278,127 @@ public class Board {
 			System.out.println("Invalid move - Cannot move onto a weapon: Retry again");
 			return false;
 		}
-		//Checking that if moving into a door cell, that its from the right direction
-		if(moveTo instanceof DoorCell&& !from.isRoom()) {
-			if(!(((DoorCell) moveTo).getEntryLoc().equals(from.getLocation()))){
+		// Checking that if moving into a door cell, that its from the right direction
+		if (moveTo instanceof DoorCell && !from.isRoom()) {
+			if (!(((DoorCell) moveTo).getEntryLoc().equals(from.getLocation()))) {
 				System.out.println("Invalid move - Cannot move to a door from this direction: Retry again");
 				return false;
 			}
 		}
-		if(from instanceof DoorCell&& !moveTo.isRoom()) {
-			if(!(((DoorCell) from).getEntryLoc().equals(moveTo.getLocation()))){
-				System.out.println("Invalid move - Cannot move from a door to that tile from this direction: Retry again");
+		if (from instanceof DoorCell && !moveTo.isRoom()) {
+			if (!(((DoorCell) from).getEntryLoc().equals(moveTo.getLocation()))) {
+				System.out.println(
+						"Invalid move - Cannot move from a door to that tile from this direction: Retry again");
 				return false;
 			}
-		}	
+		}
 		return true;
 	}
-	/*
-	 * Moves a player to a room after having been in a suggestion
+	
+	/**
+	 * Moves character and weapon to a random room cell that is in the room -
+	 * roomNameTo
+	 * 
+	 * Moves only if they are not already located in that room Does this by: 
+	 * Getting all the cells of the specified room(not including door cells) 
+	 * and randomly picks one for each of player and weapon to move to
+	 * 
+	 * @param p          Player/character to move
+	 * @param weaponName String name of weapon to move
+	 * @param roomNameTo String of room name to move to
 	 */
 	public void movePlayerWeaponToRoom(Player p, String roomNameTo, String weaponName) {
 		List<Cell> cells = getCellsFromRoom(roomNameTo);
 		Collections.shuffle(cells);
-		//moving player if nessicary
-		if(!getCellAt(p.getLocation()).isRoom() ||!getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomNameTo) ) {
-			for(Cell cell: cells)
-				if(!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
+		// moving player if necessary
+		if (!getCellAt(p.getLocation()).isRoom()
+				|| !getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomNameTo)) {
+			for (Cell cell : cells)
+				if (!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
 					getCellAt(p.getLocation()).removePlayer();
 					cell.setPlayer(p);
 					p.setLocation(cell.getLocation());
 					break;
 				}
 		}
-		if(weaponName.equals("Candlestick"))
-			weaponName="Ca";
-		else if(weaponName.equals("Dagger"))
-			weaponName="Dg";
-		else if(weaponName.equals("Lead Pipe"))
-			weaponName="Lp";
-		else if(weaponName.equals("Revolver"))
-			weaponName="Rv";
-		else if(weaponName.equals("Rope"))
-			weaponName="Rp";
-		else if(weaponName.equals("Spanner"))
-			weaponName="Sp";
-		//Moving weapon if nessicary
+		if (weaponName.equals("Candlestick"))
+			weaponName = "Ca";
+		else if (weaponName.equals("Dagger"))
+			weaponName = "Dg";
+		else if (weaponName.equals("Lead Pipe"))
+			weaponName = "Lp";
+		else if (weaponName.equals("Revolver"))
+			weaponName = "Rv";
+		else if (weaponName.equals("Rope"))
+			weaponName = "Rp";
+		else if (weaponName.equals("Spanner"))
+			weaponName = "Sp";
+		// Moving weapon if necessary
 		Cell weaponLoc = getCellAt(weaponLocation(weaponName));
-		if(!weaponLoc.isRoom() || !weaponLoc.getRoom().equals(roomNameTo)) {
-			for(Cell cell: cells)
-				if(!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
+		if (!weaponLoc.isRoom() || !weaponLoc.getRoom().equals(roomNameTo)) {
+			for (Cell cell : cells)
+				if (!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
 					getCellAt(weaponLoc.getLocation()).removeWeapon();
 					cell.setWeapon(weaponName);
 					break;
 				}
-		}	
 		}
-	
-
+	}
 
 	/// HELPER METHODS\\\
-	
-	/*
-	 * Gets all the cells that are within the given room
+
+	/**
+	 * Gets all cells for specified room - roomName
+	 * 
+	 * @param roomName - Name of cells in that room
+	 * @return
 	 */
-	private List<Cell> getCellsFromRoom(String roomName){
+	private List<Cell> getCellsFromRoom(String roomName) {
 		List<Cell> cells = new ArrayList<Cell>();
 
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
-				if(board[x][y].isRoom()&& board[x][y].getRoom().equals(roomName))
+				if (board[x][y].isRoom() && board[x][y].getRoom().equals(roomName))
 					cells.add(board[x][y]);
 			}
 		}
 		return cells;
 	}
-	
-	
-	
-	/*
-	 * Gets player at location on the board
+
+	/**
+	 * Gets player at specified location
+	 * 
+	 * @param loc
+	 * @return
 	 */
 	private Player getPlayerAt(Location loc) {
 		Player p = board[loc.getX()][loc.getY()].getPlayer();
 		return p;
 	}
-	
-	private Location weaponLocation(String name){
+
+	/**
+	 * Gets the Location of where a weapon is
+	 * 
+	 * @param name - name of weapon
+	 * @return Location of weapon
+	 */
+	private Location weaponLocation(String name) {
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
-				if(board[x][y].hasWeapon() && board[x][y].getWeapon().equals(name))
+				if (board[x][y].hasWeapon() && board[x][y].getWeapon().equals(name))
 					return board[x][y].getLocation();
 			}
 		}
 		throw new RuntimeException("Weapon not found on the board");
 	}
 
-	/*
-	 * Returns a cell at the Location, x,y
+	/**
+	 * Gets cell at Location loc
+	 * 
+	 * @param loc - Location
+	 * @return Cell
 	 */
 	public Cell getCellAt(Location loc) {
 		return board[loc.getX()][loc.getY()];
 	}
-	/*
-	 * Clears the console
-	 */
-	private static void clearScreen() {  
-	    System.out.print("\033[H\033[2J");  
-	    System.out.flush();  
-	   }
-
 }

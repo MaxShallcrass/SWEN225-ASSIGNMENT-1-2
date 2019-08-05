@@ -101,7 +101,7 @@ public class Player {
 	 * 
 	 * @param room
 	 */
-	public void makesSsuggestion(String room) {
+	public void makesSuggestion(String room) {
 		suggestedThisturn = true;
 		lastRoomSuggested = room;
 	}

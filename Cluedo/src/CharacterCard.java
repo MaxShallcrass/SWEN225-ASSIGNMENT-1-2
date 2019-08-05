@@ -1,25 +1,32 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.29.1.4597.b7ac3a910 modeling language!*/
-
-
-
-// line 17 "model.ump"
-// line 100 "model.ump"
-public class CharacterCard extends Card
-{
+/**
+ * 
+ * Character card
+ *
+ */
+public class CharacterCard extends Card {
+	/**
+	 * Card constructor
+	 * @param name
+	 */
 	public CharacterCard(String name) {
 		super(name);
 	}
-	
+
+	/**
+	 * Checks if another card is the same as this card
+	 */
 	public boolean equals(Object other) {
-		if(other!=null && other.getClass().equals(this.getClass())) {
+		if (other != null && other.getClass().equals(this.getClass())) {
 			CharacterCard o = (CharacterCard) other;
-			if(o.getName().equals(getName()))
+			if (o.getName().equals(getName()))
 				return true;
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Returns name of card
+	 */
 	public String getName() {
 		return super.getName();
 	}
