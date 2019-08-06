@@ -168,7 +168,7 @@ public class Board {
 	 * contains a weapon or player
 	 */
 	public void displayBoard() {
-		System.out.println("");
+		System.out.println();
 		System.out.println("************************************************************************");
 		System.out.println("");
 		for (int y = 0; y < 25; y++) {

@@ -39,7 +39,7 @@ class Tests {
 		Cluedo cluedo = new Cluedo(true,"3 max ferg jam s a a s s s s d s Dagger"
 				+ " Miss Scarlett");
 		
-		//assert(cluedo.getPlayers().size() == 6);
+		//assert(cluedo.getPlayers().size() == 6)j;
 		assert(true);
 	}
 	
