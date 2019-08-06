@@ -18,25 +18,25 @@ class Tests {
 	
 	@Test
 	void test_number_players_min() {		
-		Cluedo cluedo = new Cluedo(true,"3 max 1 ferg 2 jam 1");
+		Cluedo cluedo = new Cluedo(true,"3 max ferg jam");
 		assert(cluedo.getPlayers().size() == 3);
 	}
 	
 	@Test
 	void test_number_players_max() {		
-		Cluedo cluedo = new Cluedo(true,"6 max 0 ferg 0 jam 0 max 0 ferg 0 jam 0");
+		Cluedo cluedo = new Cluedo(true,"6 max ferg jam max ferg jam");
 		assert(cluedo.getPlayers().size() == 6);
 	}
 	
 	@Test
 	void test_number_players_min_boundary() {		
-		Cluedo cluedo = new Cluedo(true,"2 3 max 0 ferg 0 jam 0");
+		Cluedo cluedo = new Cluedo(true,"2 3 max ferg jam");
 		assert(cluedo.getPlayers().size() == 3);
 	}
 	
 	@Test
 	void test_suggestion() {		
-		Cluedo cluedo = new Cluedo(true,"3 max 1 ferg 2 jam 1 s a a s s s s d s Dagger"
+		Cluedo cluedo = new Cluedo(true,"3 max ferg jam s a a s s s s d s Dagger"
 				+ " Miss Scarlett");
 		
 		//assert(cluedo.getPlayers().size() == 6);
@@ -45,20 +45,20 @@ class Tests {
 	
 	@Test
 	void test_hasLost() {		
-		Cluedo cluedo = new Cluedo(true,"3 max 1 ferg 2 jam 1 s a a s s s s d a Dagger"
+		Cluedo cluedo = new Cluedo(true,"3 max ferg jam s a a s s s s d a Dagger"
 				+ " Miss Scarlett Ballroom %");
 		assert(cluedo.getPlayers().get(0).hasLost() == true);
 	}
 	
 	@Test
 	void test_incorrect_input() {		
-		Cluedo cluedo = new Cluedo(true,"% 3 f 0 m 0 x 0");
+		Cluedo cluedo = new Cluedo(true,"% 3 f m x");
 		assert(cluedo.getPlayers().size() == 3);
 	}
 	
 	@Test
 	void test() {		
-		Cluedo cluedo = new Cluedo(true,"% 3 f 0 m 0 x 0");
+		Cluedo cluedo = new Cluedo(true,"% 3 f m x");
 		assert(cluedo.getPlayers().size() == 3);
 	}
 	
