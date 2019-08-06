@@ -181,7 +181,7 @@ public class Cluedo {
 		}
 		// Clean up - games over.
 		System.out.println("GAME OVER\n" + winner.getName() +  " wins the game!");
-		System.exit(0);/
+		System.exit(0);
 	}
 
 	/**
