@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import javax.print.DocFlavor.URL;
+import javax.swing.JPanel;
 
 /**
  * Contains everything for displaying and making the game board and is in
@@ -10,7 +11,7 @@ import javax.print.DocFlavor.URL;
  * 
  * Movements and changes in the board are all done through location objects
  */
-public class Board {
+public class Board extends JPanel {
 	private Cell[][] board; // data structure for containing all the board information
 
 	/**
@@ -51,8 +52,8 @@ public class Board {
 			throw new RuntimeException(e);
 		}
 		// adding players and weapons to the board
-		addPlayers(realPlayers, nonPlayer);
-		addWeapons();
+	//	addPlayers(realPlayers, nonPlayer);
+	//	addWeapons();
 	}
 
 	/**
@@ -75,11 +76,11 @@ public class Board {
 		// Placing the players on the board
 		for (int i = 0; i < realPlayers.size(); i++) {
 			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(realPlayers.get(i));
-			realPlayers.get(i).setLocation(playerLocs.get(i));
+			realPlayers.get(i).setLoc(playerLocs.get(i));
 		}
 		for (int i = realPlayers.size(); i < realPlayers.size() + nonPlayer.size(); i++) {
 			board[playerLocs.get(i).getX()][playerLocs.get(i).getY()].setPlayer(nonPlayer.get(i - realPlayers.size()));
-			nonPlayer.get(i - realPlayers.size()).setLocation(playerLocs.get(i));
+			nonPlayer.get(i - realPlayers.size()).setLoc(playerLocs.get(i));
 		}
 	}
 
@@ -89,7 +90,7 @@ public class Board {
 	 * Note - Locations for weapons have been set to back corners of each of the rooms
 	 * to avoid player movement problems
 	 */
-	private void addWeapons() {
+	void addWeapons() {
 		// locations for weapons - one for each room
 		List<Location> wepLocations = new ArrayList<Location>() {
 			{
@@ -218,7 +219,7 @@ public class Board {
 		p.addVisitedLocation(locAt);
 		getCellAt(locAt).removePlayer();
 		getCellAt(locTo).setPlayer(p);
-		p.setLocation(locTo);
+		p.setLoc(locTo);
 		if (getCellAt(locTo) instanceof DoorCell) // if made it into a room stop player
 			if (!p.getLastSuggested().equals(getCellAt(locTo).getRoom())) {
 				displayBoard();
@@ -293,14 +294,14 @@ public class Board {
 		}
 		// Checking that if moving into a door cell, that its from the right direction
 		if (moveTo instanceof DoorCell && !from.isRoom()) {
-			if (!(((DoorCell) moveTo).getEntryLoc().equals(from.getLocation()))) {
+			if (!(((DoorCell) moveTo).getEntryLoc().equals(from.getLoc()))) {
 				displayBoard();
 				System.out.println("Invalid move - Cannot move to a door from this direction: Retry again");
 				return false;
 			}
 		}
 		if (from instanceof DoorCell && !moveTo.isRoom()) {
-			if (!(((DoorCell) from).getEntryLoc().equals(moveTo.getLocation()))) {
+			if (!(((DoorCell) from).getEntryLoc().equals(moveTo.getLoc()))) {
 				displayBoard();
 				System.out.println(
 						"Invalid move - Cannot move from a door to that tile from this direction: Retry again");
@@ -326,13 +327,13 @@ public class Board {
 		List<Cell> cells = getCellsFromRoom(roomNameTo);
 		Collections.shuffle(cells);
 		// moving player if necessary
-		if (!getCellAt(p.getLocation()).isRoom()
-				|| !getCellAt(p.getLocation()).getRoom().equalsIgnoreCase(roomNameTo)) {
+		if (!getCellAt(p.getLoc()).isRoom()
+				|| !getCellAt(p.getLoc()).getRoom().equalsIgnoreCase(roomNameTo)) {
 			for (Cell cell : cells)
 				if (!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
-					getCellAt(p.getLocation()).removePlayer();
+					getCellAt(p.getLoc()).removePlayer();
 					cell.setPlayer(p);
-					p.setLocation(cell.getLocation());
+					p.setLoc(cell.getLoc());
 					break;
 				}
 		}
@@ -353,7 +354,7 @@ public class Board {
 		if (!weaponLoc.isRoom() || !weaponLoc.getRoom().equals(roomNameTo)) {
 			for (Cell cell : cells)
 				if (!cell.hasPlayer() && !cell.hasWeapon() && !(cell instanceof DoorCell)) {
-					getCellAt(weaponLoc.getLocation()).removeWeapon();
+					getCellAt(weaponLoc.getLoc()).removeWeapon();
 					cell.setWeapon(weaponName);
 					break;
 				}
@@ -401,7 +402,7 @@ public class Board {
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
 				if (board[x][y].hasWeapon() && board[x][y].getWeapon().equals(name))
-					return board[x][y].getLocation();
+					return board[x][y].getLoc();
 			}
 		}
 		throw new RuntimeException("Weapon not found on the board");
