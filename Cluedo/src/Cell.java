@@ -1,9 +1,17 @@
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+
 /**
  * Contains all board display and location information
  * 
  * Each cell is either a Floor cell or a door cell
  */
-public abstract class Cell {
+public abstract class Cell extends JLabel {//implements ActionListener{
 	// Where on the board it is represented
 	private Location loc;
 	// For display and movements of weapons and players
@@ -14,17 +22,66 @@ public abstract class Cell {
 	// Room information if it is
 	private boolean isRoom;
 	private String roomName;
-
+	
+	//new
+	private ImageIcon tile;
+	private ImageIcon weaponImg;
+	private ImageIcon charImg;
+	
+	private boolean switchh=true;
+	
+	
+	//NEW
+//	public void actionPerformed(ActionEvent e) {
+	//	if(!switchh)
+	//		setIcon(null);
+//		switchh=!switchh;
+	//}//
+	
+	
 	/**
 	 * Creates a new cell at Location loc
 	 * 
 	 * @param loc
 	 */
-	Cell(Location loc) {
+	Cell(Location loc, String imageName) {
 		this.loc = loc;
 		hasPlayer = false;
 		hasWeapon = false;
 		isRoom = false;
+		//Setting cell icon
+		//new
+		switch (imageName) {
+		case "#":
+			imageName="corridor";
+			break;
+		case "!":
+			imageName="empty";
+			break;
+		case "E":
+			imageName="dooreast";
+			break;
+		case "S":
+			imageName="doorsouth";
+			break;
+		case "N":
+			imageName="doornorth";
+			break;
+		case "W":
+			imageName="doorwest";
+			break;
+		default:
+			imageName="room";
+		}
+		setVisible(true);
+
+				tile = new ImageIcon("resource/boardtiles/" + imageName + ".jpg");
+				setIcon(tile);
+				revalidate();
+				repaint();
+			//	setPreferredSize(new Dimension(30, 30));
+
+				//super.validate();
 	}
 
 	/**
@@ -64,8 +121,31 @@ public abstract class Cell {
 	 * @param wep
 	 */
 	public void setWeapon(String wep) {
-		hasWeapon = true;
 		weapon = wep;
+		switch (wep) {
+		case "Ca":
+			wep="candlestick";
+			break;
+		case "Dg":
+			wep="dagger";
+			break;
+		case "Lp":
+			wep="leadpipe";
+			break;
+		case "Rp":
+			wep="rope";
+			break;
+		case "Sp":
+			wep="wrench";
+			break;
+		case "Rv":
+			wep="revolver";
+			break;
+		}
+		
+		weaponImg= new ImageIcon("resource/boardtiles/" + wep + ".jpg");
+		setIcon(weaponImg);
+		hasWeapon = true;
 	}
 
 	/**
@@ -74,6 +154,7 @@ public abstract class Cell {
 	public void removeWeapon() {
 		hasWeapon = false;
 		weapon = "";
+		setIcon(tile);
 	}
 
 	/**
@@ -138,7 +219,7 @@ public abstract class Cell {
 	 * 
 	 * @return
 	 */
-	public Location getLocation() {
+	public Location getLoc() {
 		return loc;
 	}
 

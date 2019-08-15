@@ -13,9 +13,8 @@ public class FloorCell extends Cell {
 	 * @param id
 	 */
 	public FloorCell(Location aLocation, char id) {
-		super(aLocation);
+		super(aLocation, id+"");
 		this.id = id;
-
 	}
 
 	/**

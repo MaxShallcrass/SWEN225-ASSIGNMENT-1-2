@@ -15,7 +15,7 @@ public class DoorCell extends Cell {
 	 * @param id String Board representation of a door
 	 */
 	public DoorCell(Location aLocation, String id) {
-		super(aLocation);
+		super(aLocation, ""+id.charAt(1));
 		this.room = id.charAt(2);
 		this.direction = id.charAt(1);
 		// setting entry cell location

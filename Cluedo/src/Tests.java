@@ -70,46 +70,46 @@ class Tests {
 	@Test
 	void test_invalid_move_up() {		
 		Cluedo cluedoT = new Cluedo(true,"3 f m x");
-		Location l = cluedoT.getPlayers().get(0).getLocation();
+		Location l = cluedoT.getPlayers().get(0).getLoc();
 		Cluedo cluedo = new Cluedo(true,"3 f m x w");
-		assert(cluedo.getPlayers().get(0).getLocation().getX() == l.getX());
-		assert(cluedo.getPlayers().get(0).getLocation().getY() == l.getY());
+		assert(cluedo.getPlayers().get(0).getLoc().getX() == l.getX());
+		assert(cluedo.getPlayers().get(0).getLoc().getY() == l.getY());
 	}
 	
 	@Test
 	void test_invalid_move_right() {		
 		Cluedo cluedoT = new Cluedo(true,"3 f m x");
-		Location l = cluedoT.getPlayers().get(0).getLocation();
+		Location l = cluedoT.getPlayers().get(0).getLoc();
 		Cluedo cluedo = new Cluedo(true,"3 f m x d");
-		assert(cluedo.getPlayers().get(0).getLocation().getX() == l.getX());
-		assert(cluedo.getPlayers().get(0).getLocation().getY() == l.getY());
+		assert(cluedo.getPlayers().get(0).getLoc().getX() == l.getX());
+		assert(cluedo.getPlayers().get(0).getLoc().getY() == l.getY());
 	}
 	
 	@Test
 	void test_invalid_move_left() {		
 		Cluedo cluedoT = new Cluedo(true,"3 f m x");
-		Location l = cluedoT.getPlayers().get(0).getLocation();
+		Location l = cluedoT.getPlayers().get(0).getLoc();
 		Cluedo cluedo = new Cluedo(true,"3 f m x w");
-		assert(cluedo.getPlayers().get(0).getLocation().getX() == l.getX());
-		assert(cluedo.getPlayers().get(0).getLocation().getY() == l.getY());
+		assert(cluedo.getPlayers().get(0).getLoc().getX() == l.getX());
+		assert(cluedo.getPlayers().get(0).getLoc().getY() == l.getY());
 	}
 	
 	@Test
 	void test_invalid_move_down() {		
 		Cluedo cluedoT = new Cluedo(true,"3 f m x s");
-		Location l = cluedoT.getPlayers().get(0).getLocation();
+		Location l = cluedoT.getPlayers().get(0).getLoc();
 		Cluedo cluedo = new Cluedo(true,"3 f m x s s");
-		assert(cluedo.getPlayers().get(0).getLocation().getX() == l.getX());
-		assert(cluedo.getPlayers().get(0).getLocation().getY() == l.getY());
+		assert(cluedo.getPlayers().get(0).getLoc().getX() == l.getX());
+		assert(cluedo.getPlayers().get(0).getLoc().getY() == l.getY());
 	}
 	
 	@Test
 	void test_do_nothing() {		
 		Cluedo cluedo = new Cluedo(true,"3 max ferg jam s a a s s s s s s s s a a n s d d s s s s s s s s s n");
-		System.out.println(cluedo.getPlayers().get(0).getLocation().getY());
+		System.out.println(cluedo.getPlayers().get(0).getLoc().getY());
 		Location l = new Location(9,0);
-		assert(cluedo.getPlayers().get(0).getLocation().getX() == 9);
-		assert(cluedo.getPlayers().get(0).getLocation().getY() == 0);
+		assert(cluedo.getPlayers().get(0).getLoc().getX() == 9);
+		assert(cluedo.getPlayers().get(0).getLoc().getY() == 0);
 	}
 	
 	@Test

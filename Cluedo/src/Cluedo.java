@@ -145,12 +145,12 @@ public class Cluedo {
 			while (steps != 0) {
 				String md = ask("What direction do you want to move (w-a-s-d)? ", "Error - please enter w , a , s or d",
 						new ArrayList<String>(Arrays.asList("w", "a", "s", "d")));
-				steps = board.movePlayer(player.getLocation(), md, steps);
+				steps = board.movePlayer(player.getLoc(), md, steps);
 				System.out.println("Remaining moves : " + steps);
 			}
 			// If in a room make a suggestion (unless same room as last turn) or can make an
 			// accusation anywhere
-			Cell cell = board.getCellAt(player.getLocation());
+			Cell cell = board.getCellAt(player.getLoc());
 			String decision = "";
 			if (cell.isRoom() && player.canSuggest(cell.getRoom())) {
 				decision = ask("You can now make accusation(a), suggestion(s) or do nothing (n)",
@@ -486,7 +486,4 @@ public class Cluedo {
 		return ans;
 	}
 
-	public static void main(String args[]) {
-		new Cluedo(false,"");
-	}
 }

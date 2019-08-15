@@ -1,6 +1,8 @@
-import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -10,52 +12,51 @@ import javax.swing.border.LineBorder;
 
 public class CluedoUI {
 	
-	//private JFrame frame;
-	
-	
+	// private JFrame frame;
+
 	public static void main(String args[]) {
+new CluedoUI();
 		
-			JPanel board=createBoard();
-		
-		//GridBagLayout gridbag = new GridBagLayout();
-      //  GridBagConstraints c = new GridBagConstraints();
-		
-			JFrame frame = new JFrame("My First GUI");
-	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	       frame.getRootPane().setSize(1200,1200);
-	      // frame.setResizable(false);
-			//frame.getRootPane().setLayout(new GridLayout(arg0, arg1));
-			frame.getRootPane().add(board, BorderLayout.CENTER);
-	     //  JButton button = new JButton("Press");
-	      // frame.getContentPane().add(button); // Adds Button to content pane of frame
-			frame.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowOpened(WindowEvent e) {
-					board.requestFocus();
-				}
-			});
-			frame.pack();
+	}
+	
+	public CluedoUI() {
+		JFrame frame=new JFrame();
+		Board gameBoard=new Board(null, null);
+		startGUI(frame, gameBoard);
+
+	}
+	
+	public void startGUI(JFrame frame,Board gameBoard) {
+		// GridBagLayout gridbag = new GridBagLayout();
+				// GridBagConstraints c = new GridBagConstraints();
+
 			
-			frame.setVisible(true);
-	       
-	       
-	     //  Cluedo cludeo = new Cluedo(false,"");
+				frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+				frame.getRootPane().setLayout(new BorderLayout());
+				JPanel board = createBoard(gameBoard);
+				frame.getRootPane().add(board, BorderLayout.CENTER);
+				
+				frame.setPreferredSize(new Dimension(800, 800));
+				frame.pack();
+				frame.setResizable(true);
+				frame.setVisible(true);
 	}
 	
 	/**
 	 * 
 	 */
-	public static JPanel createBoard() {
+	public  JPanel createBoard(Board gameBoard) {
 		JPanel board = new JPanel();
-		board.setSize(720,750);
+		//board.setSize(720,750);
+		board.setLayout(new GridLayout(25, 24,1,1));
+		board.setBackground(Color.black);
 
-		board.setLayout(new GridLayout(24, 25));
+		gameBoard.addWeapons();
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
-				board.add(new FloorCell(new Location(x, y), 'a')) ;
+				board.add(gameBoard.getCellAt(new Location(x, y))) ;
 			}
 		}
-		
 		return board;
 	}
 	
@@ -63,13 +64,9 @@ public class CluedoUI {
 	 * Create cells in the Tetris visualization. They use the Game to chose their
 	 * color.
 	 */
-	public static JPanel cell(int col, int row, String image){
-		JPanel cell = new JPanel() ;
-		ImageIcon pic = new ImageIcon("resource/corridor.jpg");
-		cell.add(new JLabel(pic));
-		//cell.setBackground(Color.blue);
-	return cell;
-	}
+	public  JLabel cell(int x, int y, Board b) {
+        return new JLabel(new ImageIcon("resource/boardtiles/dagger.jpg")) ;
+    }
 	/**
 	 * Gets the image for the specified key
 	 */

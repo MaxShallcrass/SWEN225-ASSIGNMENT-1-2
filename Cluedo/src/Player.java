@@ -90,7 +90,7 @@ public class Player {
 	 * 
 	 * @param String - name
 	 */
-	public void setLocation(Location loc) {
+	public void setLoc(Location loc) {
 		this.loc = loc;
 	}
 
@@ -99,7 +99,7 @@ public class Player {
 	 * 
 	 * @return String - name
 	 */
-	public Location getLocation() {
+	public Location getLoc() {
 		return this.loc;
 	}
 
