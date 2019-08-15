@@ -332,15 +332,14 @@ public class Cluedo {
 	 * @return computer Players
 	 */
 	public ArrayList<Player> charactersAndNames(int numPlayers) {
-		ArrayList<String> indexChoices = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5"));
 		ArrayList<String> characterArray = new ArrayList<String>(Arrays.asList("Mrs. White", "Mr. Green",
 				"Mrs. Peacock", "Professor Plum", "Miss Scarlett", "Colonel Mustard"));
 		// repeats for each players
 		for (int reps = 0; reps < numPlayers; reps++) {
 			Player player = players.get(reps);
 			player.setName(askPlayer("Player " + (reps + 1) + " please enter your name: ") + " (" + (reps + 1) + ")");
-			player.setCharacter(characterArray.get(reps));
-			characterArray.remove(reps);
+			player.setCharacter(characterArray.get(numPlayers-reps-1));
+			characterArray.remove(numPlayers-reps-1);
 			System.out.println("You are " + player.getName());
 		}
 		ArrayList<Player> computerPlayers = new ArrayList<Player>();

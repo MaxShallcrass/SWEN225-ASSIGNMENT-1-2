@@ -2,7 +2,7 @@
  * 
  * Before the game starts, one character, one weapon, and one room card are
  * blindly selected at random. This selection represents the murder
- * circumstances, i.e., the “solution” that players need to figure out during
+ * circumstances, i.e., the solution that players need to figure out during
  * game play. The respective cards make an envelope to be hidden from view
  *
  */
