@@ -76,12 +76,13 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 		setVisible(true);
 
 				tile = new ImageIcon("resource/boardtiles/" + imageName + ".jpg");
+				
 				setIcon(tile);
 				revalidate();
 				repaint();
-			//	setPreferredSize(new Dimension(30, 30));
-
-				//super.validate();
+				setMaximumSize(new Dimension(30, 30));
+				setPreferredSize(new Dimension(30, 30));
+				
 	}
 
 	/**
@@ -172,6 +173,35 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 	 * @param p
 	 */
 	public void setPlayer(Player p) {
+		System.out.println(p.getCharacter());
+		//"Mrs. White", "Mr. Green",
+		//"Mrs. Peacock", "Professor Plum", "Miss Scarlett", "Colonel Mustard")
+		String pName;
+		
+		switch (p.getCharacter()) {
+		case "Mrs. White":
+			pName="candlestick";
+			break;
+		case "Mr. Green":
+			pName="dagger";
+			break;
+		case "Lp":
+			pName="Mrs. Peacock";
+			break;
+		case "Professor Plum":
+			pName="rope";
+			break;
+		case "Miss Scarlett":
+			pName="wrench";
+			break;
+		case "Rv":
+			pName="Colonel Mustard";
+			break;
+		}
+		//charImg= new ImageIcon("resource/boardtiles/" + wep + ".jpg");
+		setIcon(charImg);
+		
+		
 		this.player = p;
 		hasPlayer = true;
 	}
@@ -182,6 +212,7 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 	public void removePlayer() {
 		player = null;
 		hasPlayer = false;
+		setIcon(tile);
 	}
 
 	/**
