@@ -45,6 +45,7 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 	 * @param loc
 	 */
 	Cell(Location loc, String imageName) {
+		this.setToolTipText("cat");
 		this.loc = loc;
 		hasPlayer = false;
 		hasWeapon = false;
