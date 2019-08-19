@@ -22,8 +22,7 @@ public class CluedoUI {
 	int turn;
 	
 	//board.setMaximumSize(new Dimension(720, 750));
-	int guiSize = 300;
-	
+	private static int guiSize = 500;
 	private final int BOARDX = 720;
 	private final int BOARDY = 750;
 	// private ArrayList<play>
@@ -60,13 +59,13 @@ public class CluedoUI {
 		frame.add(jBoard, BorderLayout.CENTER);/// .getRootPane()
 		
 		JPanel jBottom = new JPanel();
-		jBottom.setSize(900,200);
+		jBottom.setSize(guiSize,(int)(guiSize*0.2));
 		jBottom.setBackground(Color.red);
+		frame.add(jBottom,BorderLayout.SOUTH);
 		frame.pack();
 
-		
-		
-		
+		JLabel label = new JLabel("Hello there");
+		jBottom.add(label);
 		
 		// JOptionPane
 		startGame();
@@ -284,6 +283,15 @@ public class CluedoUI {
 		}
 	}
 
+	/**
+	 * geet for gui size so that cell can construct at right scale
+	 * @return int 
+	 */
+	public static int getGuiSize() {
+		return guiSize;
+	}
+	
+	
 	/**
 	 * Create cells in the Tetris visualization. They use the Game to chose their
 	 * color.

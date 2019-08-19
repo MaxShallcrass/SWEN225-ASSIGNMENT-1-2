@@ -11,7 +11,7 @@ import javax.swing.JLabel;
  * 
  * Each cell is either a Floor cell or a door cell
  */
-public abstract class Cell extends JLabel {//implements ActionListener{
+public abstract class Cell extends JLabel {// implements ActionListener{
 	// Where on the board it is represented
 	private Location loc;
 	// For display and movements of weapons and players
@@ -22,23 +22,21 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 	// Room information if it is
 	private boolean isRoom;
 	private String roomName;
-	
-	//new
+
+	// new
 	private ImageIcon tile;
 	private ImageIcon weaponImg;
 	private ImageIcon charImg;
-	
-	private boolean switchh=true;
-	
-	
-	//NEW
+
+	private boolean switchh = true;
+
+	// NEW
 //	public void actionPerformed(ActionEvent e) {
-	//	if(!switchh)
-	//		setIcon(null);
+	// if(!switchh)
+	// setIcon(null);
 //		switchh=!switchh;
-	//}//
-	
-	
+	// }//
+
 	/**
 	 * Creates a new cell at Location loc
 	 * 
@@ -50,40 +48,41 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 		hasPlayer = false;
 		hasWeapon = false;
 		isRoom = false;
-		//Setting cell icon
-		//new
+		// Setting cell icon
+		// new
 		switch (imageName) {
 		case "#":
-			imageName="corridor";
+			imageName = "corridor";
 			break;
 		case "!":
-			imageName="empty";
+			imageName = "empty";
 			break;
 		case "E":
-			imageName="dooreast";
+			imageName = "dooreast";
 			break;
 		case "S":
-			imageName="doorsouth";
+			imageName = "doorsouth";
 			break;
 		case "N":
-			imageName="doornorth";
+			imageName = "doornorth";
 			break;
 		case "W":
-			imageName="doorwest";
+			imageName = "doorwest";
 			break;
 		default:
-			imageName="room";
+			imageName = "room";
 		}
 		setVisible(true);
 
-				tile = new ImageIcon("resource/boardtiles/" + imageName + ".jpg");
-				
-				setIcon(tile);
-				revalidate();
-				repaint();
-				setMaximumSize(new Dimension(30, 30));
-				setPreferredSize(new Dimension(30, 30));
-				
+		tile = new ImageIcon("resource/boardtiles/" + imageName + ".jpg");
+		int size = CluedoUI.getGuiSize();
+		int sizeConst = 750/30;
+		setIcon(tile);
+		revalidate();
+		repaint();
+		setMaximumSize(new Dimension(size/sizeConst,size/sizeConst));
+		setPreferredSize(new Dimension(size/sizeConst,size/sizeConst));
+
 	}
 
 	/**
@@ -126,26 +125,26 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 		weapon = wep;
 		switch (wep) {
 		case "Ca":
-			wep="candlestick";
+			wep = "candlestick";
 			break;
 		case "Dg":
-			wep="dagger";
+			wep = "dagger";
 			break;
 		case "Lp":
-			wep="leadpipe";
+			wep = "leadpipe";
 			break;
 		case "Rp":
-			wep="rope";
+			wep = "rope";
 			break;
 		case "Sp":
-			wep="wrench";
+			wep = "wrench";
 			break;
 		case "Rv":
-			wep="revolver";
+			wep = "revolver";
 			break;
 		}
-		
-		weaponImg= new ImageIcon("resource/boardtiles/" + wep + ".jpg");
+
+		weaponImg = new ImageIcon("resource/boardtiles/" + wep + ".jpg");
 		setIcon(weaponImg);
 		hasWeapon = true;
 	}
@@ -175,34 +174,33 @@ public abstract class Cell extends JLabel {//implements ActionListener{
 	 */
 	public void setPlayer(Player p) {
 		System.out.println(p.getCharacter());
-		//"Mrs. White", "Mr. Green",
-		//"Mrs. Peacock", "Professor Plum", "Miss Scarlett", "Colonel Mustard")
+		// "Mrs. White", "Mr. Green",
+		// "Mrs. Peacock", "Professor Plum", "Miss Scarlett", "Colonel Mustard")
 		String pName;
-		
+
 		switch (p.getCharacter()) {
 		case "Mrs. White":
-			pName="candlestick";
+			pName = "candlestick";
 			break;
 		case "Mr. Green":
-			pName="dagger";
+			pName = "dagger";
 			break;
 		case "Lp":
-			pName="Mrs. Peacock";
+			pName = "Mrs. Peacock";
 			break;
 		case "Professor Plum":
-			pName="rope";
+			pName = "rope";
 			break;
 		case "Miss Scarlett":
-			pName="wrench";
+			pName = "wrench";
 			break;
 		case "Rv":
-			pName="Colonel Mustard";
+			pName = "Colonel Mustard";
 			break;
 		}
-		//charImg= new ImageIcon("resource/boardtiles/" + wep + ".jpg");
+		// charImg= new ImageIcon("resource/boardtiles/" + wep + ".jpg");
 		setIcon(charImg);
-		
-		
+
 		this.player = p;
 		hasPlayer = true;
 	}
