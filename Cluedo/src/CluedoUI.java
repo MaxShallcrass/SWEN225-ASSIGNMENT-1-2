@@ -20,6 +20,12 @@ public class CluedoUI {
 	private ArrayList<Player> players;
 	private Envelope envelope;
 	int turn;
+	
+	//board.setMaximumSize(new Dimension(720, 750));
+	int guiSize = 300;
+	
+	private final int BOARDX = 720;
+	private final int BOARDY = 750;
 	// private ArrayList<play>
 
 	public static void main(String args[]) {
@@ -37,7 +43,7 @@ public class CluedoUI {
 	public void startGUI(Board gameBoard) {
 
 		frame.setVisible(true);
-		frame.setSize(800, 800);
+		frame.setSize(guiSize, guiSize);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
@@ -52,9 +58,16 @@ public class CluedoUI {
 		// frame.getRootPane().setLayout(new BorderLayout());
 		JPanel jBoard = createBoard(gameBoard);
 		frame.add(jBoard, BorderLayout.CENTER);/// .getRootPane()
-
+		
+		JPanel jBottom = new JPanel();
+		jBottom.setSize(900,200);
+		jBottom.setBackground(Color.red);
 		frame.pack();
 
+		
+		
+		
+		
 		// JOptionPane
 		startGame();
 	}
@@ -203,8 +216,8 @@ public class CluedoUI {
 	 */
 	public JPanel createBoard(Board gameBoard) {
 		JPanel board = new JPanel();
-		board.setSize(720, 750);
-		board.setMaximumSize(new Dimension(720, 750));
+		board.setSize(guiSize/BOARDX*BOARDY, 750*1);
+		board.setMaximumSize(new Dimension(guiSize/BOARDX*BOARDY, 750*1));
 		board.setLayout(new GridLayout(25, 24, 1, 1));
 		board.setBackground(Color.black);
 
