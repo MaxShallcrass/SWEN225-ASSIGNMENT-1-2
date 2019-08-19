@@ -312,6 +312,22 @@ public class Board extends JPanel {
 	}
 	
 	/**
+	 * 
+	 */
+	public int isValidBigMove(Player p, Location to){
+		int turnsLeft=0;
+		//4 cells checks
+		//for each keep doing 4 cells till find end point or the cell reached is not moveable
+		
+		
+		return-1;
+	}
+	
+	
+	
+	
+	
+	/**
 	 * Moves character and weapon to a random room cell that is in the room -
 	 * roomNameTo
 	 * 
