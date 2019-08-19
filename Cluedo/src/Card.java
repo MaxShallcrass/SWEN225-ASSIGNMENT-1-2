@@ -1,7 +1,12 @@
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.awt.Image;
+
 
 /**
  * Abstract card
@@ -12,14 +17,23 @@ import javax.swing.JLabel;
 public abstract class Card extends JLabel
 {
 	private String name;
+	private final int intX = 14;
+	private final int intY = 22;
 	
 	/**
 	 * Constructs a new card
 	 * @param name
 	 */
 	Card(String name){
-		this.setSize(new Dimension(140, 220));
-		this.setIcon(new ImageIcon("resource/cards/" + name + ".PNG"));
+		int size = CluedoUI.getGuiSize();
+		//get resized card 
+		ImageIcon ii = new ImageIcon("resource/cards/" + name + ".PNG");
+		Image image = ii.getImage().getScaledInstance(500, 500,Image.SCALE_SMOOTH); 
+		ii = new ImageIcon(image);
+		this.setIcon(ii);
+		
+	//	this.setSize(new Dimension(10,10));
+	//	this.setIcon(new ImageIcon("resource/cards/" + name + ".PNG"));
 		System.out.println(name);
 		this.name=name;
 	}

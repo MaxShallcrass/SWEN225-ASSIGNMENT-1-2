@@ -43,7 +43,6 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	 * @param loc
 	 */
 	Cell(Location loc, String imageName) {
-		this.setToolTipText("cat");
 		this.loc = loc;
 		hasPlayer = false;
 		hasWeapon = false;
@@ -73,7 +72,7 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 			imageName = "room";
 		}
 		setVisible(true);
-
+		this.setToolTipText(imageName);
 		tile = new ImageIcon("resource/boardtiles/" + imageName + ".jpg");
 		int size = CluedoUI.getGuiSize();
 		int sizeConst = 750/30;

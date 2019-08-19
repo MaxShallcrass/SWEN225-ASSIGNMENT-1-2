@@ -20,6 +20,7 @@ public class CluedoUI {
 	private ArrayList<Player> players;
 	private Envelope envelope;
 	int turn;
+	JPanel jBottom;
 	
 	//board.setMaximumSize(new Dimension(720, 750));
 	private static int guiSize = 500;
@@ -58,14 +59,21 @@ public class CluedoUI {
 		JPanel jBoard = createBoard(gameBoard);
 		frame.add(jBoard, BorderLayout.CENTER);/// .getRootPane()
 		
-		JPanel jBottom = new JPanel();
+		jBottom = new JPanel();
+		jBottom.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jBottom.setSize(guiSize,(int)(guiSize*0.2));
 		jBottom.setBackground(Color.red);
 		frame.add(jBottom,BorderLayout.SOUTH);
 		frame.pack();
 
-		JLabel label = new JLabel("Hello there");
+		JLabel label = new JLabel("");
 		jBottom.add(label);
+		
+		JPanel jHand = new JPanel();
+		jHand.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		jHand.setSize(guiSize/2,(int)(guiSize*0.2));
+		jHand.setBackground(Color.red);
+		jBottom.add(jHand);
 		
 		// JOptionPane
 		startGame();
@@ -85,6 +93,8 @@ public class CluedoUI {
 		turn = 0; // index of player whos turn it is
 		while (!gameOver) {
 			Player player = getPlayerTurn();
+			displayBottomForPlayer(player);
+
 		}
 
 		// Location l = new Location(5, 5);
@@ -95,6 +105,28 @@ public class CluedoUI {
 
 	}
 	
+	/**
+	 * displays which players turn it is, their hand and dice
+	 * @param player
+	 */
+	public void displayBottomForPlayer(Player player) {
+		//showing whos turn it is
+		JLabel j1 = (JLabel)(jBottom.getComponent(0));
+		j1.setText("Turn of: "+player.getCharacter());
+		//showing hand 
+		JPanel j2 = (JPanel)(jBottom.getComponent(1));
+		j2.removeAll();
+		for(Card c : player.getHand().getCards()) {
+			j2.add(c);
+		}
+		while(true) {}
+		
+	}
+	
+	/**
+	 * get and return player whos turn it is
+	 * @return Player
+	 */
 	public Player getPlayerTurn() {
 		Player player = players.get(turn);
 		// choosing a player that can play
