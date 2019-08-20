@@ -216,6 +216,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * @return Player
 	 */
 	public Player getPlayerTurn() {
+		System.out.println("getting with turn = "+turn);
 		Player player = players.get(turn);
 		// choosing a player that can play
 		while (player.hasLost()) {
@@ -229,6 +230,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		if (turn == players.size()) {
 			turn = 0;
 		}
+		System.out.println("returning with turn = "+turn);
+		System.out.println();
 		return player;
 	}
 
@@ -440,7 +443,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		}
 		if(e.getActionCommand().equals("Next Players Turn")){
 			nextTurn = true;
-			System.out.println("nec turn g");
+			
 		}
 		
 		
