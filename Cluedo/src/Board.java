@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import javax.print.DocFlavor.URL;
 import javax.swing.JPanel;
@@ -57,7 +58,7 @@ public class Board extends JPanel {
 			throw new RuntimeException(e);
 		}
 		// adding players and weapons to the board
-	//	addPlayers(realPlayers, nonPlayer);
+		addPlayers(realPlayers, nonPlayer);
 	//	addWeapons();
 	}
 
@@ -203,11 +204,17 @@ public class Board extends JPanel {
 		moves=isValidBigMove(p, locTo, 12);
 		if(moves==null)
 			System.out.println("failed");
+		
 		else {
 			System.out.println("should have worked");
 
-		for(int i=0; i<moves.size(); i++) {
-			System.out.println("X: " + moves.get(i).getLoc().getX() + " Y: " + moves.get(i).getLoc().getY());
+		for(int i=0; i<moves.size()-1; i++) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			movePlayer(moves.get(i).getLoc(), moves.get(i+1).getLoc());
 		}
 		}
 	}
@@ -225,26 +232,22 @@ public class Board extends JPanel {
 	 *                  changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 * @return
 	 */
-	public int movePlayer(Location locAt, String direction, int movesLeft) {
-		if (movesLeft == 0)
-			throw new RuntimeException("Player has no moves left");
-		int x = locAt.getX();
-		int y = locAt.getY();
-		if (direction.compareToIgnoreCase("w") == 0)
-			y -= 1;
-		else if (direction.compareToIgnoreCase("a") == 0)
-			x -= 1;
-		else if (direction.compareToIgnoreCase("s") == 0)
-			y += 1;
-		else if (direction.compareToIgnoreCase("d") == 0)
-			x += 1;
-		else
-			throw new RuntimeException("Invalid input for a move - Game Crashed"); // Should never reach this
-		Location locTo = new Location(x, y);
+	public int movePlayer(Location locAt, Location locTo) {
+		
+	//	if (direction.compareToIgnoreCase("w") == 0)
+	//		y -= 1;
+	//	else if (direction.compareToIgnoreCase("a") == 0)
+	//		x -= 1;
+	//	else if (direction.compareToIgnoreCase("s") == 0)
+	//		y += 1;
+		//else if (direction.compareToIgnoreCase("d") == 0)
+		//	x += 1;
+		//else
+		//	throw new RuntimeException("Invalid input for a move - Game Crashed"); // Should never reach this
 		// if not valid return with same number of turns left - Redo their turn and
 		// displays bad move message
 		if (!isValidMove(locAt, locTo))
-			return movesLeft;
+			return -1;
 		// move player, add visited locations
 		Player p = getPlayerAt(locAt);
 		p.addVisitedLocation(locAt);
@@ -253,11 +256,10 @@ public class Board extends JPanel {
 		p.setLoc(locTo);
 		if (getCellAt(locTo) instanceof DoorCell) // if made it into a room stop player
 			if (!p.getLastSuggested().equals(getCellAt(locTo).getRoom())) {
-				displayBoard();
 				return 0;
 			}
 		//displayBoard();
-		return --movesLeft;
+		return -1;
 	}
 
 	/**
