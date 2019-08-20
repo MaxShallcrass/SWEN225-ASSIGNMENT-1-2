@@ -172,7 +172,6 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		boolean gameOver = false;
 		player = getPlayerTurn();
 		displayBottomForPlayer();
-
 	}
 
 	
@@ -493,9 +492,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		Cell c = gameBoard.getCellAt(new Location(0, 0)).getSelected();
 		if (c != null) {
 			Location cLoc = c.getLoc();
-			System.out.println("XPos: " + cLoc.getX() + " YPos: " + cLoc.getY());
-			movePlayer(players.get(0), c);
-
+			movePlayer(player, c);
 			c.resetSelectedCell();
 		}
 	}
