@@ -70,6 +70,8 @@ public class CluedoUI {
 		
 		JPanel top = new JPanel();
 		JPanel bot = new JPanel();
+		top.setBackground(Color.red);
+		bot.setBackground(Color.red);
 		jBottom.add(top,BorderLayout.NORTH);
 		jBottom.add(bot,BorderLayout.SOUTH);
 		
@@ -82,8 +84,6 @@ public class CluedoUI {
 		jHand.setBackground(Color.red);
 		top.add(jHand);
 		
-		JLabel labell = new JLabel("efefefefef");
-		top.add(labell);
 
 
 		
