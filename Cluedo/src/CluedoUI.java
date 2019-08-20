@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.awt.*;
 import java.util.*;
@@ -12,13 +14,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class CluedoUI implements ActionListener {
+public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
-	// private JFrame frame;
+
 
 	private int size = 100;
 	private Board gameBoard;
-	private JFrame frame;
+	//private Jthis this;
 	private ArrayList<Player> players;
 	private Envelope envelope;
 	int turn;
@@ -36,7 +38,7 @@ public class CluedoUI implements ActionListener {
 	}
 
 	public CluedoUI() {
-		frame = new JFrame("Cluedo");
+		this.setTitle("Cludeo");
 		gameBoard = new Board(null, null);
 		startGUI(gameBoard);
 
@@ -44,11 +46,11 @@ public class CluedoUI implements ActionListener {
 
 	public void startGUI(Board gameBoard) {
 
-		frame.setVisible(true);
-		frame.setSize(guiSize, guiSize);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
+		this.setVisible(true);
+		this.setSize(guiSize, guiSize);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 
 		JMenuBar mb = new JMenuBar();
 		JMenu acc = new JMenu("Accusation");
@@ -61,18 +63,18 @@ public class CluedoUI implements ActionListener {
 		sug.add(mSug);
 		mb.add(acc);
 		mb.add(sug);
-		frame.setJMenuBar(mb);
+		this.setJMenuBar(mb);
 
-		// frame.getRootPane().setLayout(new BorderLayout());
+		// this.getRootPane().setLayout(new BorderLayout());
 		JPanel jBoard = createBoard(gameBoard);
-		frame.add(jBoard, BorderLayout.CENTER);/// .getRootPane()
+		this.add(jBoard, BorderLayout.CENTER);/// .getRootPane()
 		
 		jBottom = new JPanel();
 		jBottom.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jBottom.setSize(guiSize,(int)(guiSize*0.2));
 		jBottom.setBackground(Color.red);
-		frame.add(jBottom,BorderLayout.SOUTH);
-		frame.pack();
+		this.add(jBottom,BorderLayout.SOUTH);
+		this.pack();
 		
 		
 		
@@ -357,6 +359,36 @@ public class CluedoUI implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(e.getActionCommand());
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }
