@@ -44,6 +44,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		addPlayersToGameBoard();
 		startGUI();
 		addMouseListener(this);
+		turn = 0;
 		runGame();
 
 	}
@@ -59,7 +60,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		JMenu acc = new JMenu("Accusation");
 		JMenu sug = new JMenu("Suggestion");
 		JMenu tur = new JMenu("Turn");
-		JMenuItem mTur= new JMenuItem("Next Players Turn");
+		JMenuItem mTur = new JMenuItem("Next Players Turn");
 		JMenuItem mAcc = new JMenuItem("Make Accusation");
 		JMenuItem mSug = new JMenuItem("Make Suggestion");
 		mAcc.addActionListener(this);
@@ -126,14 +127,14 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		ArrayList<String> charC = new ArrayList<String>();
 		ArrayList<String> weapC = new ArrayList<String>();
 		ArrayList<Card> acc = new ArrayList<Card>();
-		for(Card c : player.getHand().getCards()) {
-			if(c instanceof CharacterCard) {
+		for (Card c : player.getHand().getCards()) {
+			if (c instanceof CharacterCard) {
 				charC.add(c.getName());
 			}
-			if(c instanceof WeaponCard) {
+			if (c instanceof WeaponCard) {
 				weapC.add(c.getName());
 			}
-			if(c instanceof RoomCard) {
+			if (c instanceof RoomCard) {
 				roomC.add(c.getName());
 			}
 		}
@@ -146,8 +147,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 			} catch (Exception e) {
 			}
 		}
-		
-		
+
 	}
 
 	/**
@@ -155,18 +155,13 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 */
 	private void runGame() {
 		boolean gameOver = false;
-		turn = 0; // index of player whos turn it is
-		while (!gameOver) {
-			player = getPlayerTurn();
-			displayBottomForPlayer();
-			while(!nextTurn) {
-				System.out.print("");
-			}
-			nextTurn = false;
-			//System.out.println("turn completed");
-		}
+		player = getPlayerTurn();
+		displayBottomForPlayer();
 
 	}
+
+	
+
 
 	/**
 	 * displays which players turn it is, their hand, buttons and dice
@@ -177,26 +172,30 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		// showing whos turn it is
 		JPanel top = (JPanel) jBottom.getComponent(0);
 		JPanel bot = (JPanel) jBottom.getComponent(1);
-		//JLabel j1 = (JLabel) (top.getComponent(0));
+		// JLabel j1 = (JLabel) (top.getComponent(0));
 		// showing text
 		// j1.setText("Turn of: "+player.getCharacter());
 		// showing hand
-		
+
 		JPanel j2 = (JPanel) (top.getComponent(0));
 		j2.removeAll();
+		System.out.println(player.getHand().getCards());
 		for (Card c : player.getHand().getCards()) {
 			j2.add(c);
+			//System.out.println("1");
 		}
 		// showing dice
 		JPanel j3 = (JPanel) (bot.getComponent(0));
+		j3.removeAll();
 		j3.add(randDie());
 		j3.add(randDie());
 		this.setVisible(true);
 
 	}
-	
+
 	/**
 	 * returns a JLabel with icon of dice roll
+	 * 
 	 * @return
 	 */
 	public JLabel randDie() {
@@ -204,7 +203,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		int roll = rand.nextInt(5) + 1;
 		JLabel j = new JLabel();
 		ImageIcon ii = new ImageIcon("resource/dice/" + roll + ".jpg");
-		Image image = ii.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH); 
+		Image image = ii.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 		ii = new ImageIcon(image);
 		j.setIcon(ii);
 		return j;
@@ -216,7 +215,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * @return Player
 	 */
 	public Player getPlayerTurn() {
-		System.out.println("getting with turn = "+turn);
+		System.out.println("getting with turn = " + turn);
 		Player player = players.get(turn);
 		// choosing a player that can play
 		while (player.hasLost()) {
@@ -230,7 +229,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		if (turn == players.size()) {
 			turn = 0;
 		}
-		System.out.println("returning with turn = "+turn);
+		System.out.println("returning with turn = " + turn);
 		System.out.println();
 		return player;
 	}
@@ -243,8 +242,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		ArrayList<String> chosenCharacters = new ArrayList<String>();
 		ArrayList<String> freeCharacters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
 				"Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
-		//adding chosen characters to array
-		for(Player p : players) {
+		// adding chosen characters to array
+		for (Player p : players) {
 			chosenCharacters.add(p.getCharacter());
 		}
 		// removing freeCharacters form chosenCharacters
@@ -435,18 +434,16 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("Make Accusation")){
+		if (e.getActionCommand().equals("Make Accusation")) {
 			makeAccusation();
 		}
-		if(e.getActionCommand().equals("Make Suggestion")){
+		if (e.getActionCommand().equals("Make Suggestion")) {
 			makeSuggestion();
 		}
-		if(e.getActionCommand().equals("Next Players Turn")){
-			nextTurn = true;
-			
+		if (e.getActionCommand().equals("Next Players Turn")) {
+			runGame();
+
 		}
-		
-		
 
 	}
 
