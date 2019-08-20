@@ -288,7 +288,7 @@ public abstract class Cell extends JButton  implements ActionListener{
 	 * @return
 	 */
 	public boolean isVisited() {
-		return isVisited();
+		return visited;
 	}
 	
 	/**

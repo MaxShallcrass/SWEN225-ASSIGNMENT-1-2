@@ -112,9 +112,18 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		numPlayers();
 		selectCharacters();
 		deal();
-		addPlayersToGameBoard();
+	//	addPlayersToGameBoard();
 		// game loop
 		boolean gameOver = false;
+		
+		////////Testing for Pathfinding\\\\\\\
+		Player test=players.get(0);
+		test.setLoc(new Location(6, 2));
+		gameBoard.getCellAt(new Location(6, 2)).setPlayer(test);
+		
+		
+		
+		
 		turn = 0; // index of player whos turn it is
 		while (!gameOver) {
 			Player player = getPlayerTurn();
@@ -344,6 +353,16 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
+	 * Moves player
+	 */
+	private void movePlayer(Player p, Cell to) {
+		
+		
+		gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), 10);
+		
+	}
+	
+	/**
 	 * geet for gui size so that cell can construct at right scale
 	 * @return int 
 	 */
@@ -392,6 +411,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		if(c!=null) {
 		Location cLoc= c.getLoc();
 		System.out.println("XPos: " +cLoc.getX() +" YPos: " +cLoc.getY());
+		movePlayer(players.get(0), c);
 		
 		c.resetSelectedCell();
 		}
