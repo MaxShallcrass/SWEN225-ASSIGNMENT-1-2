@@ -244,13 +244,13 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		ArrayList<String> chosenCharacters = new ArrayList<String>();
 		ArrayList<String> freeCharacters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
 				"Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
+		//adding chosen characters to array
+		for(Player p : players) {
+			chosenCharacters.add(p.getCharacter());
+		}
 		// removing freeCharacters form chosenCharacters
 		for (String s : chosenCharacters) {
-			for (int f = 0; f < freeCharacters.size(); f++) {
-				if (s.equals(freeCharacters.get(f))) {
-					freeCharacters.remove(f);
-				}
-			}
+			freeCharacters.remove(s);
 		}
 		ArrayList<Player> computerPlayers = new ArrayList<Player>();
 		for (String s : freeCharacters) {
