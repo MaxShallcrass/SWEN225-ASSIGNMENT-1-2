@@ -21,6 +21,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	private int turn;
 	private JPanel jBottom;
 	private Player player;
+	private boolean nextTurn = false;
 
 	// board.setMaximumSize(new Dimension(720, 750));w
 	private static int guiSize = 600;
@@ -57,12 +58,17 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		JMenuBar mb = new JMenuBar();
 		JMenu acc = new JMenu("Accusation");
 		JMenu sug = new JMenu("Suggestion");
+		JMenu tur = new JMenu("Turn");
+		JMenuItem mTur= new JMenuItem("Next Players Turn");
 		JMenuItem mAcc = new JMenuItem("Make Accusation");
 		JMenuItem mSug = new JMenuItem("Make Suggestion");
 		mAcc.addActionListener(this);
 		mSug.addActionListener(this);
+		mTur.addActionListener(this);
 		acc.add(mAcc);
+		tur.add(mTur);
 		sug.add(mSug);
+		mb.add(tur);
 		mb.add(acc);
 		mb.add(sug);
 		this.setJMenuBar(mb);
@@ -149,24 +155,16 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 */
 	private void runGame() {
 		boolean gameOver = false;
-
-		//////// Testing for Pathfinding\\\\\\\
-		Player test = players.get(0);
-		test.setLoc(new Location(6, 2));
-		gameBoard.getCellAt(new Location(6, 2)).setPlayer(test);
-
 		turn = 0; // index of player whos turn it is
 		while (!gameOver) {
 			player = getPlayerTurn();
-			displayBottomForPlayer(player);
-
+			displayBottomForPlayer();
+			while(!nextTurn) {
+				System.out.print("");
+			}
+			nextTurn = false;
+			//System.out.println("turn completed");
 		}
-
-		// Location l = new Location(5, 5);
-		// gameBoard.getCellAt(l).setWeapon("Ca");
-
-		// System.out.println(n);
-		// JOptionPane numPlayers = new JOptionPane(arg0, arg1, arg2, arg3, arg4)
 
 	}
 
@@ -175,7 +173,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * 
 	 * @param player
 	 */
-	public void displayBottomForPlayer(Player player) {
+	public void displayBottomForPlayer() {
 		// showing whos turn it is
 		JPanel top = (JPanel) jBottom.getComponent(0);
 		JPanel bot = (JPanel) jBottom.getComponent(1);
@@ -194,8 +192,6 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		j3.add(randDie());
 		j3.add(randDie());
 		this.setVisible(true);
-		while (true) {
-		}
 
 	}
 	
@@ -442,6 +438,11 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		if(e.getActionCommand().equals("Make Suggestion")){
 			makeSuggestion();
 		}
+		if(e.getActionCommand().equals("Next Players Turn")){
+			nextTurn = true;
+			System.out.println("nec turn g");
+		}
+		
 		
 
 	}

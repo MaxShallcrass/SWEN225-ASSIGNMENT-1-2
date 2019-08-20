@@ -197,7 +197,7 @@ public abstract class Cell extends JButton  implements ActionListener{
 	 * @param p
 	 */
 	public void setPlayer(Player p) {
-		System.out.println(p.getCharacter());
+	
 		//switch (p.getCharacter()) {
 	//	case "Mrs. White":
 	//		pName = "candlestick";
