@@ -211,7 +211,7 @@ public class Board extends JPanel {
 		bestPathway.clear();
 		exploreCellAll(getCellAt(locAt), locTo, movesLeft);
 
-		if (bestPathway.isEmpty() || bestPathway.size() > movesLeft)
+		if (bestPathway.isEmpty() || bestPathway.size()-1 > movesLeft)
 			return null;
 
 		return bestPathway;

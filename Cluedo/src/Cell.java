@@ -223,6 +223,7 @@ public abstract class Cell extends JButton  implements ActionListener{
 		 charImg= new ImageIcon("resource/boardtiles/" + p.getCharacter() + ".PNG");
 		setToolTipText(p.getCharacter());
 		setIcon(charImg);
+		this.repaint();
 		this.player = p;
 		hasPlayer = true;
 	}
