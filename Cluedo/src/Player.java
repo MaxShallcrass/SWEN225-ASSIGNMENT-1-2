@@ -12,6 +12,7 @@ public class Player {
 	private int displayNumber;
 	private Hand hand;
 	private boolean isGameOver;
+	private int movesLeft=0;
 	// Cells the player has visited this turn
 	// -For movement as cannot move through same cell twice on the same turn
 	private List<Location> visitedLocsThisTurn;
@@ -173,6 +174,21 @@ public class Player {
 	 */
 	public List<Location> getVisitedLocations() {
 		return visitedLocsThisTurn;
+	}
+	
+	/**
+	 * Gets the number of moves left a player can make
+	 */
+	public int getMovesLeft() {
+		return movesLeft;
+	}
+	
+	/**
+	 * Sets the number of moves left for a player
+	 * @param i
+	 */
+	public void addMovesLeft(int i) {
+		movesLeft+=i;
 	}
 
 	/**

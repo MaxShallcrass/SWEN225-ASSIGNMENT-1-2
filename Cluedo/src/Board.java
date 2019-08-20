@@ -196,29 +196,17 @@ public class Board extends JPanel {
 	 * @param locTo
 	 * @param movesLeft
 	 */
-	public void movePlayerMany(Location locAt, Location locTo, int movesLeft){
+	public ArrayList<Cell> movePlayerMany(Location locAt, Location locTo, int movesLeft){
 		shortestPathLength=Integer.MAX_VALUE;
-		Player p = getCellAt(locAt).getPlayer();
+		pathway.clear();
+		bestPathway.clear();
 		
-		ArrayList<Cell> moves = new ArrayList<Cell>();
-		moves=isValidBigMove(p, locTo, 12);
-		if(moves==null)
-			System.out.println("failed");
+		exploreCellAll(getCellAt(locAt), locTo, movesLeft);
 		
-		else {
-			System.out.println("should have worked");
-
-		for(int i=0; i<moves.size()-1; i++) {
-			try
-			{
-			    TimeUnit.SECONDS.sleep(1);
-			}
-			catch(InterruptedException e)
-			{
-			}
-			movePlayer(moves.get(i).getLoc(), moves.get(i+1).getLoc());
-		}
-		}
+		if(bestPathway.isEmpty() || bestPathway.size()>movesLeft)
+			return null;
+		
+		return bestPathway;
 	}
 	
 	
