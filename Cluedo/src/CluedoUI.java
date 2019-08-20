@@ -18,8 +18,9 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	// private Jthis this;
 	private ArrayList<Player> players;
 	private Envelope envelope;
-	int turn;
-	JPanel jBottom;
+	private int turn;
+	private JPanel jBottom;
+	private Player player;
 
 	// board.setMaximumSize(new Dimension(720, 750));w
 	private static int guiSize = 600;
@@ -115,7 +116,30 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * method run to make accusation call
 	 */
 	public void makeAccusation() {
-		System.out.println("accusation made");
+		ArrayList<String> roomC = new ArrayList<String>();
+		ArrayList<String> charC = new ArrayList<String>();
+		ArrayList<String> weapC = new ArrayList<String>();
+		for(Card c : player.getHand().getCards()) {
+			if(c instanceof CharacterCard) {
+				charC.add(c.getName());
+			}
+			if(c instanceof WeaponCard) {
+				weapC.add(c.getName());
+			}
+			if(c instanceof RoomCard) {
+				roomC.add(c.getName());
+			}
+		}
+		String numPlayers = null;
+		// Getting the number of players in the game
+		while (numPlayers == null) {
+			try {
+				numPlayers = (String) JOptionPane.showInputDialog(null, "What are the number of players?", "Cluedo",
+						JOptionPane.QUESTION_MESSAGE, null, roomC.toArray(), roomC.toArray());
+			} catch (Exception e) {
+			}
+		}
+		
 	}
 
 	/**
@@ -131,7 +155,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
 		turn = 0; // index of player whos turn it is
 		while (!gameOver) {
-			Player player = getPlayerTurn();
+			player = getPlayerTurn();
 			displayBottomForPlayer(player);
 
 		}
@@ -167,7 +191,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		JPanel j3 = (JPanel) (bot.getComponent(0));
 		j3.add(randDie());
 		j3.add(randDie());
-
+		this.setVisible(true);
 		while (true) {
 		}
 
@@ -410,7 +434,13 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
+		if(e.getActionCommand().equals("Make Accusation")){
+			makeAccusation();
+		}
+		if(e.getActionCommand().equals("Make Suggestion")){
+			makeSuggestion();
+		}
+		
 
 	}
 
