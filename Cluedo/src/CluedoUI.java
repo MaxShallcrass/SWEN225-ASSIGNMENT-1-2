@@ -16,23 +16,21 @@ import javax.swing.border.LineBorder;
 
 public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
-
-
 	private int size = 100;
 	private Board gameBoard;
-	//private Jthis this;
+	// private Jthis this;
 	private ArrayList<Player> players;
 	private Envelope envelope;
 	int turn;
 	JPanel jBottom;
-	
-	//board.setMaximumSize(new Dimension(720, 750));w
+
+	// board.setMaximumSize(new Dimension(720, 750));w
 	private static int guiSize = 600;
 	private final int BOARDX = 720;
 	private final int BOARDY = 750;
 	// private ArrayList<play>
-	
-	//pathfinding
+
+	// pathfinding
 
 	public static void main(String args[]) {
 		new CluedoUI();
@@ -48,7 +46,6 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	public void startGUI(Board gameBoard) {
-
 		this.setVisible(true);
 		this.setSize(guiSize, guiSize);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,37 +68,54 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		// this.getRootPane().setLayout(new BorderLayout());
 		JPanel jBoard = createBoard(gameBoard);
 		this.add(jBoard, BorderLayout.CENTER);/// .getRootPane()
-		
+
 		jBottom = new JPanel();
 		jBottom.setLayout(new FlowLayout(FlowLayout.LEFT));
-		jBottom.setSize(guiSize,(int)(guiSize*0.2));
-		jBottom.setBackground(Color.red);
-		this.add(jBottom,BorderLayout.SOUTH);
+		jBottom.setSize(guiSize, (int) (guiSize * 0.2));
+		jBottom.setBackground(Color.blue);
+		this.add(jBottom, BorderLayout.SOUTH);
 		this.pack();
-		
-		
-		
+
 		JPanel top = new JPanel();
 		JPanel bot = new JPanel();
-		top.setBackground(Color.red);
-		bot.setBackground(Color.red);
-		jBottom.add(top,BorderLayout.NORTH);
-		jBottom.add(bot,BorderLayout.SOUTH);
-		
-		JLabel label = new JLabel("");
-		top.add(label);
-		
+		top.setBackground(Color.blue);
+		bot.setBackground(Color.blue);
+		jBottom.add(top, BorderLayout.NORTH);
+		jBottom.add(bot, BorderLayout.SOUTH);
+
+		/*
+		 * JLabel label = new JLabel(""); top.add(label);
+		 */
+
 		JPanel jHand = new JPanel();
-		jHand.setLayout(new FlowLayout(FlowLayout.LEFT));
-		jHand.setSize(guiSize/2,(int)(guiSize*0.2));
-		jHand.setBackground(Color.red);
+		jHand.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		// jHand.setSize(guiSize/2,(int)(guiSize*0.2));
+		jHand.setBackground(Color.blue);
 		top.add(jHand);
-		
 
+		JPanel jDice = new JPanel();
+		jHand.setLayout(new FlowLayout(FlowLayout.LEFT));
+		// jHand.setSize(guiSize/2,(int)(guiSize*0.2));
+		jHand.setBackground(Color.blue);
+		bot.add(jDice);
 
-		
 		// JOptionPane
 		startGame();
+
+	}
+
+	/**
+	 * method to run a suggestion call
+	 */
+	public void makeSuggestion() {
+		System.out.println("suggestion made");
+	}
+
+	/**
+	 * method run to make accusation call
+	 */
+	public void makeAccusation() {
+		System.out.println("accusation made");
 	}
 
 	/**
@@ -112,18 +126,15 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		numPlayers();
 		selectCharacters();
 		deal();
-	//	addPlayersToGameBoard();
+		// addPlayersToGameBoard();
 		// game loop
 		boolean gameOver = false;
-		
-		////////Testing for Pathfinding\\\\\\\
-		Player test=players.get(0);
+
+		//////// Testing for Pathfinding\\\\\\\
+		Player test = players.get(0);
 		test.setLoc(new Location(6, 2));
 		gameBoard.getCellAt(new Location(6, 2)).setPlayer(test);
-		
-		
-		
-		
+
 		turn = 0; // index of player whos turn it is
 		while (!gameOver) {
 			Player player = getPlayerTurn();
@@ -138,29 +149,51 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		// JOptionPane numPlayers = new JOptionPane(arg0, arg1, arg2, arg3, arg4)
 
 	}
-	
+
 	/**
 	 * displays which players turn it is, their hand, buttons and dice
+	 * 
 	 * @param player
 	 */
 	public void displayBottomForPlayer(Player player) {
-		//showing whos turn it is
-		JPanel top = (JPanel)jBottom.getComponent(0);
-		JLabel j1 = (JLabel)(top.getComponent(0));
-		j1.setText("Turn of: "+player.getCharacter());
-		//showing hand 
-		JPanel j2 = (JPanel)(top.getComponent(1));
+		// showing whos turn it is
+		JPanel top = (JPanel) jBottom.getComponent(0);
+		JPanel bot = (JPanel) jBottom.getComponent(1);
+		JLabel j1 = (JLabel) (top.getComponent(0));
+		// showing text
+		// j1.setText("Turn of: "+player.getCharacter());
+		// showing hand
+		JPanel j2 = (JPanel) (top.getComponent(1));
 		j2.removeAll();
-		for(Card c : player.getHand().getCards()) {
+		for (Card c : player.getHand().getCards()) {
 			j2.add(c);
 		}
-		//
-		while(true) {}
-		
+		// showing dice
+		JPanel j3 = (JPanel) (bot.getComponent(0));
+		j3.add(randDie());
+		j3.add(randDie());
+
+		while (true) {
+		}
+
 	}
 	
 	/**
+	 * returns a JLabel with icon of dice roll
+	 * @return
+	 */
+	public JLabel randDie() {
+		Random rand = new Random();
+		int roll = rand.nextInt(5) + 1;
+		JLabel j = new JLabel();
+		ImageIcon ii = new ImageIcon("resource/dice/" + roll + ".jpg");
+		j.setIcon(ii);
+		return j;
+	}
+
+	/**
 	 * get and return player whos turn it is
+	 * 
 	 * @return Player
 	 */
 	public Player getPlayerTurn() {
@@ -172,9 +205,9 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 			player = players.get(turn);
 		}
 		player.newTurn(); // for keeping track of players movements
-		
+
 		turn++;
-		if(turn == players.size()) {
+		if (turn == players.size()) {
 			turn = 0;
 		}
 		return player;
@@ -283,8 +316,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 */
 	public JPanel createBoard(Board gameBoard) {
 		JPanel board = new JPanel();
-		board.setSize(guiSize/BOARDX*BOARDY, 750*1);
-		board.setMaximumSize(new Dimension(guiSize/BOARDX*BOARDY, 750*1));
+		board.setSize(guiSize / BOARDX * BOARDY, 750 * 1);
+		board.setMaximumSize(new Dimension(guiSize / BOARDX * BOARDY, 750 * 1));
 		board.setLayout(new GridLayout(25, 24, 1, 1));
 		board.setBackground(Color.black);
 
@@ -356,21 +389,20 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * Moves player
 	 */
 	private void movePlayer(Player p, Cell to) {
-		
-		
+
 		gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), 10);
-		
+
 	}
-	
+
 	/**
 	 * geet for gui size so that cell can construct at right scale
-	 * @return int 
+	 * 
+	 * @return int
 	 */
 	public static int getGuiSize() {
 		return guiSize;
 	}
-	
-	
+
 	/**
 	 * Create cells in the Tetris visualization. They use the Game to chose their
 	 * color.
@@ -382,11 +414,11 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(e.getActionCommand());
-		
+
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {		
+	public void mouseClicked(MouseEvent e) {
 	}
 
 	@Override
@@ -408,12 +440,12 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		Cell c = gameBoard.getCellAt(new Location(0, 0)).getSelected();
-		if(c!=null) {
-		Location cLoc= c.getLoc();
-		System.out.println("XPos: " +cLoc.getX() +" YPos: " +cLoc.getY());
-		movePlayer(players.get(0), c);
-		
-		c.resetSelectedCell();
+		if (c != null) {
+			Location cLoc = c.getLoc();
+			System.out.println("XPos: " + cLoc.getX() + " YPos: " + cLoc.getY());
+			movePlayer(players.get(0), c);
+
+			c.resetSelectedCell();
 		}
 	}
 }
