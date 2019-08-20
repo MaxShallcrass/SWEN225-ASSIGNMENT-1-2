@@ -1,7 +1,4 @@
 import java.util.List;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -39,13 +36,17 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
 	public CluedoUI() {
 		this.setTitle("Cludeo");
-		gameBoard = new Board(null, null);
-		startGUI(gameBoard);
+		numPlayers();
+		deal();
+		selectCharacters();
+		addPlayersToGameBoard();
+		startGUI();
 		addMouseListener(this);
+		runGame();
 
 	}
 
-	public void startGUI(Board gameBoard) {
+	public void startGUI() {
 		this.setVisible(true);
 		this.setSize(guiSize, guiSize);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,13 +95,12 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		top.add(jHand);
 
 		JPanel jDice = new JPanel();
-		jHand.setLayout(new FlowLayout(FlowLayout.LEFT));
+		jDice.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		// jHand.setSize(guiSize/2,(int)(guiSize*0.2));
-		jHand.setBackground(Color.blue);
+		jDice.setBackground(Color.blue);
 		bot.add(jDice);
 
 		// JOptionPane
-		startGame();
 
 	}
 
@@ -121,13 +121,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	/**
 	 * Starts the game, intialising the number of players and the names/characters
 	 */
-	private void startGame() {
-		// setup
-		numPlayers();
-		selectCharacters();
-		deal();
-		// addPlayersToGameBoard();
-		// game loop
+	private void runGame() {
 		boolean gameOver = false;
 
 		//////// Testing for Pathfinding\\\\\\\
@@ -159,11 +153,12 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		// showing whos turn it is
 		JPanel top = (JPanel) jBottom.getComponent(0);
 		JPanel bot = (JPanel) jBottom.getComponent(1);
-		JLabel j1 = (JLabel) (top.getComponent(0));
+		//JLabel j1 = (JLabel) (top.getComponent(0));
 		// showing text
 		// j1.setText("Turn of: "+player.getCharacter());
 		// showing hand
-		JPanel j2 = (JPanel) (top.getComponent(1));
+		
+		JPanel j2 = (JPanel) (top.getComponent(0));
 		j2.removeAll();
 		for (Card c : player.getHand().getCards()) {
 			j2.add(c);
@@ -187,6 +182,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		int roll = rand.nextInt(5) + 1;
 		JLabel j = new JLabel();
 		ImageIcon ii = new ImageIcon("resource/dice/" + roll + ".jpg");
+		Image image = ii.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH); 
+		ii = new ImageIcon(image);
 		j.setIcon(ii);
 		return j;
 	}
