@@ -192,33 +192,29 @@ public class Board extends JPanel {
 	
 	/**
 	 * Moves a player multiple steps if possible
+	 * 
+	 * 	
+	 * Checks if a path to find to a cell is a valid move. It finds the shortest
+	 * path from the players location to the Location to. This checks if the path is
+	 * less than the amount of turns a player has left 
+	 * 
+	 * Returns null if not valid,
+	 * Returns a list of cells on the path if valid
+	 *
 	 * @param locAt
 	 * @param locTo
 	 * @param movesLeft
 	 */
-	public void movePlayerMany(Location locAt, Location locTo, int movesLeft){
-		shortestPathLength=Integer.MAX_VALUE;
-		Player p = getCellAt(locAt).getPlayer();
-		
-		ArrayList<Cell> moves = new ArrayList<Cell>();
-		moves=isValidBigMove(p, locTo, 12);
-		if(moves==null)
-			System.out.println("failed");
-		
-		else {
-			System.out.println("should have worked");
+	public ArrayList<Cell> movePlayerMany(Location locAt, Location locTo, int movesLeft) {
+		shortestPathLength = Integer.MAX_VALUE;
+		pathway.clear();
+		bestPathway.clear();
+		exploreCellAll(getCellAt(locAt), locTo, movesLeft);
 
-		for(int i=0; i<moves.size()-1; i++) {
-			try
-			{
-			    TimeUnit.SECONDS.sleep(1);
-			}
-			catch(InterruptedException e)
-			{
-			}
-			movePlayer(moves.get(i).getLoc(), moves.get(i+1).getLoc());
-		}
-		}
+		if (bestPathway.isEmpty() || bestPathway.size() > movesLeft)
+			return null;
+
+		return bestPathway;
 	}
 	
 	
@@ -339,23 +335,8 @@ public class Board extends JPanel {
 		return true;
 	}
 	
-	/**
-	 * Checks if a path to find to a cell is a valid move. It finds the shortest
-	 * path from the players location to the Location to. This checks if the path is
-	 * less than the amount of turns a player has left 
-	 * 
-	 * Returns null if not valid,
-	 * Returns a list of cells on the path if valid
-	 */
-	public ArrayList<Cell> isValidBigMove(Player p, Location to, int playersTurns){
-		pathway.clear();
-		bestPathway.clear();
-		exploreCellAll(getCellAt(p.getLoc()), to, playersTurns);
-		if(bestPathway.isEmpty() || bestPathway.size()>playersTurns)
-			return null;
-		
-		return bestPathway;
-	}
+
+
 	
 	/**
 	 * Searches for all paths from a cell If it reaches the goal cell then we have

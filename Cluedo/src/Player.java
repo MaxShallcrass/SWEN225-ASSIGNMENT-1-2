@@ -20,6 +20,7 @@ public class Player {
 	private boolean suggestedLastTurn;
 	private boolean suggestedThisturn;
 	private String lastRoomSuggested;
+	int movesLeft=0;
 
 	/**
 	 * Constructor for a player
@@ -174,6 +175,22 @@ public class Player {
 	public List<Location> getVisitedLocations() {
 		return visitedLocsThisTurn;
 	}
+	
+	/**
+	 * Gets the number of moves left a player can make
+	 */
+	public int getMovesLeft() {
+		return movesLeft;
+	}
+
+	/**
+	 * Sets the number of moves left for a player
+	 * @param i
+	 */
+	public void addMovesLeft(int i) {
+		movesLeft+=i;
+	}
+	
 
 	/**
 	 * To string for board visuals
