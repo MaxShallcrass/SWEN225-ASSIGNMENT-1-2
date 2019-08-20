@@ -186,6 +186,20 @@ public class Board extends JPanel {
 		System.out.println("************************************************************************");
 		System.out.println("");
 	}
+	
+	
+	/**
+	 * Moves a player multiple steps if possible
+	 * @param locAt
+	 * @param locTo
+	 * @param movesLeft
+	 */
+	public void movePlayerMany(Location locAt, Location locTo, int movesLeft){
+		
+		
+	}
+	
+	
 
 	/**
 	 * Moves a player at Location locAt on the board one cell over in the direction

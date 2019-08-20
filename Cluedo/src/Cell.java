@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,7 +12,7 @@ import javax.swing.JLabel;
  * 
  * Each cell is either a Floor cell or a door cell
  */
-public abstract class Cell extends JLabel {// implements ActionListener{
+public abstract class Cell extends JButton  implements ActionListener{
 	// Where on the board it is represented
 	private Location loc;
 	// For display and movements of weapons and players
@@ -24,9 +25,12 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	private String roomName;
 	
 	
+	
+	
 	//Pathfinding
 	boolean visited=false;
-	
+	private static Cell selectedCell=null;
+
 	// UI
 	private ImageIcon tile;
 	private ImageIcon weaponImg;
@@ -36,11 +40,12 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	private boolean switchh = true;
 
 	// NEW
-//	public void actionPerformed(ActionEvent e) {
-	// if(!switchh)
-	// setIcon(null);
-//		switchh=!switchh;
-	// }//
+	public void actionPerformed(ActionEvent e){
+		selectedCell=this;
+		
+		
+		System.out.println("touched");
+	 }//
 
 	/**
 	 * Creates a new cell at Location loc
@@ -48,6 +53,15 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	 * @param loc
 	 */
 	Cell(Location loc, String imageName) {
+		this.addActionListener(this);
+		 setFocusPainted(false);
+	        setMargin(new Insets(0, 0, 0, 0));
+	        setContentAreaFilled(false);
+	        setBorderPainted(false);
+	        setOpaque(false);
+		
+		
+		
 		this.loc = loc;
 		hasPlayer = false;
 		hasWeapon = false;
@@ -285,6 +299,16 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 		visited=b;
 	}
 	
+	/**
+	 * Gets selected cell for path finding
+	 */
+	Cell getSelected() {
+		return selectedCell;
+	}
+	
+	public void resetSelectedCell() {
+		selectedCell=null;
+	}
 
 	/**
 	 * Returns the information of the cell to display on the board if it contains a

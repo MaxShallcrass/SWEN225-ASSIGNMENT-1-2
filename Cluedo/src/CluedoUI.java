@@ -31,6 +31,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	private final int BOARDX = 720;
 	private final int BOARDY = 750;
 	// private ArrayList<play>
+	
+	//pathfinding
 
 	public static void main(String args[]) {
 		new CluedoUI();
@@ -41,6 +43,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		this.setTitle("Cludeo");
 		gameBoard = new Board(null, null);
 		startGUI(gameBoard);
+		addMouseListener(this);
 
 	}
 
@@ -279,6 +282,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		gameBoard.addWeapons();
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
+				gameBoard.getCellAt(new Location(x, y)).addMouseListener(this);
 				board.add(gameBoard.getCellAt(new Location(x, y)));
 			}
 		}
@@ -363,32 +367,33 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mouseClicked(MouseEvent e) {		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
+	/**
+	 * For pathfinding to find the currently selected cell to move to
+	 * 
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		Cell c = gameBoard.getCellAt(new Location(0, 0)).getSelected();
+		if(c!=null) {
+		Location cLoc= c.getLoc();
+		System.out.println("XPos: " +cLoc.getX() +" YPos: " +cLoc.getY());
 		
+		c.resetSelectedCell();
+		}
 	}
 }
