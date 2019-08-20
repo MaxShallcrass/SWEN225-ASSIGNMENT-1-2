@@ -31,6 +31,7 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	private ImageIcon tile;
 	private ImageIcon weaponImg;
 	private ImageIcon charImg;
+	private String toolTip;
 
 	private boolean switchh = true;
 
@@ -77,6 +78,7 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 		}
 		setVisible(true);
 		this.setToolTipText(imageName);
+		toolTip=imageName;	
 		tile = new ImageIcon("resource/boardtiles/" + imageName + ".jpg");
 		int size = CluedoUI.getGuiSize();
 		int sizeConst = 750/30;
@@ -85,15 +87,17 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 		repaint();
 		setMaximumSize(new Dimension(size/sizeConst,size/sizeConst));
 		setPreferredSize(new Dimension(size/sizeConst,size/sizeConst));
-
 	}
 
 	/**
-	 * Sets the cell a room and stores the room name
+	 * Sets the cell a room, stores the room name and sets hover message to the room
+	 * name
 	 * 
 	 * @param room name of room
 	 */
 	public void setRoom(String room) {
+		setToolTipText(room);
+		toolTip = room;
 		roomName = room;
 		isRoom = true;
 	}
@@ -145,8 +149,10 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 		case "Rv":
 			wep = "revolver";
 			break;
+		default:
+			throw new RuntimeException("Incorrect weapon name for tile");
 		}
-
+		setToolTipText(wep);
 		weaponImg = new ImageIcon("resource/boardtiles/" + wep + ".jpg");
 		setIcon(weaponImg);
 		hasWeapon = true;
@@ -158,6 +164,7 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	public void removeWeapon() {
 		hasWeapon = false;
 		weapon = "";
+		setToolTipText(toolTip);
 		setIcon(tile);
 	}
 
@@ -177,33 +184,31 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	 */
 	public void setPlayer(Player p) {
 		System.out.println(p.getCharacter());
-		// "Mrs. White", "Mr. Green",
-		// "Mrs. Peacock", "Professor Plum", "Miss Scarlett", "Colonel Mustard")
-		String pName;
-
-		switch (p.getCharacter()) {
-		case "Mrs. White":
-			pName = "candlestick";
-			break;
-		case "Mr. Green":
-			pName = "dagger";
-			break;
-		case "Lp":
-			pName = "Mrs. Peacock";
-			break;
-		case "Professor Plum":
-			pName = "rope";
-			break;
-		case "Miss Scarlett":
-			pName = "wrench";
-			break;
-		case "Rv":
-			pName = "Colonel Mustard";
-			break;
-		}
-		// charImg= new ImageIcon("resource/boardtiles/" + wep + ".jpg");
+		//switch (p.getCharacter()) {
+	//	case "Mrs. White":
+	//		pName = "candlestick";
+	//		break;
+	//	case "Mr. Green":
+	//		pName = "dagger";
+	//		break;
+	//	case "Lp":
+	//		pName = "Mrs. Peacock";
+	//		break;
+	//	case "Professor Plum":
+	//		pName = "rope";
+//			break;
+	//	case "Miss Scarlett":
+	//		pName = "wrench";
+	//		break;
+	//	case "Rv":
+	//		pName = "Colonel Mustard";
+	//		break;
+	//	default:
+	//		throw new RuntimeException("Incorrect player name for tile");
+	//	}
+		 charImg= new ImageIcon("resource/boardtiles/" + p.getCharacter() + ".PNG");
+		setToolTipText(p.getCharacter());
 		setIcon(charImg);
-
 		this.player = p;
 		hasPlayer = true;
 	}
@@ -214,6 +219,7 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	public void removePlayer() {
 		player = null;
 		hasPlayer = false;
+		setToolTipText(toolTip);
 		setIcon(tile);
 	}
 
