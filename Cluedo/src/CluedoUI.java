@@ -116,14 +116,53 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * method to run a suggestion call
 	 */
 	public void makeSuggestion() {
-		System.out.println("suggestion made");
+		ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
+				"Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
+		ArrayList<String> weapons = new ArrayList<String>(
+				Arrays.asList("Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"));
+		ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen", "Ballroom", "Conservatory",
+				"Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"));
+		// Getting the number of players in the game
+		String room = gameBoard.getCellAt(player.getLoc()).getRoom();
+		String character = null;
+		String weapon = null;
+		while (character == null) {
+			try {
+				character = (String) JOptionPane.showInputDialog(null, "What character do you suggest?", "Cluedo",
+						JOptionPane.QUESTION_MESSAGE, null, characters.toArray(), characters.toArray());
+			} catch (Exception e) {
+			}
+		}
+		while (weapon == null) {
+			try {
+				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you sugest?", "Cluedo",
+						JOptionPane.QUESTION_MESSAGE, null, weapons.toArray(), weapons.toArray());
+			} catch (Exception e) {
+			}
+		}
+		//move items
+		Player pMove = null;
+		for(Player p : players) {
+			if(p.getCharacter().equals(character)) {
+				pMove = p;
+			}
+		}
+		gameBoard.movePlayerWeaponToRoom(pMove,room,weapon);
+		Suggestion sug = new Suggestion(new RoomCard(room), new WeaponCard(weapon), new CharacterCard(character));
+		//refute
 	}
-
+	
+	/**
+	 * method to handle the refute process
+	 */
+	public void refute() {
+		
+	}
+	
 	/**
 	 * method run to make accusation call
 	 */
 	public void makeAccusation() {
-		System.out.println("f");
 		ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
 				"Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
 		ArrayList<String> weapons = new ArrayList<String>(
