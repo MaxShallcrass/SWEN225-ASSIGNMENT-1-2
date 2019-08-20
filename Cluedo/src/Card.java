@@ -28,13 +28,13 @@ public abstract class Card extends JLabel
 		int size = CluedoUI.getGuiSize();
 		//get resized card 
 		ImageIcon ii = new ImageIcon("resource/cards/" + name + ".PNG");
-		Image image = ii.getImage().getScaledInstance(500, 500,Image.SCALE_SMOOTH); 
+		Image image = ii.getImage().getScaledInstance(intX*5,intY*5,Image.SCALE_SMOOTH); 
 		ii = new ImageIcon(image);
 		this.setIcon(ii);
+		this.setToolTipText(name);
 		
 	//	this.setSize(new Dimension(10,10));
 	//	this.setIcon(new ImageIcon("resource/cards/" + name + ".PNG"));
-		System.out.println(name);
 		this.name=name;
 	}
 	

@@ -22,8 +22,8 @@ public class CluedoUI {
 	int turn;
 	JPanel jBottom;
 	
-	//board.setMaximumSize(new Dimension(720, 750));
-	private static int guiSize = 500;
+	//board.setMaximumSize(new Dimension(720, 750));w
+	private static int guiSize = 600;
 	private final int BOARDX = 720;
 	private final int BOARDY = 750;
 	// private ArrayList<play>
@@ -65,15 +65,27 @@ public class CluedoUI {
 		jBottom.setBackground(Color.red);
 		frame.add(jBottom,BorderLayout.SOUTH);
 		frame.pack();
-
+		
+		
+		
+		JPanel top = new JPanel();
+		JPanel bot = new JPanel();
+		jBottom.add(top,BorderLayout.NORTH);
+		jBottom.add(bot,BorderLayout.SOUTH);
+		
 		JLabel label = new JLabel("");
-		jBottom.add(label);
+		top.add(label);
 		
 		JPanel jHand = new JPanel();
-		jHand.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		jHand.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jHand.setSize(guiSize/2,(int)(guiSize*0.2));
 		jHand.setBackground(Color.red);
-		jBottom.add(jHand);
+		top.add(jHand);
+		
+		JLabel labell = new JLabel("efefefefef");
+		top.add(labell);
+
+
 		
 		// JOptionPane
 		startGame();
@@ -106,19 +118,21 @@ public class CluedoUI {
 	}
 	
 	/**
-	 * displays which players turn it is, their hand and dice
+	 * displays which players turn it is, their hand, buttons and dice
 	 * @param player
 	 */
 	public void displayBottomForPlayer(Player player) {
 		//showing whos turn it is
-		JLabel j1 = (JLabel)(jBottom.getComponent(0));
+		JPanel top = (JPanel)jBottom.getComponent(0);
+		JLabel j1 = (JLabel)(top.getComponent(0));
 		j1.setText("Turn of: "+player.getCharacter());
 		//showing hand 
-		JPanel j2 = (JPanel)(jBottom.getComponent(1));
+		JPanel j2 = (JPanel)(top.getComponent(1));
 		j2.removeAll();
 		for(Card c : player.getHand().getCards()) {
 			j2.add(c);
 		}
+		//
 		while(true) {}
 		
 	}
