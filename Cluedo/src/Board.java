@@ -209,10 +209,12 @@ public class Board extends JPanel {
 			System.out.println("should have worked");
 
 		for(int i=0; i<moves.size()-1; i++) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			try
+			{
+			    TimeUnit.SECONDS.sleep(1);
+			}
+			catch(InterruptedException e)
+			{
 			}
 			movePlayer(moves.get(i).getLoc(), moves.get(i+1).getLoc());
 		}
