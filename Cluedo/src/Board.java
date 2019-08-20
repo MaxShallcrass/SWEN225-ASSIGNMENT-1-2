@@ -13,7 +13,11 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel {
 	private Cell[][] board; // data structure for containing all the board information
-
+	
+	//pathfinding
+	private ArrayList<Integer> pathsFound= new ArrayList<Integer>();//Stores distances for each path found
+	private Stack<Cell> pathway = new Stack<Cell>();
+	private ArrayList<Cell> bestPathway = new ArrayList<Cell>();
 	/**
 	 * Constructs the board for the game. Loads the board from GameBoard.txt Adds
 	 * players to the board Adds weapons to the board
@@ -312,18 +316,56 @@ public class Board extends JPanel {
 	}
 	
 	/**
+	 * Checks if a path to find to a cell is a valid move. It finds the shortest
+	 * path from the players location to the Location to. This checks if the path is
+	 * less than the amount of turns a player has left 
 	 * 
+	 * Returns null if not valid,
+	 * Returns a list of cells on the path if valid
 	 */
-	public int isValidBigMove(Player p, Location to){
-		int turnsLeft=0;
-		//4 cells checks
-		//for each keep doing 4 cells till find end point or the cell reached is not moveable
+	public ArrayList<Cell> isValidBigMove(Player p, Location to, int playersTurns){
+		pathway.clear();
+		bestPathway.clear();
+		exploreCellAll(getCellAt(p.getLoc()), to);
+		if(bestPathway.isEmpty() || bestPathway.size()>playersTurns)
+			return null;
 		
-		
-		return-1;
+		return bestPathway;
 	}
 	
-	
+	/**
+	 * Searches for all paths from a cell If it reaches the goal cell then we have
+	 * found a complete path and adds the number of steps to an arrayList
+	 * 
+	 * Breath first search algorithm
+	 * @param cell
+	 */
+	public void exploreCellAll(Cell current, Location goal) {
+		pathway.push(current);
+		if(current.getLoc().equals(goal)) { //reached goal cell
+			if(pathway.size()<bestPathway.size()) { //Found smaller pathway
+				bestPathway.clear();
+				bestPathway.addAll(pathway);
+				System.out.println("new best path length: " +bestPathway.size());
+			}
+		}else {
+			current.setIsVisited(true);
+			Location currentLoc = current.getLoc();
+			int currentX=currentLoc.getX();
+			int currentY=currentLoc.getY();
+			Location down = new Location(currentX, currentY-1);
+			Location up = new Location(currentX, currentY+1);
+			Location left = new Location(currentX-1, currentY);
+			Location right = new Location(currentX+1, currentY);
+			//Visits surrounding cells
+			if(isValidMove(currentLoc, down) && !getCellAt(down).isVisited()) exploreCellAll(getCellAt(down), goal);
+			if(isValidMove(currentLoc, up) && !getCellAt(up).isVisited()) exploreCellAll(getCellAt(up), goal);
+			if(isValidMove(currentLoc, left) && !getCellAt(left).isVisited()) exploreCellAll(getCellAt(left), goal);
+			if(isValidMove(currentLoc, right) && !getCellAt(right).isVisited()) exploreCellAll(getCellAt(right), goal);
+		}
+		current.setIsVisited(false);
+		pathway.pop();
+	}
 	
 	
 	

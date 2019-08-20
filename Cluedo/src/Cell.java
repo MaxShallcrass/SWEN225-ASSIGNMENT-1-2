@@ -22,8 +22,12 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	// Room information if it is
 	private boolean isRoom;
 	private String roomName;
-
-	// new
+	
+	
+	//Pathfinding
+	boolean visited=false;
+	
+	// UI
 	private ImageIcon tile;
 	private ImageIcon weaponImg;
 	private ImageIcon charImg;
@@ -258,6 +262,23 @@ public abstract class Cell extends JLabel {// implements ActionListener{
 	 * @return
 	 */
 	public abstract char getId();
+	
+	/**
+	 * Returns if the cell has been visited in the current path find
+	 * @return
+	 */
+	public boolean isVisited() {
+		return isVisited();
+	}
+	
+	/**
+	 * Sets the cell visited or not visted in the pathfind
+	 * @param b
+	 */
+	public void setIsVisited(boolean b) {
+		visited=b;
+	}
+	
 
 	/**
 	 * Returns the information of the cell to display on the board if it contains a
