@@ -18,6 +18,7 @@ public class Board extends JPanel {
 	private ArrayList<Integer> pathsFound= new ArrayList<Integer>();//Stores distances for each path found
 	private Stack<Cell> pathway = new Stack<Cell>();
 	private ArrayList<Cell> bestPathway = new ArrayList<Cell>();
+	private int shortestPathLength;
 	/**
 	 * Constructs the board for the game. Loads the board from GameBoard.txt Adds
 	 * players to the board Adds weapons to the board
@@ -195,13 +196,20 @@ public class Board extends JPanel {
 	 * @param movesLeft
 	 */
 	public void movePlayerMany(Location locAt, Location locTo, int movesLeft){
+		shortestPathLength=Integer.MAX_VALUE;
 		Player p = getCellAt(locAt).getPlayer();
-		if(null==isValidBigMove(p, locTo, 10))
+		
+		ArrayList<Cell> moves = new ArrayList<Cell>();
+		moves=isValidBigMove(p, locTo, 12);
+		if(moves==null)
 			System.out.println("failed");
-		else
+		else {
 			System.out.println("should have worked");
 
-			
+		for(int i=0; i<moves.size(); i++) {
+			System.out.println("X: " + moves.get(i).getLoc().getX() + " Y: " + moves.get(i).getLoc().getY());
+		}
+		}
 	}
 	
 	
@@ -269,8 +277,8 @@ public class Board extends JPanel {
 		int x = to.getX();
 		int y = to.getY();
 		// Checks error bounds
-		if (x < 0 || x >= 24 || y < 0 || y >= 24) {
-			System.out.println("Invalid move - Out of bounds: Retry again");
+		if (x < 0 || x >= 24 || y < 0 || y >= 25) {
+		//	System.out.println("Invalid move - Out of bounds: Retry again");
 			return false;
 		}
 
@@ -280,7 +288,7 @@ public class Board extends JPanel {
 		if (!prevsLocs.isEmpty())
 			for (Location loc : prevsLocs) {
 				if (loc.equals(to)) {
-					System.out.println("Invalid move - Already visited tile this turn: Retry again");
+				//	System.out.println("Invalid move - Already visited tile this turn: Retry again");
 					return false;
 				}
 			}}
@@ -288,12 +296,12 @@ public class Board extends JPanel {
 		Cell from = getCellAt(at);
 		// checks that there is not already a player
 		if (moveTo.hasPlayer()) {
-			System.out.println("Invalid move - Player already on that tile: Retry again");
+			//System.out.println("Invalid move - Player already on that tile: Retry again");
 			return false;
 		}
 		// checks it's not an empty tile
 		if (moveTo.toString().compareToIgnoreCase("e") == 0) {
-			System.out.println("Invalid move - Cannot move to an empty tile(e): Retry again");
+		//	System.out.println("Invalid move - Cannot move to an empty tile(e): Retry again");
 			return false;
 		}
 
@@ -302,25 +310,25 @@ public class Board extends JPanel {
 		// note cannot move from hallway cell to a room cell - has to transition trough
 		// a door cell
 		if (moveTo.getId() != from.getId() && !(moveTo instanceof DoorCell) && !(from instanceof DoorCell)) {
-			System.out.println("Invalid move - Cannot move through a wall: Retry again");
+			//System.out.println("Invalid move - Cannot move through a wall: Retry again");
 			return false;
 		}
 		// checks if tile has a weapon on it
 		if (moveTo.hasWeapon()) {
-			System.out.println("Invalid move - Cannot move onto a weapon: Retry again");
+			//System.out.println("Invalid move - Cannot move onto a weapon: Retry again");
 			return false;
 		}
 		// Checking that if moving into a door cell, that its from the right direction
 		if (moveTo instanceof DoorCell && !from.isRoom()) {
 			if (!(((DoorCell) moveTo).getEntryLoc().equals(from.getLoc()))) {
-				System.out.println("Invalid move - Cannot move to a door from this direction: Retry again");
+			//	System.out.println("Invalid move - Cannot move to a door from this direction: Retry again");
 				return false;
 			}
 		}
 		if (from instanceof DoorCell && !moveTo.isRoom()) {
 			if (!(((DoorCell) from).getEntryLoc().equals(moveTo.getLoc()))) {
-				System.out.println(
-						"Invalid move - Cannot move from a door to that tile from this direction: Retry again");
+				//System.out.println(
+					//	"Invalid move - Cannot move from a door to that tile from this direction: Retry again");
 				return false;
 			}
 		}
@@ -338,7 +346,7 @@ public class Board extends JPanel {
 	public ArrayList<Cell> isValidBigMove(Player p, Location to, int playersTurns){
 		pathway.clear();
 		bestPathway.clear();
-		exploreCellAll(getCellAt(p.getLoc()), to);
+		exploreCellAll(getCellAt(p.getLoc()), to, playersTurns);
 		if(bestPathway.isEmpty() || bestPathway.size()>playersTurns)
 			return null;
 		
@@ -352,13 +360,15 @@ public class Board extends JPanel {
 	 * Breath first search algorithm
 	 * @param cell
 	 */
-	public void exploreCellAll(Cell current, Location goal) {
+	public void exploreCellAll(Cell current, Location goal, int longestAllowedLength) {
 		pathway.push(current);
-		if(current.getLoc().equals(goal)) { //reached goal cell
-			if(pathway.size()<bestPathway.size()) { //Found smaller pathway
+		if(pathway.size() <= longestAllowedLength+1)
+		if( current.getLoc().equals(goal)) { //reached goal cell
+			if(pathway.size()<shortestPathLength) { //Found smaller pathway
 				bestPathway.clear();
 				bestPathway.addAll(pathway);
 				System.out.println("new best path length: " +bestPathway.size());
+				shortestPathLength=bestPathway.size();
 			}
 		}else {
 			current.setIsVisited(true);
@@ -369,11 +379,12 @@ public class Board extends JPanel {
 			Location up = new Location(currentX, currentY+1);
 			Location left = new Location(currentX-1, currentY);
 			Location right = new Location(currentX+1, currentY);
+			//x < 0 || x >= 24 || y < 0 || y >= 24
 			//Visits surrounding cells
-			if(isValidMove(currentLoc, down) && !getCellAt(down).isVisited()) exploreCellAll(getCellAt(down), goal);
-			if(isValidMove(currentLoc, up) && !getCellAt(up).isVisited()) exploreCellAll(getCellAt(up), goal);
-			if(isValidMove(currentLoc, left) && !getCellAt(left).isVisited()) exploreCellAll(getCellAt(left), goal);
-			if(isValidMove(currentLoc, right) && !getCellAt(right).isVisited()) exploreCellAll(getCellAt(right), goal);
+			if(currentY-1 >-1 && currentY-1 < 25 && !getCellAt(down).isVisited() && isValidMove(currentLoc, down)) exploreCellAll(getCellAt(down), goal,longestAllowedLength);
+			if(currentY+1 >-1 && currentY+1 < 25 && !getCellAt(up).isVisited() && isValidMove(currentLoc, up)) exploreCellAll(getCellAt(up), goal,longestAllowedLength);
+			if(currentX-1 > -1 && currentX-1< 24 && !getCellAt(left).isVisited() &&isValidMove(currentLoc, left)) exploreCellAll(getCellAt(left), goal,longestAllowedLength);
+			if(currentX+1 > -1 && currentX+1< 24 &&!getCellAt(right).isVisited()&&isValidMove(currentLoc, right)) exploreCellAll(getCellAt(right), goal,longestAllowedLength);
 		}
 		current.setIsVisited(false);
 		pathway.pop();
