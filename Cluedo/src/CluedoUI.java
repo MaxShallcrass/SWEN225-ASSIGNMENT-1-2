@@ -2,6 +2,8 @@ import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.*;
 import java.util.*;
@@ -10,7 +12,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class CluedoUI {
+public class CluedoUI implements ActionListener {
 
 	// private JFrame frame;
 
@@ -49,10 +51,16 @@ public class CluedoUI {
 		frame.setResizable(false);
 
 		JMenuBar mb = new JMenuBar();
-		JMenu sg = new JMenu("Start Game");
-		JMenu eg = new JMenu("End Game");
-		mb.add(sg);
-		mb.add(eg);
+		JMenu acc = new JMenu("Accusation");
+		JMenu sug = new JMenu("Suggestion");
+		JMenuItem mAcc = new JMenuItem("Make Accusation");
+		JMenuItem mSug = new JMenuItem("Make Suggestion");
+		mAcc.addActionListener(this);
+		mSug.addActionListener(this);
+		acc.add(mAcc);
+		sug.add(mSug);
+		mb.add(acc);
+		mb.add(sug);
 		frame.setJMenuBar(mb);
 
 		// frame.getRootPane().setLayout(new BorderLayout());
@@ -344,5 +352,11 @@ public class CluedoUI {
 	 */
 	public JLabel cell(int x, int y, Board b) {
 		return new JLabel(new ImageIcon("resource/boardtiles/dagger.jpg"));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println(e.getActionCommand());
+		
 	}
 }
