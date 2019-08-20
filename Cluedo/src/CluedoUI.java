@@ -119,6 +119,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		ArrayList<String> roomC = new ArrayList<String>();
 		ArrayList<String> charC = new ArrayList<String>();
 		ArrayList<String> weapC = new ArrayList<String>();
+		ArrayList<Card> acc = new ArrayList<Card>();
 		for(Card c : player.getHand().getCards()) {
 			if(c instanceof CharacterCard) {
 				charC.add(c.getName());
@@ -139,6 +140,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 			} catch (Exception e) {
 			}
 		}
+		
 		
 	}
 
