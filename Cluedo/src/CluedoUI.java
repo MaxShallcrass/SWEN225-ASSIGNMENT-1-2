@@ -147,6 +147,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 				pMove = p;
 			}
 		}
+		player.makesSuggestion(room);
 		gameBoard.movePlayerWeaponToRoom(pMove,room,weapon);
 		Suggestion sug = new Suggestion(new RoomCard(room), new WeaponCard(weapon), new CharacterCard(character));
 		//refute
@@ -211,6 +212,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		boolean gameOver = false;
 		player = getPlayerTurn();
 		displayBottomForPlayer();
+		player.newTurn();
 	}
 
 	
@@ -497,7 +499,14 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 			makeAccusation();
 		}
 		if (e.getActionCommand().equals("Make Suggestion")) {
-			makeSuggestion();
+			//check validity 
+			if(gameBoard.getCellAt(player.getLoc()).isRoom() && !player.hasLost()) {
+				if(player.canSuggest(gameBoard.getCellAt(player.getLoc()).getRoom())) {
+					makeSuggestion();
+					return;
+				}
+			}
+			JOptionPane.showMessageDialog(this, "You currently cannot make a suggestion");
 		}
 		if (e.getActionCommand().equals("Next Players Turn")) {
 			runGame();
