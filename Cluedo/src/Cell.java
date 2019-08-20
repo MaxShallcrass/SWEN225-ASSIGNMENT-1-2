@@ -261,8 +261,8 @@ public abstract class Cell extends JButton  implements ActionListener{
 	 * @return
 	 */
 	public Player getPlayer() {
-		if (!hasPlayer)
-			throw new RuntimeException("Error: Cell that does not have a player - getPlayer");
+		//if (!hasPlayer)
+		//	throw new RuntimeException("Error: Cell that does not have a player - getPlayer");
 
 		return player;
 	}

@@ -459,12 +459,12 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 */
 	private void movePlayer(Player p, Cell to) {
 		if(player.getMovesLeft()!=0) {
-			ArrayList<Cell> pathWay =gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), 10);
+			ArrayList<Cell> pathWay =gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), player.getMovesLeft());
 			if(pathWay!=null) {
 				player.addMovesLeft(-pathWay.size()+1);
 				for(int i=0; i<pathWay.size()-1; i++) {
 					try {
-						Thread.sleep(100);
+						Thread.sleep(250);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
