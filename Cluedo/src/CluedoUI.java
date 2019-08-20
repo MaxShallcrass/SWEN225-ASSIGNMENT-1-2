@@ -123,29 +123,44 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * method run to make accusation call
 	 */
 	public void makeAccusation() {
-		ArrayList<String> roomC = new ArrayList<String>();
-		ArrayList<String> charC = new ArrayList<String>();
-		ArrayList<String> weapC = new ArrayList<String>();
-		ArrayList<Card> acc = new ArrayList<Card>();
-		for (Card c : player.getHand().getCards()) {
-			if (c instanceof CharacterCard) {
-				charC.add(c.getName());
-			}
-			if (c instanceof WeaponCard) {
-				weapC.add(c.getName());
-			}
-			if (c instanceof RoomCard) {
-				roomC.add(c.getName());
-			}
-		}
-		String numPlayers = null;
+		System.out.println("f");
+		ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
+				"Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
+		ArrayList<String> weapons = new ArrayList<String>(
+				Arrays.asList("Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"));
+		ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen", "Ballroom", "Conservatory",
+				"Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"));
 		// Getting the number of players in the game
-		while (numPlayers == null) {
+		String room = null;
+		String character = null;
+		String weapon = null;
+		while (room == null) {
 			try {
-				numPlayers = (String) JOptionPane.showInputDialog(null, "What are the number of players?", "Cluedo",
-						JOptionPane.QUESTION_MESSAGE, null, roomC.toArray(), roomC.toArray());
+				room = (String) JOptionPane.showInputDialog(null, "What room do you accuse?", "Cluedo",
+						JOptionPane.QUESTION_MESSAGE, null, rooms.toArray(), rooms.toArray());
 			} catch (Exception e) {
 			}
+		}
+		while (character == null) {
+			try {
+				character = (String) JOptionPane.showInputDialog(null, "What character do you accuse?", "Cluedo",
+						JOptionPane.QUESTION_MESSAGE, null, characters.toArray(), characters.toArray());
+			} catch (Exception e) {
+			}
+		}
+		while (weapon == null) {
+			try {
+				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you accuse?", "Cluedo",
+						JOptionPane.QUESTION_MESSAGE, null, weapons.toArray(), weapons.toArray());
+			} catch (Exception e) {
+			}
+		}
+		Accusation acus = new Accusation(new RoomCard(room), new WeaponCard(weapon), new CharacterCard(character));
+		if(acus.testAccusation(envelope)) {
+			JOptionPane.showMessageDialog(this, "Congragulations you have won");
+		}else {
+			player.losesGame();
+			JOptionPane.showMessageDialog(this, "You have lost");
 		}
 
 	}
@@ -172,17 +187,12 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		// showing whos turn it is
 		JPanel top = (JPanel) jBottom.getComponent(0);
 		JPanel bot = (JPanel) jBottom.getComponent(1);
-		// JLabel j1 = (JLabel) (top.getComponent(0));
-		// showing text
-		// j1.setText("Turn of: "+player.getCharacter());
-		// showing hand
-
+		//getting hand
 		JPanel j2 = (JPanel) (top.getComponent(0));
 		j2.removeAll();
 		System.out.println(player.getHand().getCards());
 		for (Card c : player.getHand().getCards()) {
 			j2.add(c);
-			//System.out.println("1");
 		}
 		// showing dice
 		JPanel j3 = (JPanel) (bot.getComponent(0));
@@ -202,7 +212,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 */
 	public JLabel randDie() {
 		Random rand = new Random();
-		int roll = rand.nextInt(5) + 1;
+		int roll = rand.nextInt(6) + 1;
+		player.addMovesLeft(roll);
 		JLabel j = new JLabel();
 		ImageIcon ii = new ImageIcon("resource/dice/" + roll + ".jpg");
 		Image image = ii.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -217,8 +228,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * @return Player
 	 */
 	public Player getPlayerTurn() {
-		System.out.println("getting with turn = " + turn);
-		Player player = players.get(turn);
+		player = players.get(turn);
 		// choosing a player that can play
 		while (player.hasLost()) {
 			if (++turn == players.size())
@@ -231,8 +241,6 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		if (turn == players.size()) {
 			turn = 0;
 		}
-		System.out.println("returning with turn = " + turn);
-		System.out.println();
 		return player;
 	}
 
@@ -412,9 +420,20 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * Moves player
 	 */
 	private void movePlayer(Player p, Cell to) {
-
-		gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), 10);
-
+		if(player.getMovesLeft()!=0) {
+			ArrayList<Cell> pathWay =gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), 10);
+			if(pathWay!=null) {
+				player.addMovesLeft(-pathWay.size()+1);
+				for(int i=0; i<pathWay.size()-1; i++) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					gameBoard.movePlayer(pathWay.get(i).getLoc(), pathWay.get(i+1).getLoc());
+				}
+			}	
+		}
 	}
 
 	/**
