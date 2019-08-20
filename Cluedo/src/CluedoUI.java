@@ -190,6 +190,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		j3.add(randDie());
 		j3.add(randDie());
 		this.setVisible(true);
+		this.repaint();
+		
 
 	}
 
