@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.awt.*;
 import java.util.*;
@@ -10,6 +11,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 
 public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
@@ -52,7 +56,19 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	public void startGUI() {
 		this.setVisible(true);
 		this.setSize(guiSize, guiSize);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent we)
+		    { 
+		        String ObjButtons[] = {"Yes","No"};
+		        int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to exit?","Online Examination System",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+		        if(PromptResult==JOptionPane.YES_OPTION)
+		        {
+		            System.exit(0);
+		        }
+		    }
+		});
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 
@@ -128,14 +144,14 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		String weapon = null;
 		while (character == null) {
 			try {
-				character = (String) JOptionPane.showInputDialog(null, "What character do you suggest?", "Cluedo",
+				character = (String) JOptionPane.showInputDialog(null, "What character do you suggest?",""+player.getCharacter(),
 						JOptionPane.QUESTION_MESSAGE, null, characters.toArray(), characters.toArray());
 			} catch (Exception e) {
 			}
 		}
 		while (weapon == null) {
 			try {
-				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you sugest?", "Cluedo",
+				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you sugest?",""+player.getCharacter(),
 						JOptionPane.QUESTION_MESSAGE, null, weapons.toArray(), weapons.toArray());
 			} catch (Exception e) {
 			}
@@ -151,13 +167,63 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		gameBoard.movePlayerWeaponToRoom(pMove,room,weapon);
 		Suggestion sug = new Suggestion(new RoomCard(room), new WeaponCard(weapon), new CharacterCard(character));
 		//refute
+		JOptionPane.showMessageDialog(this, "The refute stage begins");
+		refute(sug);
 	}
 	
 	/**
 	 * method to handle the refute process
 	 */
-	public void refute() {
-		
+	public void refute(Suggestion s) {
+		// find player after this player
+		int turnR = 0;
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).equals(player)) {
+				turnR = i + 1;// +1 for the next player
+			}
+		}
+		// loop through the remaining players
+		while (true) {
+			// wraparound for getting next refute player
+			if (turnR == players.size()) {
+				turnR = 0;
+			}
+			Player playerR = players.get(turnR);
+			if (playerR.equals(player)) { // finished refutes
+				JOptionPane.showMessageDialog(this, "No one was able to refute!");
+				break;
+			}
+
+			// Add possible refutes to list and then control flow off size of list (0 or >0)
+			ArrayList<Card> possRefutes = new ArrayList<Card>();
+			for (Card playerCard : playerR.getHand().getCards()) {
+				for (Card suggestionCard : s.getCards()) {
+					if (playerCard.equals(suggestionCard)) {
+						possRefutes.add(playerCard);
+					}
+				}
+			}
+			if (possRefutes.size() != 0) {
+				ArrayList<String> strPossRefutes = new ArrayList<String>();
+				for (Card c : possRefutes) {
+					strPossRefutes.add(c.getName());
+				}
+				String refuteS = null;
+				while (refuteS == null) {
+					try {
+						refuteS = (String) JOptionPane.showInputDialog(null, "What card do you want to refute with?", ""+playerR.getCharacter(),
+								JOptionPane.QUESTION_MESSAGE, null, strPossRefutes.toArray(), strPossRefutes.toArray());
+					} catch (Exception e) {
+					}
+				}
+				System.out.println(playerR.getName());
+				JOptionPane.showMessageDialog(this, "Refuted by "+playerR.getCharacter()+" with: "+refuteS);
+				break;
+			} else {
+				JOptionPane.showMessageDialog(this,"Player " + playerR.getCharacter()+" unable to refute.");
+			}
+			turnR++;
+		}
 	}
 	
 	/**
@@ -176,21 +242,21 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		String weapon = null;
 		while (room == null) {
 			try {
-				room = (String) JOptionPane.showInputDialog(null, "What room do you accuse?", "Cluedo",
+				room = (String) JOptionPane.showInputDialog(null, "What room do you accuse?", ""+player.getCharacter(),
 						JOptionPane.QUESTION_MESSAGE, null, rooms.toArray(), rooms.toArray());
 			} catch (Exception e) {
 			}
 		}
 		while (character == null) {
 			try {
-				character = (String) JOptionPane.showInputDialog(null, "What character do you accuse?", "Cluedo",
+				character = (String) JOptionPane.showInputDialog(null, "What character do you accuse?", ""+player.getCharacter(),
 						JOptionPane.QUESTION_MESSAGE, null, characters.toArray(), characters.toArray());
 			} catch (Exception e) {
 			}
 		}
 		while (weapon == null) {
 			try {
-				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you accuse?", "Cluedo",
+				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you accuse?", ""+player.getCharacter(),
 						JOptionPane.QUESTION_MESSAGE, null, weapons.toArray(), weapons.toArray());
 			} catch (Exception e) {
 			}
@@ -281,6 +347,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		if (turn == players.size()) {
 			turn = 0;
 		}
+		JOptionPane.showMessageDialog(this, ""+player.getCharacter()+", it is your turn!");
 		return player;
 	}
 
@@ -347,7 +414,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 			// Getting the number of players in the game
 			while (playerChoice == null) {
 				try {
-					playerChoice = (String) JOptionPane.showInputDialog(null, "Player " + count + " ?", "Cluedo",
+					playerChoice = (String) JOptionPane.showInputDialog(null, "Player " + count + " select your character:", "Cluedo",
 							JOptionPane.QUESTION_MESSAGE, null, charOptions, charOptions[0]);
 					if (playerChoice.equals("")) {
 						playerChoice = null;
@@ -365,21 +432,6 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 			// set players character
 			p.setCharacter(playerChoice);
 		}
-	}
-
-	/**
-	 * 
-	 */
-	public String ask(String s) {
-		String ans = null;
-		try {
-			while (ans == null) {
-				ans = (String) JOptionPane.showInputDialog(s);
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return ans;
 	}
 
 	/**
@@ -496,7 +548,11 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Make Accusation")) {
-			makeAccusation();
+			if(!player.hasLost()) {
+				makeAccusation();
+				return;
+			}
+			JOptionPane.showMessageDialog(this, "You currently cannot make an accusation");
 		}
 		if (e.getActionCommand().equals("Make Suggestion")) {
 			//check validity 

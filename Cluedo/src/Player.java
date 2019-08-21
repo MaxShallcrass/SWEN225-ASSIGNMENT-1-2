@@ -122,10 +122,15 @@ public class Player {
 	 * @return
 	 */
 	public boolean canSuggest(String roomName) {
-		if (!suggestedLastTurn || !roomName.equals(lastRoomSuggested))
-			return true;
-
-		return false;
+		if(suggestedThisturn) {
+			return false;
+		}
+		if(suggestedLastTurn) {
+			if(roomName.equals(lastRoomSuggested)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -143,14 +148,17 @@ public class Player {
 	public void resetSuggestion() {
 		if (suggestedThisturn)
 			suggestedLastTurn = true;
-		else
+		else{
 			suggestedLastTurn = false;
+			lastRoomSuggested = "";
+		}
 	}
 
 	/**
 	 * Resets a player for a new turn Creates a new list of moved locations
 	 */
 	public void newTurn() {
+		resetSuggestion();
 		suggestedThisturn=false;
 		visitedLocsThisTurn = new ArrayList<Location>();
 	}
