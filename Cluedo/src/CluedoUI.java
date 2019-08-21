@@ -63,7 +63,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		    public void windowClosing(WindowEvent we)
 		    { 
 		        String ObjButtons[] = {"Yes","No"};
-		        int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to exit?","Online Examination System",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+		        int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to exit?","Cluedo",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 		        if(PromptResult==JOptionPane.YES_OPTION)
 		        {
 		            System.exit(0);
@@ -125,7 +125,6 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		jDice.setBackground(Color.blue);
 		bot.add(jDice);
 
-		// JOptionPane
 
 	}
 
@@ -243,31 +242,53 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		String weapon = null;
 		while (room == null) {
 			try {
-				room = (String) JOptionPane.showInputDialog(null, "What room do you accuse?", ""+""+player.getName()+" ("+player.getCharacter()+")",
-						JOptionPane.QUESTION_MESSAGE, null, rooms.toArray(), rooms.toArray());
+				room = (String) JOptionPane.showInputDialog(null, "What room do you accuse?",
+						"" + "" + player.getName() + " (" + player.getCharacter() + ")", JOptionPane.QUESTION_MESSAGE,
+						null, rooms.toArray(), rooms.toArray());
 			} catch (Exception e) {
 			}
 		}
 		while (character == null) {
 			try {
-				character = (String) JOptionPane.showInputDialog(null, "What character do you accuse?", ""+""+player.getName()+" ("+player.getCharacter()+")",
-						JOptionPane.QUESTION_MESSAGE, null, characters.toArray(), characters.toArray());
+				character = (String) JOptionPane.showInputDialog(null, "What character do you accuse?",
+						"" + "" + player.getName() + " (" + player.getCharacter() + ")", JOptionPane.QUESTION_MESSAGE,
+						null, characters.toArray(), characters.toArray());
 			} catch (Exception e) {
 			}
 		}
 		while (weapon == null) {
 			try {
-				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you accuse?", ""+""+player.getName()+" ("+player.getCharacter()+")",
-						JOptionPane.QUESTION_MESSAGE, null, weapons.toArray(), weapons.toArray());
+				weapon = (String) JOptionPane.showInputDialog(null, "What weapon do you accuse?",
+						"" + "" + player.getName() + " (" + player.getCharacter() + ")", JOptionPane.QUESTION_MESSAGE,
+						null, weapons.toArray(), weapons.toArray());
 			} catch (Exception e) {
 			}
 		}
 		Accusation acus = new Accusation(new RoomCard(room), new WeaponCard(weapon), new CharacterCard(character));
-		if(acus.testAccusation(envelope)) {
-			JOptionPane.showMessageDialog(this, "Congragulations you have won");
-		}else {
+		if (acus.testAccusation(envelope)) {
+			JOptionPane.showMessageDialog(this, "Congragulations!! " + "" + "" + player.getName() + " ("
+					+ player.getCharacter() + ") You have won");
+			System.exit(0);
+
+		} else {
 			player.losesGame();
 			JOptionPane.showMessageDialog(this, "You have lost");
+		}
+		// checking if only one player is left that hasnt lost
+		int numPlayersLost = 0;
+		for (Player p : players) {
+			if (p.hasLost())
+				numPlayersLost++;
+		}
+		if (numPlayersLost == players.size() - 1) { // We have a winner!!
+			Player winner = null;
+			for (Player p : players) // gets winner
+				if (!p.hasLost())
+					winner = p;
+			JOptionPane.showMessageDialog(this, "Congragulations!! " + "" + "" + winner.getName() + " ("
+					+ winner.getCharacter() + ") You have won");
+
+			System.exit(0);
 		}
 
 	}
@@ -304,23 +325,22 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		// showing dice
 		JPanel j3 = (JPanel) (bot.getComponent(0));
 		j3.removeAll();
+		player.setMovesLeft(0);
 		j3.add(randDie());
 		j3.add(randDie());
 		this.setVisible(true);
 		this.repaint();
-		
-
 	}
 
 	/**
-	 * returns a JLabel with icon of dice roll
+	 * Returns a JLabel with icon of dice roll
 	 * 
 	 * @return
 	 */
 	public JLabel randDie() {
 		Random rand = new Random();
 		int roll = rand.nextInt(6) + 1;
-		player.addMovesLeft(roll);
+		player.setMovesLeft(player.getMovesLeft()+roll); //setting moves left for a player
 		JLabel j = new JLabel();
 		ImageIcon ii = new ImageIcon("resource/dice/" + roll + ".jpg");
 		Image image = ii.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -330,7 +350,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * get and return player whos turn it is
+	 * Get and return player who's turn it is
 	 * 
 	 * @return Player
 	 */
@@ -353,7 +373,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * the initial game board is just a background, now that we have players it can
+	 * The initial game board is just a background, now that we have players it can
 	 * be updated to contain the actual game sate
 	 */
 	public void addPlayersToGameBoard() {
@@ -405,12 +425,16 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	 * method to set player names
 	 */
 	public void getNames() {
-		for(Player p : players) {
-			String name = JOptionPane.showInputDialog("Player please enter your name: ");
+		int count = 0;
+		for (Player p : players) {
+			count++;
+			String name = null;
+			while (name == null&& name!="")
+		name=	JOptionPane.showInputDialog(null, "Player " + count + " please enter your name: ", "Player Name", 1);
 			p.setName(name);
 		}
 	}
-	
+
 	/**
 	 * method to select which characters each player is playing
 	 */
@@ -524,7 +548,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		if(player.getMovesLeft()!=0) {
 			ArrayList<Cell> pathWay =gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), player.getMovesLeft());
 			if(pathWay!=null) {
-				player.addMovesLeft(-pathWay.size()+1);
+				player.setMovesLeft(player.getMovesLeft()-pathWay.size()+1); //takes off moves made by the player
 				for(int i=0; i<pathWay.size()-1; i++) {
 					try {
 						Thread.sleep(250);
@@ -557,16 +581,18 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Make Accusation")) {
-			if(!player.hasLost()) {
+			if(!player.hasLost()&&player.getMovesLeft()!=-1) {
+				player.setMovesLeft(-1);
 				makeAccusation();
 				return;
 			}
 			JOptionPane.showMessageDialog(this, "You currently cannot make an accusation");
 		}
-		if (e.getActionCommand().equals("Make Suggestion")) {
+		if (e.getActionCommand().equals("Make Suggestion")&&player.getMovesLeft()!=-1) {
 			//check validity 
 			if(gameBoard.getCellAt(player.getLoc()).isRoom() && !player.hasLost()) {
 				if(player.canSuggest(gameBoard.getCellAt(player.getLoc()).getRoom())) {
+					player.setMovesLeft(-1);
 					makeSuggestion();
 					return;
 				}

@@ -497,8 +497,8 @@ public class Cluedo {
 	}
 
 	
-	public static void main(String args[]) {
-		new Cluedo(false,"");
-	}
+	//public static void main(String args[]) {
+	//	new Cluedo(false,"");
+	//}
 
 }

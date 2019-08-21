@@ -193,10 +193,10 @@ public class Player {
 
 	/**
 	 * Sets the number of moves left for a player
-	 * @param i
+	 * @param 
 	 */
-	public void addMovesLeft(int i) {
-		movesLeft+=i;
+	public void setMovesLeft(int movesLeft) {
+		this.movesLeft=movesLeft;
 	}
 	
 
