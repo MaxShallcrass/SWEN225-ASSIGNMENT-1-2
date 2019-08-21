@@ -1,6 +1,8 @@
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -15,31 +17,29 @@ import javax.swing.border.LineBorder;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 
-public class CluedoUI extends JFrame implements ActionListener, MouseListener {
-
+public class CluedoUI extends JFrame implements ActionListener, MouseListener, KeyListener {
 	private int size = 100;
 	private Board gameBoard;
-	// private Jthis this;
 	private ArrayList<Player> players;
 	private Envelope envelope;
 	private int turn;
 	private JPanel jBottom;
 	private Player player;
 	private boolean nextTurn = false;
-
-	// board.setMaximumSize(new Dimension(720, 750));w
+	private boolean startedGame=false;
 	private static int guiSize = 600;
 	private final int BOARDX = 720;
 	private final int BOARDY = 750;
-	// private ArrayList<play>
-
-	// pathfinding
 
 	public static void main(String args[]) {
 		new CluedoUI();
 
 	}
 
+	/**
+	 * Starts the game, calling methods for adding players, letting them choose
+	 * there players and building the GUI
+	 */
 	public CluedoUI() {
 		this.setTitle("Cludeo");
 		numPlayers();
@@ -49,46 +49,58 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		addPlayersToGameBoard();
 		startGUI();
 		addMouseListener(this);
+		addKeyListener(this);
 		turn = 0;
+		startedGame = true;
+		setFocusable(true);
+		setFocusTraversalKeysEnabled(false);
 		runGame();
 
 	}
 
+	/**
+	 * Constructs and builds the GUI with all the panels
+	 */
 	public void startGUI() {
 		this.setVisible(true);
 		this.setSize(guiSize, guiSize);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-		    @Override
-		    public void windowClosing(WindowEvent we)
-		    { 
-		        String ObjButtons[] = {"Yes","No"};
-		        int PromptResult = JOptionPane.showOptionDialog(null,"Are you sure you want to exit?","Cluedo",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
-		        if(PromptResult==JOptionPane.YES_OPTION)
-		        {
-		            System.exit(0);
-		        }
-		    }
+		// Window confirmation for closing game
+		addWindowListener(new WindowAdapter() { 
+			@Override
+			public void windowClosing(WindowEvent we) {
+				String ObjButtons[] = { "Yes", "No" };
+				int PromptResult = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Cluedo",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
+				if (PromptResult == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
 		});
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
-
+		// Setting up menue bar options
 		JMenuBar mb = new JMenuBar();
 		JMenu acc = new JMenu("Accusation");
 		JMenu sug = new JMenu("Suggestion");
+		JMenu shrtct = new JMenu("Shortcut Keys");
 		JMenu tur = new JMenu("Turn");
 		JMenuItem mTur = new JMenuItem("Next Players Turn");
 		JMenuItem mAcc = new JMenuItem("Make Accusation");
 		JMenuItem mSug = new JMenuItem("Make Suggestion");
+		JMenuItem mShrtct = new JMenuItem("Shortcut Key info");
+		mShrtct.addActionListener(this);
 		mAcc.addActionListener(this);
 		mSug.addActionListener(this);
 		mTur.addActionListener(this);
+		shrtct.add(mShrtct);
 		acc.add(mAcc);
 		tur.add(mTur);
 		sug.add(mSug);
 		mb.add(tur);
 		mb.add(acc);
 		mb.add(sug);
+		mb.add(shrtct);
 		this.setJMenuBar(mb);
 
 		// this.getRootPane().setLayout(new BorderLayout());
@@ -109,27 +121,22 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		jBottom.add(top, BorderLayout.NORTH);
 		jBottom.add(bot, BorderLayout.SOUTH);
 
-		/*
-		 * JLabel label = new JLabel(""); top.add(label);
-		 */
-
+		//Panel for cards in the current players hand
 		JPanel jHand = new JPanel();
+		jHand.addKeyListener(this);
 		jHand.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		// jHand.setSize(guiSize/2,(int)(guiSize*0.2));
 		jHand.setBackground(Color.blue);
 		top.add(jHand);
-
+		//Panel for dice roll
 		JPanel jDice = new JPanel();
+		jDice.addKeyListener(this);
 		jDice.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		// jHand.setSize(guiSize/2,(int)(guiSize*0.2));
 		jDice.setBackground(Color.blue);
 		bot.add(jDice);
-
-
 	}
 
 	/**
-	 * method to run a suggestion call
+	 * Method to run a suggestion call
 	 */
 	public void makeSuggestion() {
 		ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
@@ -172,7 +179,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 	
 	/**
-	 * method to handle the refute process
+	 * Method to handle the refute process
 	 */
 	public void refute(Suggestion s) {
 		// find player after this player
@@ -211,23 +218,26 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 				String refuteS = null;
 				while (refuteS == null) {
 					try {
-						refuteS = (String) JOptionPane.showInputDialog(null, "What card do you want to refute with?", ""+""+playerR.getName()+" ("+playerR.getCharacter()+")",
+						refuteS = (String) JOptionPane.showInputDialog(null, "What card do you want to refute with?",
+								"" + "" + playerR.getName() + " (" + playerR.getCharacter() + ")",
 								JOptionPane.QUESTION_MESSAGE, null, strPossRefutes.toArray(), strPossRefutes.toArray());
 					} catch (Exception e) {
 					}
 				}
 				System.out.println(playerR.getName());
-				JOptionPane.showMessageDialog(this, "Refuted by "+""+playerR.getName()+" ("+playerR.getCharacter()+")"+" with: "+refuteS);
+				JOptionPane.showMessageDialog(this, "Refuted by " + "" + playerR.getName() + " ("
+						+ playerR.getCharacter() + ")" + " with: " + refuteS);
 				break;
 			} else {
-				JOptionPane.showMessageDialog(this,"Player " + ""+playerR.getName()+" ("+playerR.getCharacter()+")"+" unable to refute.");
+				JOptionPane.showMessageDialog(this, "Player " + "" + playerR.getName() + " (" + playerR.getCharacter()
+						+ ")" + " unable to refute.");
 			}
 			turnR++;
 		}
 	}
 	
 	/**
-	 * method run to make accusation call
+	 * Method run to make accusation call
 	 */
 	public void makeAccusation() {
 		ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard",
@@ -294,7 +304,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * Starts the game, intialising the number of players and the names/characters
+	 * Starts the game, initializing the number of players and the names/characters
 	 */
 	private void runGame() {
 		boolean gameOver = false;
@@ -307,7 +317,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 
 
 	/**
-	 * displays which players turn it is, their hand, buttons and dice
+	 * Displays which players turn it is, their hand, buttons and dice
 	 * 
 	 * @param player
 	 */
@@ -333,7 +343,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * Returns a JLabel with icon of dice roll
+	 * Returns a JLabel with icon of dice roll and adds amount of moves left to the
+	 * player
 	 * 
 	 * @return
 	 */
@@ -468,7 +479,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * 
+	 * Creates the game board and adds weapons to it.
 	 */
 	public JPanel createBoard(Board gameBoard) {
 		JPanel board = new JPanel();
@@ -481,6 +492,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		for (int y = 0; y < 25; y++) {
 			for (int x = 0; x < 24; x++) {
 				gameBoard.getCellAt(new Location(x, y)).addMouseListener(this);
+				gameBoard.getCellAt(new Location(x, y)).addKeyListener(this);
 				board.add(gameBoard.getCellAt(new Location(x, y)));
 			}
 		}
@@ -542,27 +554,27 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * Moves player
+	 * Moves player to clicked cell if its possible
 	 */
 	private void movePlayer(Player p, Cell to) {
-		if(player.getMovesLeft()!=0) {
-			ArrayList<Cell> pathWay =gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), player.getMovesLeft());
-			if(pathWay!=null) {
-				player.setMovesLeft(player.getMovesLeft()-pathWay.size()+1); //takes off moves made by the player
-				for(int i=0; i<pathWay.size()-1; i++) {
+		if (player.getMovesLeft() != 0) {
+			ArrayList<Cell> pathWay = gameBoard.movePlayerMany(p.getLoc(), to.getLoc(), player.getMovesLeft());
+			if (pathWay != null) {
+				player.setMovesLeft(player.getMovesLeft() - pathWay.size() + 1); // takes off moves made by the player
+				for (int i = 0; i < pathWay.size() - 1; i++) {
 					try {
 						Thread.sleep(250);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					gameBoard.movePlayer(pathWay.get(i).getLoc(), pathWay.get(i+1).getLoc());
+					gameBoard.movePlayer(pathWay.get(i).getLoc(), pathWay.get(i + 1).getLoc());
 				}
-			}	
+			}
 		}
 	}
 
 	/**
-	 * geet for gui size so that cell can construct at right scale
+	 * Get for gui size so that cell can construct at right scale
 	 * 
 	 * @return int
 	 */
@@ -570,14 +582,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		return guiSize;
 	}
 
-	/**
-	 * Create cells in the Tetris visualization. They use the Game to chose their
-	 * color.
-	 */
-	public JLabel cell(int x, int y, Board b) {
-		return new JLabel(new ImageIcon("resource/boardtiles/dagger.jpg"));
-	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Make Accusation")) {
@@ -601,6 +606,10 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 		}
 		if (e.getActionCommand().equals("Next Players Turn")) {
 			runGame();
+
+		}
+		if (e.getActionCommand().equals("Shortcut Key info")) {
+			JOptionPane.showMessageDialog(this, "Keys: \n A = Make assumption \n N = Next turn \n  S = Make suggestion");
 
 		}
 
@@ -633,6 +642,48 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener {
 			Location cLoc = c.getLoc();
 			movePlayer(player, c);
 			c.resetSelectedCell();
+		}
+	}
+
+	/**
+	 * Code for key events - shorcut keys for Game play
+	 * 
+	 * @param e
+	 */
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		if (startedGame) {
+			if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A') { // Doing assumption
+				if (!player.hasLost() && player.getMovesLeft() != -1) {
+					player.setMovesLeft(-1);
+					makeAccusation();
+					return;
+				}
+				JOptionPane.showMessageDialog(this, "You currently cannot make an accusation");
+			}
+			if (e.getKeyChar() == 's' || e.getKeyChar() == 'S') { // doing suggestion
+				if (gameBoard.getCellAt(player.getLoc()).isRoom() && !player.hasLost()) {
+					if (player.canSuggest(gameBoard.getCellAt(player.getLoc()).getRoom())) {
+						player.setMovesLeft(-1);
+						makeSuggestion();
+						return;
+					}
+				}
+				JOptionPane.showMessageDialog(this, "You currently cannot make a suggestion");
+			}
+
+			if (e.getKeyChar() == 'n' || e.getKeyChar() == 'N') { // starts next turn
+				runGame();
+			}
 		}
 	}
 }
