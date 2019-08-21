@@ -147,6 +147,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener, K
 				"Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"));
 		// Getting the number of players in the game
 		String room = gameBoard.getCellAt(player.getLoc()).getRoom();
+		player.setLastRoom(room);
 		String character = null;
 		String weapon = null;
 		while (character == null) {
@@ -176,6 +177,8 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener, K
 		//refute
 		JOptionPane.showMessageDialog(this, "The refute stage begins");
 		refute(sug);
+		player.resetSuggestion();
+
 	}
 	
 	/**
@@ -596,7 +599,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener, K
 		if (e.getActionCommand().equals("Make Suggestion")&&player.getMovesLeft()!=-1) {
 			//check validity 
 			if(gameBoard.getCellAt(player.getLoc()).isRoom() && !player.hasLost()) {
-				if(player.canSuggest(gameBoard.getCellAt(player.getLoc()).getRoom())) {
+				if(!player.getLastRoom().equals(gameBoard.getCellAt(player.getLoc()).getRoom())) {
 					player.setMovesLeft(-1);
 					makeSuggestion();
 					return;
@@ -672,7 +675,7 @@ public class CluedoUI extends JFrame implements ActionListener, MouseListener, K
 			}
 			if (e.getKeyChar() == 's' || e.getKeyChar() == 'S') { // doing suggestion
 				if (gameBoard.getCellAt(player.getLoc()).isRoom() && !player.hasLost()) {
-					if (player.canSuggest(gameBoard.getCellAt(player.getLoc()).getRoom())) {
+					if(!player.getLastRoom().equals(gameBoard.getCellAt(player.getLoc()).getRoom())) {
 						player.setMovesLeft(-1);
 						makeSuggestion();
 						return;

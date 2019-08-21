@@ -20,6 +20,7 @@ public class Player {
 	private boolean suggestedLastTurn;
 	private boolean suggestedThisturn;
 	private String lastRoomSuggested;
+	private String lastRoom="";
 	int movesLeft=0;
 
 	/**
@@ -132,6 +133,7 @@ public class Player {
 		}
 		return true;
 	}
+	
 
 	/**
 	 * Returns last room player suggested in Used for checking for doorways
@@ -205,5 +207,14 @@ public class Player {
 	 */
 	public String toString() {
 		return displayNumber + "  ";
+	}
+	/**
+	 * 
+	 */
+	public void setLastRoom(String room) {
+		lastRoom=room;
+	}
+	public String getLastRoom() {
+		return lastRoom;
 	}
 }
