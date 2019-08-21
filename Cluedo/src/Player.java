@@ -76,7 +76,7 @@ public class Player {
 	 * gets name - includes character name and player number
 	 */
 	public String getName() {
-		return character+ " - " +name;
+		return name;
 	}
 
 	/**
