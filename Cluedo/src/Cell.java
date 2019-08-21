@@ -11,6 +11,9 @@ import javax.swing.JLabel;
  * Contains all board display and location information
  * 
  * Each cell is either a Floor cell or a door cell
+ * 
+ * The cell extends JButton and implements ActionListner in which is used to
+ * find the cell that is clicked on for moving a player
  */
 public abstract class Cell extends JButton  implements ActionListener{
 	// Where on the board it is represented
@@ -23,29 +26,16 @@ public abstract class Cell extends JButton  implements ActionListener{
 	// Room information if it is
 	private boolean isRoom;
 	private String roomName;
-	
-	
-	
-	
-	//Pathfinding
+	//Path finding
 	boolean visited=false;
 	private static Cell selectedCell=null;
-
 	// UI
 	private ImageIcon tile;
 	private ImageIcon weaponImg;
 	private ImageIcon charImg;
 	private String toolTip;
 
-	private boolean switchh = true;
-
-	// NEW
-	public void actionPerformed(ActionEvent e){
-		selectedCell=this;
-		
-		
-		System.out.println("touched");
-	 }//
+	
 
 	/**
 	 * Creates a new cell at Location loc
@@ -53,21 +43,20 @@ public abstract class Cell extends JButton  implements ActionListener{
 	 * @param loc
 	 */
 	Cell(Location loc, String imageName) {
+		//Settings to make the JButton to look like a JLabel
+		setFocusPainted(false);
+		setMargin(new Insets(0, 0, 0, 0));
+		setContentAreaFilled(false);
+		setBorderPainted(false);
+		setOpaque(false);
+		
+		//Initializing values
 		this.addActionListener(this);
-		 setFocusPainted(false);
-	        setMargin(new Insets(0, 0, 0, 0));
-	        setContentAreaFilled(false);
-	        setBorderPainted(false);
-	        setOpaque(false);
-		
-		
-		
 		this.loc = loc;
 		hasPlayer = false;
 		hasWeapon = false;
 		isRoom = false;
-		// Setting cell icon
-		// new
+		// Setting cell icon - The picture
 		switch (imageName) {
 		case "#":
 			imageName = "corridor";
@@ -92,15 +81,22 @@ public abstract class Cell extends JButton  implements ActionListener{
 		}
 		setVisible(true);
 		this.setToolTipText(imageName);
-		toolTip=imageName;	
+		toolTip = imageName;
 		tile = new ImageIcon("resource/boardtiles/" + imageName + ".jpg");
-		int size = CluedoUI.getGuiSize();
-		int sizeConst = 750/30;
 		setIcon(tile);
-		revalidate();
-		repaint();
-		setMaximumSize(new Dimension(size/sizeConst,size/sizeConst));
-		setPreferredSize(new Dimension(size/sizeConst,size/sizeConst));
+		//dimensions
+		int size = CluedoUI.getGuiSize();
+		int sizeConst = 750 / 30;
+		setMaximumSize(new Dimension(size / sizeConst, size / sizeConst));
+		setPreferredSize(new Dimension(size / sizeConst, size / sizeConst));
+	}
+
+	/**
+	 * The cell that gets clicked on is set to the static cell so we know which one
+	 * to use for path finding
+	 */
+	public void actionPerformed(ActionEvent e) {
+		selectedCell = this;
 	}
 
 	/**
@@ -197,39 +193,15 @@ public abstract class Cell extends JButton  implements ActionListener{
 	 * @param p
 	 */
 	public void setPlayer(Player p) {
-	
-		//switch (p.getCharacter()) {
-	//	case "Mrs. White":
-	//		pName = "candlestick";
-	//		break;
-	//	case "Mr. Green":
-	//		pName = "dagger";
-	//		break;
-	//	case "Lp":
-	//		pName = "Mrs. Peacock";
-	//		break;
-	//	case "Professor Plum":
-	//		pName = "rope";
-//			break;
-	//	case "Miss Scarlett":
-	//		pName = "wrench";
-	//		break;
-	//	case "Rv":
-	//		pName = "Colonel Mustard";
-	//		break;
-	//	default:
-	//		throw new RuntimeException("Incorrect player name for tile");
-	//	}
-		 charImg= new ImageIcon("resource/boardtiles/" + p.getCharacter() + ".PNG");
+		charImg = new ImageIcon("resource/boardtiles/" + p.getCharacter() + ".PNG");
 		setToolTipText(p.getCharacter());
 		setIcon(charImg);
-		this.repaint();
 		this.player = p;
 		hasPlayer = true;
 	}
 
 	/**
-	 * Remoces player from cell
+	 * Removes player from cell
 	 */
 	public void removePlayer() {
 		player = null;
@@ -262,8 +234,8 @@ public abstract class Cell extends JButton  implements ActionListener{
 	 * @return
 	 */
 	public Player getPlayer() {
-		//if (!hasPlayer)
-		//	throw new RuntimeException("Error: Cell that does not have a player - getPlayer");
+		if (!hasPlayer)
+			return null;
 
 		return player;
 	}

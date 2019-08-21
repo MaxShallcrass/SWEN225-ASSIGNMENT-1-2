@@ -28,8 +28,7 @@ public class Cluedo {
 			"Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"));
 	private boolean gameOver = false;
 	Player winner;
-	boolean UI = true;
-	CluedoUI cluedoUI;
+
 
 	/**
 	 * Constructor for Cluedo. Runs and sets up the main game mechanics.
@@ -37,9 +36,7 @@ public class Cluedo {
 	 * @param testing shouldnt ask for input ever
 	 */
 	public Cluedo(Boolean t,String testingString) {
-		if(UI) {
-			cluedoUI = new CluedoUI();
-		}
+
 		testing = t;
 		if(testing) {
 			testSc = new Scanner(testingString);
@@ -481,7 +478,7 @@ public class Cluedo {
 	 */
 	public String askPlayer(String s) {
 		String ans;
-		if(!UI) {
+		
 			if(!testing) {
 				System.out.print(s);
 				Scanner sc = new Scanner(System.in);
@@ -489,22 +486,19 @@ public class Cluedo {
 			}else {
 				ans = testSc.next();
 			}
-		}else {
-			ans = cluedoUI.ask(s);
-		}
+		
 		return ans;
 	}
 
 	public void tellPlayer(String s) {
-		if(!UI) {
+		
 			System.out.println(s);
-		}
-		//cluedoUI.tellPlayer(s);
+
 	}
 
-	/*
+	
 	public static void main(String args[]) {
 		new Cluedo(false,"");
-	}*/
+	}
 
 }
